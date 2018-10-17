@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('username');
             $table->string('password');
             $table->tinyInteger('active');
-            $table->string('login_key');
+            $table->string('remember_token');
         });
     }
 

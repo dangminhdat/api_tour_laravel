@@ -2,21 +2,21 @@
 
 namespace Core\Services;
 
-use Core\Repositories\UserRepositoryInterface;
+use Core\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 
-class UserService implements UserServiceInterface
+class UserService implements ServiceInterface
 {
     protected $repository;
 
-    public function __construct(UserRepositoryInterface $repository)
+    public function __construct(UserRepository $repository)
     {
         return $this->repository = $repository;
     }
 
     public function paginate()
     {
-        return $this->repository->paginate()->toArray();
+        return $this->repository->paginate();
     }
 
     public function find($id)
@@ -39,6 +39,11 @@ class UserService implements UserServiceInterface
         return $this->repository->destroy($id);
     }
 
+    public function findUsername($username)
+    {
+        return $this->repository->findWhere(["username" => $username]);
+    }
+
     /**
      * Service lgin
      * 
@@ -49,7 +54,7 @@ class UserService implements UserServiceInterface
     public function login($username, $password)
     {
         // Find username
-        $user = $this->repository->login($username);
+        $user = $this->repository->findWhere(["username" => $username, "deleted_at" => 1]);
         if (!empty($user) && Hash::check($password, $user->password)) {
             // Update remember_token
             $user->remember_token = str_random(50);

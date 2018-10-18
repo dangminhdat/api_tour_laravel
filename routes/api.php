@@ -19,3 +19,5 @@ use Illuminate\Http\Request;
 
 // route post login
 Route::post('/login', ['as' => 'login', 'uses' => 'UserController@login']);
+
+Route::resource('users','UserController');

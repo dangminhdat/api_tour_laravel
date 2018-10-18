@@ -3,24 +3,44 @@
 namespace Core\Repositories;
 
 use App\User;
+use App\UserDetail;
 
-class UserRepository implements UserRepositoryInterface
+class UserRepository implements RepositoryInterface
 {
     protected $model;
+    protected $model_detail;
 
-    public function __construct(User $model)
+    public function __construct(User $model, UserDetail $detail)
     {
         $this->model = $model;
+        $this->model_detail = $detail;
     }
 
     public function paginate()
     {
-        return $this->model->all();
+        $paginate = array();
+        $user_detail = $this->model_detail->where("deleted_at", 1)->get()->toArray();
+        foreach ($user_detail as $key => $value) {
+            $arr = array_merge($this->model->where(["id" => $value['id_user'], "deleted_at" => 1])->first()->toArray(), $value);
+            unset($arr['deleted_at']);
+            unset($arr['id_user']);
+            $paginate[] = $arr;
+        }
+        return $paginate;
     }
 
     public function find($id)
     {
-        return $this->model->findOrFail($id);
+        // get user by id
+        $user = $this->model->where(["deleted_at" => 1, "id" => $id])->first();
+        // get data user detail
+        $user_detail = $user->user_detail;
+        unset($user_detail['id']);
+        unset($user_detail['id_user']);
+        $user = array_merge($user->toArray(), $user_detail->toArray());
+        unset($user['user_detail']);
+
+        return $user;
     }
 
     public function store($data)
@@ -30,7 +50,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function update($id, $data)
     {
-        $model = $this->find($id);
+        $model = $this->model->where(["deleted_at" => 1, "id" => $id]);
         return $model->update($data);
     }
 
@@ -46,10 +66,9 @@ class UserRepository implements UserRepositoryInterface
      * @param  string $username
      * @return object $model
      */
-    public function login($username)
+    public function findWhere($condition)
     {
-        $model = $this->model
-            ->where("username", $username);
+        $model = $this->model->where($condition);
         return $model->first();
     }
 

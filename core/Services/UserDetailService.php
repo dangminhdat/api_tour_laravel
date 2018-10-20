@@ -39,8 +39,8 @@ class UserDetailService implements ServiceInterface
         return $this->repository->destroy($id);
     }
 
-    public function findEmail($email)
+    public function findWhere($condition)
     {
-        return $this->repository->findWhere(["email" => $email]);
+        return $this->repository->findWhere($condition);
     }
 }

@@ -78,7 +78,7 @@ class UserController extends Controller
                     "username"       => $request->username,
                     "password"       => bcrypt($request->password),
                     "active"         => $request->active,
-                    "deleted_at"     => true,
+                    "deleted_at"     => false,
                     "remember_token" => null,
                 ];
 
@@ -93,7 +93,7 @@ class UserController extends Controller
                     "fullname"   => $request->fullname,
                     "email"      => $request->email,
                     "phone"      => $request->phone,
-                    "deleted_at"     => true,
+                    "deleted_at" => false,
                     "id_user"    => $user['id']
                 ];
                 $user_detail = $this->user_detail_service->store($data_user_detail);
@@ -131,6 +131,10 @@ class UserController extends Controller
         {
             // get user by id
             $user = $this->user_service->find($id);
+
+            if (!$user) {
+                throw new \Exception("Not found user", 2);
+            }
             
             $code = 200;
             $message = "Success";
@@ -139,7 +143,7 @@ class UserController extends Controller
         catch(\Exception $e) {
             $code = 400;
             $message = "Something error!!!!!";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -231,8 +235,8 @@ class UserController extends Controller
         try
         {
             DB::transaction(function () use ($id) {
-                $user = $this->user_service->update($id, ["deleted_at" => 0]);
-                $user = $this->user_detail_service->update($id, ["deleted_at" => 0]);
+                $user = $this->user_service->update($id, ["deleted_at" => true]);
+                $user = $this->user_detail_service->update($id, ["deleted_at" => true]);
             });
         
             $code = 200;

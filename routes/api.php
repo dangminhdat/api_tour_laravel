@@ -21,3 +21,5 @@ use Illuminate\Http\Request;
 Route::post('/login', ['as' => 'login', 'uses' => 'UserController@login']);
 
 Route::resource('users','UserController');
+
+Route::resource('hotels','HotelController');

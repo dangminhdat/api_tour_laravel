@@ -39,9 +39,9 @@ class UserService implements ServiceInterface
         return $this->repository->destroy($id);
     }
 
-    public function findUsername($username)
+    public function findWhere($condition)
     {
-        return $this->repository->findWhere(["username" => $username]);
+        return $this->repository->findWhere($condition);
     }
 
     /**
@@ -54,7 +54,7 @@ class UserService implements ServiceInterface
     public function login($username, $password)
     {
         // Find username
-        $user = $this->repository->findWhere(["username" => $username, "deleted_at" => 0]);
+        $user = $this->repository->findWhere(["username" => $username, "deleted_at" => 0, "active" => 0]);
         if (!empty($user) && Hash::check($password, $user->password)) {
             // Update remember_token
             $user->remember_token = str_random(50);

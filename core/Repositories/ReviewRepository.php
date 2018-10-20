@@ -2,31 +2,29 @@
 
 namespace Core\Repositories;
 
-use App\Hotel;
+use App\Review;
 
-class HotelRepository implements RepositoryInterface
+class ReviewRepository implements RepositoryInterface
 {
     protected $model;
 
-    public function __construct(Hotel $model)
+    public function __construct(Review $model)
     {
         $this->model = $model;
     }
 
     public function paginate()
     {
-        $hotels = $this->model->where(["deleted_at" => 0])->get()->toArray();
-        foreach ($hotels as $s => $hotel) {
-        	unset($hotels[$s]['deleted_at']);
+        $reviews = $this->model->where(["deleted_at" => 0])->get()->toArray();
+        foreach ($reviews as $s => $review) {
+        	unset($reviews[$s]['deleted_at']);
         }
-        return $hotels;
+        return $reviews;
     }
 
     public function find($id)
     {
-        $hotel = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
-        unset($hotel['deleted_at']);
-        return $hotel;
+        return $this->model->findOrFail($id);
     }
 
     public function store($data)
@@ -36,7 +34,7 @@ class HotelRepository implements RepositoryInterface
 
     public function update($id, $data)
     {
-        $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
+        $model = $this->model->where(["deleted_at" => 0, "id_user" => $id]);
         return $model->update($data);
     }
 
@@ -46,12 +44,6 @@ class HotelRepository implements RepositoryInterface
         return $model->destroy($id);
     }
 
-    /**
-     * Select username use eloquent
-     * 
-     * @param  string $username
-     * @return object $model
-     */
     public function findWhere($condition)
     {
         $model = $this->model->where($condition);

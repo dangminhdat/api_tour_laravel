@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->tinyInteger('active');
-            $table->tinyInteger('deleted_at');
+            $table->tinyInteger('deleted_at')->default(0);
             $table->string('remember_token')->nullable();;
         });
     }

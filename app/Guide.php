@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Hotel extends Model
+class Guide extends Model
 {
     //
-    protected $table = "hotel";
+    protected $table = "guide";
     public $timestamps = false;
 
     /**
@@ -16,7 +16,7 @@ class Hotel extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'address', 'phone', 'website', 'deleted_at'
+        'name', 'address', 'phone', 'deleted_at'
     ];
 
     /**

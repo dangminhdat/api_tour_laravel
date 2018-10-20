@@ -2,31 +2,31 @@
 
 namespace Core\Repositories;
 
-use App\Hotel;
+use App\Guide;
 
-class HotelRepository implements RepositoryInterface
+class GuideRepository implements RepositoryInterface
 {
     protected $model;
 
-    public function __construct(Hotel $model)
+    public function __construct(Guide $model)
     {
         $this->model = $model;
     }
 
     public function paginate()
     {
-        $hotels = $this->model->where(["deleted_at" => 0])->get()->toArray();
-        foreach ($hotels as $s => $hotel) {
-        	unset($hotels[$s]['deleted_at']);
+        $guides = $this->model->where(["deleted_at" => 0])->get()->toArray();
+        foreach ($guides as $s => $guide) {
+        	unset($guides[$s]['deleted_at']);
         }
-        return $hotels;
+        return $guides;
     }
 
     public function find($id)
     {
-        $hotel = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
-        unset($hotel['deleted_at']);
-        return $hotel;
+        $guide = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
+        unset($guide['deleted_at']);
+        return $guide;
     }
 
     public function store($data)

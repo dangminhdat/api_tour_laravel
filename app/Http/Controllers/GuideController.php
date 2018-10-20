@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Core\Services\HotelService;
+use Core\Services\GuideService;
 
-class HotelController extends Controller
+class GuideController extends Controller
 {
-    protected $hotel_service;
+    protected $guide_service;
 
-    public function __construct(HotelService $service)
+    public function __construct(GuideService $service)
     {
-        $this->hotel_service = $service;
+        $this->guide_service = $service;
     }
 
     /**
@@ -24,13 +24,13 @@ class HotelController extends Controller
         try
         {
             // all data hotel
-            $data_hotel = $this->hotel_service->paginate();
+            $data_guide = $this->guide_service->paginate();
 
             $code = 200;
             $message = "Success";
             $data = array(
-                'total' => count($data_hotel),
-                'list' => $data_hotel
+                'total' => count($data_guide),
+                'list' => $data_guide
             );
         } 
         catch(\Exception $e) {
@@ -54,21 +54,25 @@ class HotelController extends Controller
     public function store(Request $request)
     {
         //
+        //
         try
         {
-            $hotel = $this->hotel_service->findName($request->name);
-            if ($hotel) {
-                throw new \Exception("Name hotel is exists", 2);
-            }
-            $hotel = [
+            $guide = $this->guide_service->findWhere([
                 "name"      => $request->name,
                 "address"   => $request->address,
                 "phone"     => $request->phone,
-                "website"   => $request->website,
+            ]);
+            if ($guide) {
+                throw new \Exception("Name guide is exists", 2);
+            }
+            $guide = [
+                "name"      => $request->name,
+                "address"   => $request->address,
+                "phone"     => $request->phone,
                 "deleted_at"=> false
             ];
 
-            $this->hotel_service->store($hotel);
+            $this->guide_service->store($guide);
 
             $code = 200;
             $message = "Success!";
@@ -102,14 +106,15 @@ class HotelController extends Controller
         try
         {
             // get user by id
-            $hotel = $this->hotel_service->find($id);
-            if (!$hotel) {
-                throw new \Exception("Not found hotel", 2);
+            $guide = $this->guide_service->find($id);
+
+            if (!$guide) {
+                throw new \Exception("Not found guide", 2);
             }
             
             $code = 200;
             $message = "Success";
-            $data = $hotel;
+            $data = $guide;
         } 
         catch(\Exception $e) {
             $code = 400;
@@ -134,21 +139,25 @@ class HotelController extends Controller
     {
         try
         {
-            // get hotel by id
-            $hotel = $this->hotel_service->find($id);
-            // validate name hotel
-            $name = $this->hotel_service->findName($request->name);
-            if ($name && $hotel->name !== $name->name) {
-                throw new \Exception("Name hotel is exists", 2);
+            // get guide by id
+            $guide = $this->guide_service->find($id);
+            // validate name guide
+            $name = $this->guide_service->findWhere([
+                "name"      => $request->name,
+                "address"   => $request->address,
+                "phone"     => $request->phone,
+            ]);
+            if ($name && !($guide->name === $name->name && $guide->address === $name->address && $guide->phone === $name->phone)) {
+
+                throw new \Exception("Name guide is exists", 2);
             }
-            // insert data to hotel table
-            $data_hotel = [
-                "name"      => $request->name?$request->name:$hotel['name'],
-                "address"   => $request->address?$request->address:$hotel['address'],
-                "phone"     => $request->phone?$request->phone:$hotel['phone'],
-                "website"   => $request->website?$request->website:$hotel['website'],
+            // insert data to guide table
+            $data_guide = [
+                "name"      => $request->name?$request->name:$guide['name'],
+                "address"   => $request->address?$request->address:$guide['address'],
+                "phone"     => $request->phone?$request->phone:$guide['phone'],
             ];
-            $this->hotel_service->update($hotel['id'], $data_hotel);
+            $this->guide_service->update($guide['id'], $data_guide);
             
             $code = 200;
             $message = "Success";
@@ -180,8 +189,8 @@ class HotelController extends Controller
     {
         try
         {
-            $hotel = $this->hotel_service->update($id, ["deleted_at" => true]);
-            if (!$hotel) {
+            $guide = $this->guide_service->update($id, ["deleted_at" => true]);
+            if (!$guide) {
                 throw new \Exception("Not found hotel", 2);
             }
         

@@ -20,6 +20,20 @@ use Illuminate\Http\Request;
 // route post login
 Route::post('/login', ['as' => 'login', 'uses' => 'UserController@login']);
 
-Route::resource('users','UserController');
+// restful api user
+Route::resource('users', 'UserController');
 
-Route::resource('hotels','HotelController');
+// restful api hotel
+Route::resource('hotels', 'HotelController');
+
+// api get profile
+Route::get('/profile', 'UserController@profile');
+// api change pass
+Route::POST('/change-pass/{id}', 'UserController@change_pass');
+// api lock user
+Route::POST('/lock/{id}', 'UserController@lock_user');
+// api unlock user
+Route::POST('/unlock/{id}', 'UserController@unlock_user');
+
+// restful api guide
+Route::resource('guides', 'GuideController');

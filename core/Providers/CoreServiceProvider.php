@@ -7,8 +7,6 @@ use Core\Repositories\UserRepository;
 use Core\Repositories\UserRepositoryInterface;
 use Core\Services\UserService;
 use Core\Services\UserServiceInterface;
-use Core\Repositories\HotelRepository;
-use Core\Repositories\HotelService;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -34,13 +32,17 @@ class CoreServiceProvider extends ServiceProvider
             RepositoryInterface::class, 
             UserRepository::class, 
             UserDetailRepository::class,
-            HotelRepository::class
+            HotelRepository::class,
+            GuideRepository::class,
+            ReviewRepository::class
         );
         $this->app->bind(
             ServiceInterface::class, 
             UserService::class,
             UserDetailService::class,
-            HotelService::class
+            HotelService::class,
+            GuideService::class,
+            ReviewService::class
         );
     }
 }

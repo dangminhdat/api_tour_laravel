@@ -2,13 +2,13 @@
 
 namespace Core\Services;
 
-use Core\Repositories\HotelRepository;
+use Core\Repositories\GuideRepository;
 
-class HotelService implements ServiceInterface
+class GuideService implements ServiceInterface
 {
     protected $repository;
 
-    public function __construct(HotelRepository $repository)
+    public function __construct(GuideRepository $repository)
     {
         return $this->repository = $repository;
     }
@@ -38,8 +38,8 @@ class HotelService implements ServiceInterface
         return $this->repository->destroy($id);
     }
 
-    public function findName($name)
+    public function findWhere($condition)
     {
-        return $this->repository->findWhere(["name" => $name]);
+        return $this->repository->findWhere($condition);
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserDetail extends Migration
+class CreateTableGuide extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +14,12 @@ class CreateUserDetail extends Migration
     public function up()
     {
         //
-        Schema::create("user_detail", function(Blueprint $table){
-            $table->increments('id');
-            $table->string('fullname');
-            $table->string('email')->unique();
+        Schema::create("guide", function(Blueprint $table) {
+            $table->increments("id");
+            $table->string('name');
+            $table->string('address');
             $table->string('phone');
             $table->tinyInteger('deleted_at')->default(0);
-            $table->integer('id_user');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('restrict');
         });
     }
 
@@ -33,6 +31,6 @@ class CreateUserDetail extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('user_detail');
+        Schema::dropIfExists('guide');
     }
 }

@@ -50,13 +50,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(){}
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -69,7 +62,7 @@ class UserController extends Controller
 
             DB::transaction(function () use ($request) {
                 // validate username
-                $username = $this->user_service->findUsername($request->username);
+                $username = $this->user_service->findWhere(["username" => $request->username]);
                 if ($username) {
                     throw new \Exception("Username is exists", 2);
                 }
@@ -77,14 +70,14 @@ class UserController extends Controller
                 $data_user = [
                     "username"       => $request->username,
                     "password"       => bcrypt($request->password),
-                    "active"         => $request->active,
+                    "active"         => true,
                     "deleted_at"     => false,
                     "remember_token" => null,
                 ];
 
                 $user = $this->user_service->store($data_user);
                 // validate email
-                $email = $this->user_detail_service->findEmail($request->email);
+                $email = $this->user_detail_service->findWhere(["email" => $request->email]);
                 if ($email) {
                     throw new \Exception("Email is exists", 3);
                 }
@@ -153,17 +146,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -179,19 +161,18 @@ class UserController extends Controller
             // transaction
             DB::transaction(function () use ($request, $user) {
                 // validate username
-                $username = $this->user_service->findUsername($request->username);
+                $username = $this->user_service->findWhere(["username" => $request->username ]);
                 if ($username && $username->username !== $user['username']) {
                     throw new \Exception("Username is exists", 2);
                 }
                 // insert data to user table
                 $data_user = [
                     "username" => $request->username?$request->username:$user['username'],
-                    "password" => $request->password?bcrypt($request->password):$user['password'],
                 ];
 
                 $this->user_service->update($user['id'], $data_user);
                 // validate email
-                $email = $this->user_detail_service->findEmail($request->email);
+                $email = $this->user_detail_service->findWhere(["email" => $request->email]);
                 if ($email && $email->email !== $user['email']) {
                     throw new \Exception("Email is exists", 3);
                 }
@@ -282,6 +263,125 @@ class UserController extends Controller
         }
         
         // Return json
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ]);
+    }
+
+    /**
+     * Get profile user login
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function profile(Request $request)
+    {
+        try
+        {
+            $authorization = $request->header('authorization');
+
+            $profile = $this->user_service->findWhere(["remember_token" => $authorization, 'deleted_at' => 0]);
+            $profile = $this->user_service->find($profile->id);
+
+            $code = 200;
+            $message = "Success!";
+            $data = $profile;
+        } catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+
+        // Return json
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ]);
+    }
+
+    /**
+     * Change password for user
+     * @param  Request $request [description]
+     * @param  [type]  $id      [description]
+     * @return [type]           [description]
+     */
+    public function change_pass(Request $request, $id)
+    {
+        try
+        {
+            $this->user_service->update($id, ["password" => $request->password]);
+        
+            $code = 200;
+            $message = "Success";
+            $data = "Change password success!";
+        } 
+        catch(\Exception $e) {
+            $code = 400;
+            $message = "Something error!!!!!";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ]);
+    }
+
+    /**
+     * Lock user
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function lock_user($id)
+    {
+        try
+        {
+            $lock = $this->user_service->update($id, ["active" => false]);
+            if (!$lock) {
+                throw new \Exception("Something error!!!", 1);
+            }
+
+            $code = 200;
+            $message = "Success";
+            $data = "Lock user success!";
+        } 
+        catch(\Exception $e) {
+            $code = 400;
+            $message = "Something error!!!!!";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ]);
+    }
+
+    /**
+     * Unlock user
+     * @param  string $value [description]
+     * @return [type]        [description]
+     */
+    public function unlock_user($id)
+    {
+        try
+        {
+            $unlock = $this->user_service->update($id, ["active" => true]);
+            if (!$unlock) {
+                throw new \Exception("Something error!!!", 1);
+            }
+        
+            $code = 200;
+            $message = "Success";
+            $data = "Unlock user success!";
+        } 
+        catch(\Exception $e) {
+            $code = 400;
+            $message = "Something error!!!!!";
+            $data = null;
+        }
         return response()->json([
             "result_code"       => $code,
             "result_message"    => $message,

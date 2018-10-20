@@ -23,9 +23,6 @@ Route::post('/login', ['as' => 'login', 'uses' => 'UserController@login']);
 // restful api user
 Route::resource('users', 'UserController');
 
-// restful api hotel
-Route::resource('hotels', 'HotelController');
-
 // api get profile
 Route::get('/profile', 'UserController@profile');
 // api change pass
@@ -37,3 +34,6 @@ Route::POST('/unlock/{id}', 'UserController@unlock_user');
 
 // restful api guide
 Route::resource('guides', 'GuideController');
+
+// restful api hotel
+Route::resource('hotels', 'HotelController');

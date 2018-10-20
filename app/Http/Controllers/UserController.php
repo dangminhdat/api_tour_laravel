@@ -86,6 +86,7 @@ class UserController extends Controller
                     "fullname"   => $request->fullname,
                     "email"      => $request->email,
                     "phone"      => $request->phone,
+                    "address"    => $request->address,
                     "deleted_at" => false,
                     "id_user"    => $user['id']
                 ];
@@ -178,9 +179,10 @@ class UserController extends Controller
                 }
                 // insert ta to user_detail table
                 $data_user_detail = [
-                    "fullname"   => $request->fullname?$request->username:$user['fullname'],
-                    "email"      => $request->email?$request->username:$user['email'],
-                    "phone"      => $request->phone?$request->username:$user['phone'],
+                    "fullname"   => $request->fullname?$request->fullname:$user['fullname'],
+                    "email"      => $request->email?$request->email:$user['email'],
+                    "phone"      => $request->phone?$request->phone:$user['phone'],
+                    "address"    => $request->address?$request->username:$user['address'],
                 ];
                 $this->user_detail_service->update($user['id'], $data_user_detail);
             });

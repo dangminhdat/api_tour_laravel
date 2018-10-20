@@ -19,6 +19,7 @@ class CreateUserDetail extends Migration
             $table->string('fullname');
             $table->string('email')->unique();
             $table->string('phone');
+            $table->string('address');
             $table->tinyInteger('deleted_at')->default(0);
             $table->integer('id_user');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('restrict');

@@ -37,3 +37,9 @@ Route::resource('guides', 'GuideController');
 
 // restful api hotel
 Route::resource('hotels', 'HotelController');
+
+// restful api type tour
+Route::resource('type-tour', 'TypeTourController');
+
+// restful api review
+Route::resource('review', 'ReviewController');

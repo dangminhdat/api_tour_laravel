@@ -53,8 +53,6 @@ class GuideController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //
         try
         {
             $guide = $this->guide_service->findWhere([

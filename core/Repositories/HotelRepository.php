@@ -42,7 +42,7 @@ class HotelRepository implements RepositoryInterface
 
     public function destroy($id)
     {
-        $model = $this->find($id);
+        $model = $this->model->find($id);
         return $model->destroy($id);
     }
 

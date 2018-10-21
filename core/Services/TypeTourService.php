@@ -2,14 +2,13 @@
 
 namespace Core\Services;
 
-use Core\Repositories\ReviewRepository;
-use Illuminate\Support\Facades\Hash;
+use Core\Repositories\TypeTourRepository;
 
-class ReviewService implements ServiceInterface
+class TypeTourService implements ServiceInterface
 {
     protected $repository;
 
-    public function __construct(ReviewRepository $repository)
+    public function __construct(TypeTourRepository $repository)
     {
         return $this->repository = $repository;
     }
@@ -37,10 +36,5 @@ class ReviewService implements ServiceInterface
     public function destroy($id)
     {
         return $this->repository->destroy($id);
-    }
-
-    public function findWhere($condition)
-    {
-        return $this->repository->findWhere($condition);
     }
 }

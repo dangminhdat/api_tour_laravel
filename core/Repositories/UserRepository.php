@@ -3,25 +3,23 @@
 namespace Core\Repositories;
 
 use App\User;
-use App\UserDetail;
 
 class UserRepository implements RepositoryInterface
 {
     protected $model;
-    protected $model_detail;
 
-    public function __construct(User $model, UserDetail $detail)
+    public function __construct(User $model)
     {
         $this->model = $model;
-        $this->model_detail = $detail;
     }
 
     public function paginate()
     {
         $paginate = array();
-        $user_detail = $this->model_detail->where("deleted_at", 0)->get()->toArray();
-        foreach ($user_detail as $key => $value) {
-            $arr = array_merge($this->model->where(["id" => $value['id_user'], "deleted_at" => 0])->first()->toArray(), $value);
+        $users = $this->model->where("deleted_at", 0)->get()->toArray();
+        foreach ($users as $key => $user) {
+            $userF = $this->model->where(["id" => $user['id'], "deleted_at" => 0])->first();
+            $arr = array_merge($userF->toArray(), $userF->user_detail->toArray());
             unset($arr['deleted_at']);
             unset($arr['id_user']);
             unset($arr['remember_token']);
@@ -59,7 +57,7 @@ class UserRepository implements RepositoryInterface
 
     public function destroy($id)
     {
-        $model = $this->find($id);
+        $model = $this->model->find($id);
         return $model->destroy($id);
     }
 

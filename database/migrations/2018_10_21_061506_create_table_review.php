@@ -22,6 +22,7 @@ class CreateTableReview extends Migration
             $table->dateTime('date_review');
             $table->tinyInteger('deleted_at')->default(0);
             $table->integer('id_tour');
+            $table->foreign('id_tour')->references('id')->on('tour')->onDelete('restrict');
         });
     }
 

@@ -2,25 +2,25 @@
 
 namespace Core\Repositories;
 
-use App\UserDetail;
+use App\TypeTour;
 
-class UserDetailRepository implements RepositoryInterface
+class TypeTourRepository implements RepositoryInterface
 {
     protected $model;
 
-    public function __construct(UserDetail $model)
+    public function __construct(TypeTour $model)
     {
         $this->model = $model;
     }
 
     public function paginate()
     {
-        return $this->model->all()->toArray();
+        return $this->model->all();
     }
 
     public function find($id)
     {
-        return $this->model->findOrFail($id);
+        return $this->model->find($id);
     }
 
     public function store($data)
@@ -30,7 +30,7 @@ class UserDetailRepository implements RepositoryInterface
 
     public function update($id, $data)
     {
-        $model = $this->model->where(["deleted_at" => 0, "id_user" => $id]);
+        $model = $this->model->find($id);
         return $model->update($data);
     }
 
@@ -38,11 +38,5 @@ class UserDetailRepository implements RepositoryInterface
     {
         $model = $this->model->find($id);
         return $model->destroy($id);
-    }
-
-    public function findWhere($condition)
-    {
-        $model = $this->model->where($condition);
-        return $model->first();
     }
 }

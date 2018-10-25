@@ -26,8 +26,8 @@ class TypeTour extends Model
     protected $hidden = [
     ];
 
-    public function tour()
+    public function detail_tour()
     {
-        return $this->hasMany('App\Tour','id_type_tour','id');
+        return $this->hasMany('App\DetailTour', 'id_type_tour', 'id');
     }
 }

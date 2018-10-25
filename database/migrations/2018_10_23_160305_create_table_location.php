@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableTour extends Migration
+class CreateTableLocation extends Migration
 {
     /**
      * Run the migrations.
@@ -14,17 +14,9 @@ class CreateTableTour extends Migration
     public function up()
     {
         //
-        Schema::create("tour", function(Blueprint $table) {
+        Schema::create("location", function(Blueprint $table) {
             $table->increments("id");
             $table->string('name');
-            $table->integer('number_days');
-            $table->dateTime('date_created');
-            $table->string("item_tour");
-            $table->integer("discount");
-            $table->integer("booked");
-            $table->text('images');
-            $table->text('programs');
-            $table->text('note');
             $table->tinyInteger('deleted_at')->default(0);
         });
     }
@@ -37,6 +29,6 @@ class CreateTableTour extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists("tour");
+        Schema::dropIfExists("location");
     }
 }

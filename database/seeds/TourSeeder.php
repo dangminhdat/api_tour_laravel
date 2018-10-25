@@ -20,11 +20,28 @@ class TourSeeder extends Seeder
                     "date_created"=> now(),
                     "item_tour"   => "OK",
                     "discount"    => $i."00",
+                    "booked"      => $i,
                     "images"      => "/images/tour".$i.".png",
                     "programs"    => "OK",
                     "note"        => "OK",
                     "deleted_at"  => false,
-                    "id_type_tour"=> ($i%2)?1:2
+                ],
+            ]);
+
+            DB::table("detail_tour")->insert([
+                [
+                    "date_depart"   => "2018-12-".$i." 12:00",
+                    "price_adults"  => 100000,
+                    "price_childs"  => 100000,
+                    "time_depart"   => '12:00',
+                    "address_depart"=> "OK",
+                    "slot"          => 10,
+                    "deleted_at"    => false,
+                    "id_image"      => 1,
+                    "id_guide"      => $i,
+                    "id_hotel"      => $i,
+                    "id_tour"       => $i,
+                    "id_type_tour"  => ($i%2)?1:2
                 ],
             ]);
         }

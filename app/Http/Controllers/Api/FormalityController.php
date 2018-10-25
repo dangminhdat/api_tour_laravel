@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Core\Services\TypeTourService;
+use Core\Services\FormalityService;
 
-class TypeTourController extends Controller
+class FormalityController extends ApiController
 {
-    protected $typetour_service;
+    protected $formality_service;
 
-    public function __construct(TypeTourService $service)
+    public function __construct(FormalityService $service)
     {
-        $this->typetour_service = $service;
+        $this->formality_service = $service;
     }
     /**
      * Display a listing of the resource.
@@ -20,17 +20,16 @@ class TypeTourController extends Controller
      */
     public function index()
     {
-        //
         try
         {
             // all data type tour
-            $type_tour = $this->typetour_service->paginate();
+            $formality = $this->formality_service->paginate();
 
             $code = 200;
             $message = "Success";
             $data = array(
-                'total' => count($type_tour),
-                'list' => $type_tour
+                'total' => count($formality),
+                'list' => $formality
             );
         } 
         catch(\Exception $e) {
@@ -42,7 +41,17 @@ class TypeTourController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -63,6 +72,17 @@ class TypeTourController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
         //
     }

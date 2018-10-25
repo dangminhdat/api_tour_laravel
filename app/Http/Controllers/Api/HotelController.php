@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Core\Services\HotelService;
 
-class HotelController extends Controller
+class HotelController extends ApiController
 {
     protected $hotel_service;
 
@@ -42,7 +42,7 @@ class HotelController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -63,6 +63,7 @@ class HotelController extends Controller
             $hotel = [
                 "name"      => $request->name,
                 "address"   => $request->address,
+                "price_room"=> $request->price_room,
                 "phone"     => $request->phone,
                 "website"   => $request->website,
                 "deleted_at"=> false
@@ -88,7 +89,7 @@ class HotelController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -120,7 +121,7 @@ class HotelController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -145,6 +146,7 @@ class HotelController extends Controller
             $data_hotel = [
                 "name"      => $request->name?$request->name:$hotel['name'],
                 "address"   => $request->address?$request->address:$hotel['address'],
+                "price_room"=> $request->price_room?$request->price_room:$hotel['price_room'],
                 "phone"     => $request->phone?$request->phone:$hotel['phone'],
                 "website"   => $request->website?$request->website:$hotel['website'],
             ];
@@ -167,7 +169,7 @@ class HotelController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -198,6 +200,6 @@ class HotelController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 }

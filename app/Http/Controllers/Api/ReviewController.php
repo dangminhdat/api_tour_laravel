@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Core\Services\ReviewService;
 
-class ReviewController extends Controller
+class ReviewController extends ApiController
 {
-     protected $review_service;
+    protected $review_service;
 
     public function __construct(ReviewService $service)
     {
@@ -42,7 +42,7 @@ class ReviewController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -82,7 +82,7 @@ class ReviewController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -115,7 +115,7 @@ class ReviewController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -131,7 +131,7 @@ class ReviewController extends Controller
             "result_code"       => 404,
             "result_message"    => "Not found",
             "data"              => null
-        ]);
+        ], $code);
     }
 
     /**
@@ -163,6 +163,6 @@ class ReviewController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 }

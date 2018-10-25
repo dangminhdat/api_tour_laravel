@@ -26,4 +26,9 @@ class Guide extends Model
      */
     protected $hidden = [
     ];
+
+    public function detail_tour()
+    {
+        return $this->hasOne('App\DetailTour', 'id_guide', 'id');
+    }
 }

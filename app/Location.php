@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Hotel extends Model
+class Location extends Model
 {
     //
-    protected $table = "hotel";
+    protected $table = "location";
     public $timestamps = false;
 
     /**
@@ -16,7 +16,7 @@ class Hotel extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'address', 'price_room', 'phone', 'website', 'deleted_at'
+        'name'
     ];
 
     /**
@@ -29,6 +29,6 @@ class Hotel extends Model
 
     public function detail_tour()
     {
-        return $this->belongsToMany('App\DetailTour','hotel_tour', 'id_hotel', 'id_detail_tour');
+        return $this->belongsToMany('App\DetailTour','location_tour', 'id_location', 'id_detail_tour');
     }
 }

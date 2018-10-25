@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Core\Services\UserService;
 use Core\Services\UserDetailService;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     protected $user_service;
     protected $user_detail_service;
@@ -46,7 +46,7 @@ class UserController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -110,7 +110,7 @@ class UserController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -143,7 +143,7 @@ class UserController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -204,7 +204,7 @@ class UserController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -235,7 +235,7 @@ class UserController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -269,7 +269,7 @@ class UserController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -300,7 +300,7 @@ class UserController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -328,7 +328,7 @@ class UserController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -358,7 +358,7 @@ class UserController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -388,6 +388,6 @@ class UserController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 }

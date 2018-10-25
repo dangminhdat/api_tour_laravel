@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Core\Services\GuideService;
 
-class GuideController extends Controller
+class GuideController extends ApiController
 {
     protected $guide_service;
 
@@ -42,7 +42,7 @@ class GuideController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -90,7 +90,7 @@ class GuideController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -123,7 +123,7 @@ class GuideController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -174,7 +174,7 @@ class GuideController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 
     /**
@@ -205,6 +205,6 @@ class GuideController extends Controller
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
-        ]);
+        ], $code);
     }
 }

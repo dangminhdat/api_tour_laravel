@@ -57,4 +57,16 @@ class ReviewRepository implements RepositoryInterface
         $model = $this->model->where($condition);
         return $model->first();
     }
+
+    public function review_by_tour($id)
+    {
+        $reviews = $this->model->where(["deleted_at" => 0, "id_tour" => $id])->get()->toArray();
+        foreach ($reviews as $key => $review) {
+            $reviewF = $this->model->findOrFail($review['id']);
+            $reviews[$key]['name_tour'] = $reviewF->tour->name;
+            unset($reviews[$key]['id_tour']);
+            unset($reviews[$key]['deleted_at']);
+        }
+        return $reviews;
+    }
 }

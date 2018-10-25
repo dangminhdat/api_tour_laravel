@@ -37,7 +37,8 @@ class CoreServiceProvider extends ServiceProvider
             TypeTourRepository::class,
             ReviewRepository::class,
             FormalityRepository::class,
-            TourRepository::class
+            TourRepository::class,
+            LocationRepository::class
         );
         $this->app->bind(
             ServiceInterface::class, 
@@ -48,7 +49,8 @@ class CoreServiceProvider extends ServiceProvider
             TypeTourService::class,
             ReviewService::class,
             FormalityService::class,
-            TourService::class
+            TourService::class,
+            LocationService::class
         );
     }
 }

@@ -16,7 +16,7 @@ class Location extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name', 'image'
     ];
 
     /**

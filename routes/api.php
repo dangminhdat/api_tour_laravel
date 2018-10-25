@@ -43,6 +43,8 @@ Route::resource('type-tour', 'Api\TypeTourController');
 
 // restful api review
 Route::resource('review', 'Api\ReviewController');
+// review of tour
+Route::POST('review/tour', 'Api\ReviewController@review_by_tour');
 
 // restful api formality
 Route::resource('formality', 'Api\FormalityController');
@@ -51,3 +53,6 @@ Route::resource('formality', 'Api\FormalityController');
 Route::resource('tour', 'Api\TourController');
 // get data by location
 Route::POST('tour/location', 'Api\TourController@tour_by_location');
+
+// restful api location
+Route::resource('location', 'Api\LocationController');

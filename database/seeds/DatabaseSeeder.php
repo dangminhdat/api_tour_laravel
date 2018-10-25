@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserTableSeeder::class);
+        $this->call(UserTableSeeder::class);
         $this->call(TypeTourSeeder::class);
         $this->call(FormalitySeeder::class);
         $this->call(HotelSeeder::class);
@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TourSeeder::class);
         $this->call(LocationTourSeeder::class);
         $this->call(HotelTourSeeder::class);
+        $this->call(ReviewSeeder::class);
     }
 }

@@ -23,7 +23,7 @@ class GuideController extends ApiController
     {
         try
         {
-            // all data hotel
+            // all data guide
             $data_guide = $this->guide_service->paginate();
 
             $code = 200;

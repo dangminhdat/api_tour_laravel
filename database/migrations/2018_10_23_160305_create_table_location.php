@@ -17,6 +17,7 @@ class CreateTableLocation extends Migration
         Schema::create("location", function(Blueprint $table) {
             $table->increments("id");
             $table->string('name');
+            $table->string('image');
             $table->tinyInteger('deleted_at')->default(0);
         });
     }

@@ -165,4 +165,35 @@ class ReviewController extends ApiController
             "data"              => $data
         ], $code);
     }
+
+    /**
+     * Get review of tour
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function review_by_tour(Request $request)
+    {
+        try
+        {
+            // all data review of tour
+            $data_review = $this->review_service->review_by_tour($request->id_tour);
+
+            $code = 200;
+            $message = "Success";
+            $data = array(
+                'total' => count($data_review),
+                'list' => $data_review
+            );
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
 }

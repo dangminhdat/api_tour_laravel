@@ -20,7 +20,6 @@ class TourController extends ApiController
      */
     public function index()
     {
-        //
         try
         {
             // all data tour
@@ -36,23 +35,13 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
             "result_message"    => $message,
             "data"              => $data
         ], $code);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -74,18 +63,25 @@ class TourController extends ApiController
      */
     public function show($id)
     {
-        //
-    }
+        try
+        {
+            // all data tour
+            $tour = $this->tour_service->find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+            $code = 200;
+            $message = "Success";
+            $data = $tour;
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 
     /**
@@ -121,6 +117,36 @@ class TourController extends ApiController
         {
             // all data tour by location
             $tour = $this->tour_service->tour_by_location($request->id_location);
+
+            $code = 200;
+            $message = "Success";
+            $data = array(
+                'total' => count($tour),
+                'list' => $tour
+            );
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = $e->getMessage();
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    /**
+     * Get list tour by sales
+     * @return [type] [description]
+     */
+    public function tour_by_sales()
+    {
+        try
+        {
+            // all data tour by location
+            $tour = $this->tour_service->tour_by_sales();
 
             $code = 200;
             $message = "Success";

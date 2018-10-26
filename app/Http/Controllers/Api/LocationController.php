@@ -46,16 +46,6 @@ class LocationController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -63,7 +53,7 @@ class LocationController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -74,18 +64,29 @@ class LocationController extends ApiController
      */
     public function show($id)
     {
-        //
-    }
+        try
+        {
+            // get user by id
+            $location = $this->location_service->find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+            if (!$location) {
+                throw new \Exception("Not found guide", 2);
+            }
+            
+            $code = 200;
+            $message = "Success";
+            $data = $location;
+        } 
+        catch(\Exception $e) {
+            $code = 400;
+            $message = "Something error!!!!!";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 
     /**
@@ -108,6 +109,26 @@ class LocationController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        try
+        {
+            $location = $this->location_service->update($id, ["deleted_at" => true]);
+            if (!$location) {
+                throw new \Exception("Not found hotel", 2);
+            }
+        
+            $code = 200;
+            $message = "Success";
+            $data = "Delete success!";
+        } 
+        catch(\Exception $e) {
+            $code = 400;
+            $message = "Something error!!!!!";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 }

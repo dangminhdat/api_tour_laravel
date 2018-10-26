@@ -49,10 +49,13 @@ Route::POST('review/tour', 'Api\ReviewController@review_by_tour');
 // restful api formality
 Route::resource('formality', 'Api\FormalityController');
 
+// get data by sales
+Route::GET('tour/sales', 'Api\TourController@tour_by_sales');
 // restful api tour
 Route::resource('tour', 'Api\TourController');
 // get data by location
 Route::POST('tour/location', 'Api\TourController@tour_by_location');
+
 
 // restful api location
 Route::resource('location', 'Api\LocationController');

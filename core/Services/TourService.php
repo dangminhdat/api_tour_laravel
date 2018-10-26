@@ -48,4 +48,9 @@ class TourService implements ServiceInterface
     {
         return $this->repository->tour_by_location($id);
     }
+
+    public function tour_by_sales()
+    {
+        return $this->repository->tour_by_sales();
+    }
 }

@@ -117,8 +117,9 @@ class TourRepository implements RepositoryInterface
             // get data by location
             $item = 0;
             $checks = $details->location;
+            
             foreach ($checks as $check) {
-                if (!$check->deleted_at && $check->id === $id)
+                if (!$check->deleted_at && $check->id == $id)
                 {
                     break;
                 }

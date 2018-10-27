@@ -27,12 +27,13 @@ class User extends Model
         'password',
     ];
 
-    /**
-     * user detail belongs to user
-     * @return [type] [description]
-     */
     public function user_detail()
     {
-        return $this->hasOne('App\UserDetail','id_user','id');
+        return $this->hasOne('App\UserDetail', 'id_user', 'id');
+    }
+
+    public function review()
+    {
+        return $this->hasMany('App\Review', 'id_user', 'id');
     }
 }

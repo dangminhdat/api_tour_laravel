@@ -15,7 +15,6 @@ class GuideSeeder extends Seeder
         for ($i=1; $i <= 10; $i++) { 
 	        DB::table("guide")->insert([
 	        	[
-	        		"id" 		=> $i,
 	        		"name" 		=> "Guide ".$i,
 	        		"address" 	=> "Address ".$i,
 	        		"phone" 	=> "Phone ".$i,

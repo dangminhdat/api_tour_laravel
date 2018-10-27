@@ -17,15 +17,16 @@ class Review extends Model
      * @var array
      */
     protected $fillable = [
-        'name_review', 'email_review', 'score', 'content', 'date_review', 'deleted_at', 'id_tour'
+        'name_review', 'email_review', 'score', 'content', 'date_review', 'deleted_at', 'id_tour', 'id_user'
     ];
 
-    /**
-     * user detail belongs to user
-     * @return [type] [description]
-     */
     public function tour()
     {
-    	return $this->belongsTo('App\Tour','id_tour','id');
+    	return $this->belongsTo('App\Tour', 'id_tour', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'id_user', 'id');
     }
 }

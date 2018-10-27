@@ -57,12 +57,11 @@ class ReviewController extends ApiController
         try
         {
             $review = [
-                "name_review"   => $request->name_review,
-                "email_review"  => $request->email_review,
                 "score"         => $request->score,
                 "content"       => $request->content,
                 "date_review"   => now(),
                 "id_tour"       => $request->id_tour,
+                "id_user"       => $request->id_user,
                 "deleted_at"    => false
             ];
 
@@ -171,12 +170,12 @@ class ReviewController extends ApiController
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function review_by_tour(Request $request)
+    public function review_by_tour($id)
     {
         try
         {
             // all data review of tour
-            $data_review = $this->review_service->review_by_tour($request->id_tour);
+            $data_review = $this->review_service->review_by_tour($id);
 
             $code = 200;
             $message = "Success";
@@ -188,7 +187,7 @@ class ReviewController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = null;
+            $data = $e->getMessage();
         }
         return response()->json([
             "result_code"       => $code,

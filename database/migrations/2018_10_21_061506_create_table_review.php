@@ -15,14 +15,14 @@ class CreateTableReview extends Migration
     {
         Schema::create("review", function(Blueprint $table) {
             $table->increments("id");
-            $table->string('name_review');
-            $table->string('email_review');
             $table->string('score');
             $table->string('content');
             $table->dateTime('date_review');
             $table->tinyInteger('deleted_at')->default(0);
             $table->integer('id_tour');
+            $table->integer('id_user');
             $table->foreign('id_tour')->references('id')->on('tour')->onDelete('restrict');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('restrict');
         });
     }
 

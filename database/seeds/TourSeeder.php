@@ -14,7 +14,6 @@ class TourSeeder extends Seeder
         for ($i=1; $i <= 10; $i++) { 
             DB::table("tour")->insert([
                 [
-                    "id"          => $i,
                     "name"        => "Tour ĐÀ NẴNG - NHA TRANG - ".$i,
                     "number_days" => $i,
                     "date_created"=> now(),

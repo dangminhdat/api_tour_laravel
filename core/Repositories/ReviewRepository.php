@@ -15,11 +15,14 @@ class ReviewRepository implements RepositoryInterface
 
     public function paginate()
     {
-        $reviews = $this->model->where(["deleted_at" => 0])->get()->toArray();
+        $reviews = $this->model->where(["deleted_at" => 0])->get();
         foreach ($reviews as $key => $review) {
             $reviewF = $this->model->findOrFail($review['id']);
+            $reviews[$key]['email'] = $reviewF->user->user_detail->email;
+            $reviews[$key]['name'] = $reviewF->user->user_detail->fullname;
             $reviews[$key]['name_tour'] = $reviewF->tour->name;
             unset($reviews[$key]['id_tour']);
+            unset($reviews[$key]['id_user']);
             unset($reviews[$key]['deleted_at']);
         }
         return $reviews;
@@ -28,10 +31,14 @@ class ReviewRepository implements RepositoryInterface
     public function find($id)
     {
         $review = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
+        $review['email'] = $review->user->user_detail->email;
+        $review['name'] = $review->user->user_detail->fullname;
         $review->name_tour = $review->tour->name;
         unset($review->deleted_at);
         unset($review->tour);
         unset($review->id_tour);
+        unset($review->user);
+        unset($review->id_user);
         return $review;
     }
 
@@ -60,11 +67,15 @@ class ReviewRepository implements RepositoryInterface
 
     public function review_by_tour($id)
     {
-        $reviews = $this->model->where(["deleted_at" => 0, "id_tour" => $id])->get()->toArray();
+        $reviews = $this->model->where(["deleted_at" => 0, "id_tour" => $id])->get();
         foreach ($reviews as $key => $review) {
-            $reviewF = $this->model->findOrFail($review['id']);
-            $reviews[$key]['name_tour'] = $reviewF->tour->name;
+            $reviews[$key]['email'] = $review->user->user_detail->email;
+            $reviews[$key]['name'] = $review->user->user_detail->fullname;
+            $reviews[$key]['name_tour'] = $review->tour->name;
             unset($reviews[$key]['id_tour']);
+            unset($reviews[$key]['id_user']);
+            unset($reviews[$key]['user']);
+            unset($reviews[$key]['tour']);
             unset($reviews[$key]['deleted_at']);
         }
         return $reviews;

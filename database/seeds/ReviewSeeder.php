@@ -15,12 +15,11 @@ class ReviewSeeder extends Seeder
         for ($i=1; $i <= 10 ; $i++) { 
         	 DB::table("review")->insert([
 	        	[
-	        		"name_review" => "Review ".$i,
-	        		"email_review" => "review".$i."@gmail.com",
 	        		"score" => $i,
 	        		"content" => "OK",
 	        		"date_review" => now(),
-	        		"id_tour" => ($i%2)?1:2
+	        		"id_tour" => ($i%2)?1:2,
+                    "id_user" => 1
 	        	]
 	        ]);
         }

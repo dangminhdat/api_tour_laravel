@@ -13,12 +13,12 @@ class LocationTourSeeder extends Seeder
     {
         //
         DB::table("location_tour")->insert([
-        	[ "id" => 1, "id_detail_tour" => 1, "id_location" => 1 ],
-        	[ "id" => 2, "id_detail_tour" => 2, "id_location" => 1 ],
-        	[ "id" => 3, "id_detail_tour" => 3, "id_location" => 1 ],
-            [ "id" => 4, "id_detail_tour" => 4, "id_location" => 1 ],
-            [ "id" => 5, "id_detail_tour" => 1, "id_location" => 2 ],
-        	[ "id" => 6, "id_detail_tour" => 2, "id_location" => 2 ],
+        	[ "id_detail_tour" => 1, "id_location" => 1 ],
+        	[ "id_detail_tour" => 2, "id_location" => 1 ],
+        	[ "id_detail_tour" => 3, "id_location" => 1 ],
+            [ "id_detail_tour" => 4, "id_location" => 1 ],
+            [ "id_detail_tour" => 1, "id_location" => 2 ],
+        	[ "id_detail_tour" => 2, "id_location" => 2 ],
         ]);
     }
 }

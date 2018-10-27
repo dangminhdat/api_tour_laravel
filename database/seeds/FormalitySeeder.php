@@ -13,8 +13,8 @@ class FormalitySeeder extends Seeder
     {
         //
         DB::table("formality")->insert([
-        	[ "id" => 1, "name" => "Nhóm" ],
-        	[ "id" => 2, "name" => "Công ty" ]
+        	[ "name" => "Nhóm" ],
+        	[ "name" => "Công ty" ]
         ]);
     }
 }

@@ -168,4 +168,28 @@ class TourRepository implements RepositoryInterface
         }
         return $tours;
     }
+
+    public function tour_of_type($id)
+    {
+        $tours = $this->model->where(["deleted_at" => 0])->get();
+        foreach ($tours as $key => $tour) {
+            $details = $tour->detail_tour;
+            if ($details->id_type_tour != $id) {
+                unset($tours[$key]);
+                continue;
+            }
+            $details = $tour->detail_tour;
+            $tours[$key]['date_depart'] = $details->date_depart;
+            $tours[$key]['price_adults'] = $details->price_adults;
+            $tours[$key]['price_childs'] = $details->price_childs;
+            $tours[$key]['time_depart'] = $details->time_depart;
+            $tours[$key]['slot'] = $details->slot;
+            unset($tours[$key]['programs']);
+            unset($tours[$key]['note']);
+            unset($tours[$key]['detail_tour']);
+            unset($tours[$key]['date_created']);
+            unset($tours[$key]['deleted_at']);
+        }
+        return $tours;
+    }
 }

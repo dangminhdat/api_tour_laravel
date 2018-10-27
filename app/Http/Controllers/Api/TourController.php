@@ -111,12 +111,12 @@ class TourController extends ApiController
      * Get list tour by location
      * @return [type] [description]
      */
-    public function tour_by_location(Request $request)
+    public function tour_by_location($id)
     {
         try
         {
             // all data tour by location
-            $tour = $this->tour_service->tour_by_location($request->id_location);
+            $tour = $this->tour_service->tour_by_location($id);
 
             $code = 200;
             $message = "Success";
@@ -147,6 +147,37 @@ class TourController extends ApiController
         {
             // all data tour by location
             $tour = $this->tour_service->tour_by_sales();
+
+            $code = 200;
+            $message = "Success";
+            $data = array(
+                'total' => count($tour),
+                'list' => $tour
+            );
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = $e->getMessage();
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    /**
+     * Get list tour of type
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function tour_of_type($id)
+    {
+        try
+        {
+            // all data tour by location
+            $tour = $this->tour_service->tour_of_type($id);
 
             $code = 200;
             $message = "Success";

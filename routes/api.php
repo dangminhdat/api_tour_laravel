@@ -41,21 +41,22 @@ Route::resource('hotels', 'Api\HotelController');
 // restful api type tour
 Route::resource('type-tour', 'Api\TypeTourController');
 
+// review of tour
+Route::GET('review/tour/{id}', 'Api\ReviewController@review_by_tour');
 // restful api review
 Route::resource('review', 'Api\ReviewController');
-// review of tour
-Route::POST('review/tour', 'Api\ReviewController@review_by_tour');
 
 // restful api formality
 Route::resource('formality', 'Api\FormalityController');
 
 // get data by sales
 Route::GET('tour/sales', 'Api\TourController@tour_by_sales');
+// get data by type tour
+Route::GET('tour/type-tour/{id}', 'Api\TourController@tour_of_type');
+// get data by location
+Route::GET('tour/location/{id}', 'Api\TourController@tour_by_location');
 // restful api tour
 Route::resource('tour', 'Api\TourController');
-// get data by location
-Route::POST('tour/location', 'Api\TourController@tour_by_location');
-
 
 // restful api location
 Route::resource('location', 'Api\LocationController');

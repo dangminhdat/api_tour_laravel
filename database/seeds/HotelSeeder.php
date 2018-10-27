@@ -15,7 +15,6 @@ class HotelSeeder extends Seeder
         for ($i=1; $i <= 10; $i++) { 
 	        DB::table("hotel")->insert([
 	        	[
-	        		"id" 		=> $i,
 	        		"name" 		=> "Hotel ".$i,
 	        		"price_room"=> 100000,
 	        		"address" 	=> "Address ".$i,

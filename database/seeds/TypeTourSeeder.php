@@ -13,8 +13,8 @@ class TypeTourSeeder extends Seeder
     {
         //
         DB::table("type_tour")->insert([
-        	[ "id" => 1, "name" => "Du lịch trong nước" ],
-        	[ "id" => 2, "name" => "Du lịch nước ngoài" ]
+        	[ "name" => "Du lịch trong nước" ],
+        	[ "name" => "Du lịch nước ngoài" ]
         ]);
     }
 }

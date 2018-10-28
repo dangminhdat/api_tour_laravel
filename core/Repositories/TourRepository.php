@@ -15,7 +15,7 @@ class TourRepository implements RepositoryInterface
 
     public function paginate()
     {
-        $tours = $this->model->where(["deleted_at" => 0])->get();
+        $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($tours as $key => $tour) {
             $details = $tour->detail_tour;
             $tours[$key]['date_depart'] = $details->date_depart;
@@ -111,7 +111,7 @@ class TourRepository implements RepositoryInterface
 
     public function tour_by_location($id)
     {
-        $tours = $this->model->where(["deleted_at" => 0])->get();
+        $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($tours as $key => $tour) {
             $details = $tour->detail_tour;
             // get data by location
@@ -149,7 +149,7 @@ class TourRepository implements RepositoryInterface
 
     public function tour_by_sales()
     {
-        $tours = $this->model->where(["deleted_at" => 0])->get();
+        $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($tours as $key => $tour) {
             if ($tour->discount === 0) {
                 unset($tours[$key]);
@@ -172,7 +172,7 @@ class TourRepository implements RepositoryInterface
 
     public function tour_of_type($id)
     {
-        $tours = $this->model->where(["deleted_at" => 0])->get();
+        $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($tours as $key => $tour) {
             $details = $tour->detail_tour;
             if ($details->id_type_tour != $id) {

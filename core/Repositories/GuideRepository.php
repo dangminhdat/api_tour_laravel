@@ -15,7 +15,7 @@ class GuideRepository implements RepositoryInterface
 
     public function paginate()
     {
-        $guides = $this->model->where(["deleted_at" => 0])->get()->toArray();
+        $guides = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($guides as $s => $guide) {
         	unset($guides[$s]['deleted_at']);
         }

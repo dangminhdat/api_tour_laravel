@@ -16,7 +16,7 @@ class UserRepository implements RepositoryInterface
     public function paginate()
     {
         $paginate = array();
-        $users = $this->model->where("deleted_at", 0)->get()->toArray();
+        $users = $this->model->where("deleted_at", 0)->orderBy('id', 'DESC')->get();
         foreach ($users as $key => $user) {
             $userF = $this->model->where(["id" => $user['id'], "deleted_at" => 0])->first();
             $arr = array_merge($userF->toArray(), $userF->user_detail->toArray());

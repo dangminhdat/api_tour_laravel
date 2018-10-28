@@ -15,7 +15,7 @@ class HotelRepository implements RepositoryInterface
 
     public function paginate()
     {
-        $hotels = $this->model->where(["deleted_at" => 0])->get()->toArray();
+        $hotels = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($hotels as $s => $hotel) {
         	unset($hotels[$s]['deleted_at']);
         }

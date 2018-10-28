@@ -15,7 +15,7 @@ class ReviewRepository implements RepositoryInterface
 
     public function paginate()
     {
-        $reviews = $this->model->where(["deleted_at" => 0])->get();
+        $reviews = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($reviews as $key => $review) {
             $reviewF = $this->model->findOrFail($review['id']);
             $reviews[$key]['email'] = $reviewF->user->user_detail->email;
@@ -67,7 +67,7 @@ class ReviewRepository implements RepositoryInterface
 
     public function review_by_tour($id)
     {
-        $reviews = $this->model->where(["deleted_at" => 0, "id_tour" => $id])->get();
+        $reviews = $this->model->where(["deleted_at" => 0, "id_tour" => $id])->orderBy('id', 'DESC')->get();
         foreach ($reviews as $key => $review) {
             $reviews[$key]['email'] = $review->user->user_detail->email;
             $reviews[$key]['name'] = $review->user->user_detail->fullname;

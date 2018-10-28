@@ -15,7 +15,7 @@ class LocationRepository implements RepositoryInterface
 
     public function paginate()
     {
-        $locations = $this->model->where(["deleted_at" => 0])->get()->toArray();
+        $locations = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($locations as $s => $location) {
         	unset($locations[$s]['deleted_at']);
         }

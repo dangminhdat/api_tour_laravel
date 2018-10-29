@@ -390,4 +390,33 @@ class UserController extends ApiController
             "data"              => $data
         ], $code);
     }
+
+    public function logout(Request $request)
+    {
+        try
+        {
+            $authorization = $request->header('authorization');
+
+            $user = $this->user_service->findWhere(["remember_token" => $authorization]);
+
+            $logout = $this->user_service->update($user->id, ["remember_token" => str_random(50)]);
+            if (!$logout) {
+                throw new \Exception("Something error!!!", 1);
+            }
+        
+            $code = 200;
+            $message = "Success";
+            $data = "Logout success!";
+        } 
+        catch(\Exception $e) {
+            $code = 400;
+            $message = "Something error!!!!!";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
 }

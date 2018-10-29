@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 
 // route post login
 Route::post('/login', ['as' => 'login', 'uses' => 'Api\UserController@login']);
+// route post login
+Route::post('/logout', ['as' => 'logout', 'uses' => 'Api\UserController@logout']);
 
 // restful api user
 Route::resource('users', 'Api\UserController');

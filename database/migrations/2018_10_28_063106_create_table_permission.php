@@ -14,7 +14,7 @@ class CreateTablePermission extends Migration
     public function up()
     {
         //
-        Schema::create("permission", function(Blueprint $tablie) {
+        Schema::create("permission", function(Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('is_create')->default(0);
             $table->tinyInteger('is_view')->default(0);

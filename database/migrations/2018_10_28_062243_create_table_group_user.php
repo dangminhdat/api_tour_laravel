@@ -13,7 +13,13 @@ class CreateTableGroupUser extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('group_user', function(Blueprint $table) {
+            $table->increments('id');
+            $table->integer('id_user');
+            $table->integer('id_group');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('restrict');
+            $table->foreign('id_group')->references('id')->on('groups')->onDelete('restrict');
+        });
     }
 
     /**
@@ -23,6 +29,6 @@ class CreateTableGroupUser extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('group_user');
     }
 }

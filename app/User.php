@@ -36,4 +36,9 @@ class User extends Model
     {
         return $this->hasMany('App\Review', 'id_user', 'id');
     }
+
+    public function group()
+    {
+        return $this->belongsToMany('App\Group','group_user', 'id_user', 'id_group');
+    }
 }

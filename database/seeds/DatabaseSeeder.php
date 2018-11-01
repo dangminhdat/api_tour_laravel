@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(LocationTourSeeder::class);
         $this->call(HotelTourSeeder::class);
         $this->call(ReviewSeeder::class);
+        $this->call(ResourceSeeder::class);
+        $this->call(GroupSeeder::class);
+        $this->call(PermissionSeeder::class);
     }
 }

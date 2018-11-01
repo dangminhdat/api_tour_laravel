@@ -14,7 +14,8 @@ class GroupSeeder extends Seeder
         //
         DB::table("groups")->insert([
         	[ "name" => "ADMIN" ],
-        	[ "name" => "MOD" ]
+            [ "name" => "MOD" ],
+        	[ "name" => "CUSTOMER" ],
         ]);
     }
 }

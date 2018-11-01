@@ -18,8 +18,7 @@ class ResourceSeeder extends Seeder
         	[ "name_table" 	=> "hotel" ],
         	[ "name_table"	=> "guide" ],
         	[ "name_table"  => "review" ],
-        	[ "name_table"  => "person_order" ],
-        	[ "name_table"  => "review" ],
+        	[ "name_table"  => "order" ],
         	[ "name_table"  => "permission" ]
         ]);
     }

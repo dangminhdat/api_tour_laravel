@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('check_login', function (Request $request) {
+Route::group([ 'middleware' => ['check_login']], function () {
     // route post login
 	Route::post('/logout', ['as' => 'logout', 'uses' => 'Api\UserController@logout']);
 	// restful api user

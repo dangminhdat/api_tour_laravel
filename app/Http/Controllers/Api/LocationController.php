@@ -13,7 +13,7 @@ class LocationController extends ApiController
     {
         $this->location_service = $service;
         // check login
-        $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
+        // $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
     }
     /**
      * Display a listing of the resource.
@@ -55,7 +55,38 @@ class LocationController extends ApiController
      */
     public function store(Request $request)
     {
-        
+        try
+        {
+            if (!$request->hasFile('image')) {
+                throw new \Exception("No choose image", 1);
+            }
+            $location = [
+                "name"       => $request->name,
+                "image"      => $request->file('image')
+            ];
+
+            if(!$this->location_service->store($location)) {
+                throw new \Exception("Something error!!!", 2);
+            }
+
+            $code = 200;
+            $message = "Success!";
+            $data = "Insert location success!";
+        }
+        catch(\Exception $e) {
+            $message = "Something error!!!";
+            if ($e->getCode() === 1) {
+                $message = $e->getMessage();
+            }
+            $code = 400;
+            $data = $e->getMessage();
+        }
+
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 
     /**

@@ -31,7 +31,21 @@ class LocationRepository implements RepositoryInterface
 
     public function store($data)
     {
-        return $this->model->create($data);
+        $upload = public_path()."/uploads/";
+        if(!is_dir($upload)) {
+            mkdir($upload);
+        }
+        $ext = $data['image']->getClientOriginalExtension('image');
+        $name   = str_slug($data['name'],'-')."-".date("Y-m-d").'.'.$ext;
+        $data['image']->move($upload, $name);
+        $result = [
+            'name'  => $data['name'],
+            'image' => $name
+        ];
+        if ($data['image']->isValid('image')) {
+            return false;
+        }
+        return $this->model->create($result);
     }
 
     public function update($id, $data)

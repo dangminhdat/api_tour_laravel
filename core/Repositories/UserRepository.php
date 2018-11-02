@@ -20,6 +20,7 @@ class UserRepository implements RepositoryInterface
         foreach ($users as $key => $user) {
             $userF = $this->model->where(["id" => $user['id'], "deleted_at" => 0])->first();
             $arr = array_merge($userF->toArray(), $userF->user_detail->toArray());
+            $arr['group'] = $userF->group->first()->name;
             unset($arr['deleted_at']);
             unset($arr['id_user']);
             unset($arr['remember_token']);
@@ -36,12 +37,13 @@ class UserRepository implements RepositoryInterface
         $user_detail = $user->user_detail;
         unset($user_detail['id']);
         unset($user_detail['id_user']);
-        $user = array_merge($user->toArray(), $user_detail->toArray());
-        unset($user['user_detail']);
-        unset($user['deleted_at']);
-        unset($user['remember_token']);
+        $userR = array_merge($user->toArray(), $user_detail->toArray());
+        $userR['group'] = $user->group->first()->name;
+        unset($userR['user_detail']);
+        unset($userR['deleted_at']);
+        unset($userR['remember_token']);
 
-        return $user;
+        return $userR;
     }
 
     public function store($data)

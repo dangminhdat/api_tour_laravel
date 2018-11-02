@@ -12,6 +12,8 @@ class GuideController extends ApiController
     public function __construct(GuideService $service)
     {
         $this->guide_service = $service;
+        // check login
+        $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
     }
 
     /**

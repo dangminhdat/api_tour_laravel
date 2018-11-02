@@ -12,6 +12,8 @@ class LocationController extends ApiController
     public function __construct(LocationService $service)
     {
         $this->location_service = $service;
+        // check login
+        $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
     }
     /**
      * Display a listing of the resource.

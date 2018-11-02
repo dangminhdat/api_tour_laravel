@@ -12,6 +12,8 @@ class ReviewController extends ApiController
     public function __construct(ReviewService $service)
     {
         $this->review_service = $service;
+        // check login
+        $this->middleware('check_login', ['only' => [ 'update', 'destroy' ]]);
     }
 
     /**

@@ -12,6 +12,8 @@ class TourController extends ApiController
     public function __construct(TourService $service)
     {
         $this->tour_service = $service;
+        // check login
+        $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
     }
     /**
      * Display a listing of the resource.

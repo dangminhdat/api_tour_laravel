@@ -12,6 +12,8 @@ class HotelController extends ApiController
     public function __construct(HotelService $service)
     {
         $this->hotel_service = $service;
+        // check login
+        $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
     }
 
     /**

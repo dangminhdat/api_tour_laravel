@@ -27,8 +27,6 @@ class CreateTableDetailTour extends Migration
             $table->integer('id_guide');
             $table->integer('id_hotel');
             $table->integer('id_tour');
-            $table->integer('id_type_tour');
-            $table->foreign('id_type_tour')->references('id')->on('type_tour')->onDelete('restrict');
             $table->foreign('id_tour')->references('id')->on('tour')->onDelete('restrict');
             $table->foreign('id_guide')->references('id')->on('guide')->onDelete('restrict');
             $table->foreign('id_hotel')->references('id')->on('hotel')->onDelete('restrict');

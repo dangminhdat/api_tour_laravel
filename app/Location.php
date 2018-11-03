@@ -27,8 +27,8 @@ class Location extends Model
     protected $hidden = [
     ];
 
-    public function detail_tour()
+    public function tour()
     {
-        return $this->belongsToMany('App\DetailTour','location_tour', 'id_location', 'id_detail_tour');
+        return $this->belongsToMany('App\Tour','location_tour', 'id_location', 'id_tour');
     }
 }

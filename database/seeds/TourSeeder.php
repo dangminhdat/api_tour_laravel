@@ -18,12 +18,13 @@ class TourSeeder extends Seeder
                     "number_days" => $i,
                     "date_created"=> now(),
                     "item_tour"   => "OK",
-                    "discount"    => $i."00",
+                    "discount"    => $i,
                     "booked"      => $i,
                     "images"      => "/images/tour".$i.".png",
                     "programs"    => "OK",
                     "note"        => "OK",
                     "deleted_at"  => false,
+                    "id_type_tour"  => ($i%2)?1:2
                 ],
             ]);
 
@@ -40,7 +41,6 @@ class TourSeeder extends Seeder
                     "id_guide"      => $i,
                     "id_hotel"      => $i,
                     "id_tour"       => $i,
-                    "id_type_tour"  => ($i%2)?1:2
                 ],
             ]);
         }

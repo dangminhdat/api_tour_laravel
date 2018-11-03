@@ -16,7 +16,7 @@ class Tour extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'number_days', 'date_created', 'item_tour', 'discount', 'booked', 'images', 'programs', 'note'
+        'name', 'number_days', 'date_created', 'item_tour', 'discount', 'booked', 'images', 'programs', 'note', 'deleted_at', 'id_type_tour'
     ];
 
     /**
@@ -34,6 +34,16 @@ class Tour extends Model
 
     public function detail_tour()
     {
-        return $this->hasOne('App\DetailTour', 'id_tour', 'id');
+        return $this->hasMany('App\DetailTour', 'id_tour', 'id');
+    }
+
+    public function type_tour()
+    {
+        return $this->belongsTo('App\TypeTour', 'id_type_tour', 'id');
+    }
+
+    public function location()
+    {
+        return $this->belongsToMany('App\Location', 'location_tour', 'id_tour', 'id_location');
     }
 }

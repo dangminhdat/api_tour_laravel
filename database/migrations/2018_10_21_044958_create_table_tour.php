@@ -13,8 +13,7 @@ class CreateTableTour extends Migration
      */
     public function up()
     {
-        //
-        Schema::create("tour", function(Blueprint $table) {
+        Schema::create('tour', function(Blueprint $table) {
             $table->increments("id");
             $table->string('name');
             $table->integer('number_days');
@@ -26,6 +25,8 @@ class CreateTableTour extends Migration
             $table->text('programs');
             $table->text('note');
             $table->tinyInteger('deleted_at')->default(0);
+            $table->integer('id_type_tour');
+            $table->foreign('id_type_tour')->references('id')->on('type_tour')->onDelete('restrict');
         });
     }
 

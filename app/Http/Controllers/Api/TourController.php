@@ -37,7 +37,7 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = null;
+            $data = $e->getMessage();
         }
         return response()->json([
             "result_code"       => $code,
@@ -65,25 +65,25 @@ class TourController extends ApiController
      */
     public function show($id)
     {
-        try
-        {
-            // all data tour
-            $tour = $this->tour_service->find($id);
+        // try
+        // {
+        //     // all data tour
+        //     $tour = $this->tour_service->find($id);
 
-            $code = 200;
-            $message = "Success";
-            $data = $tour;
-        } 
-        catch(\Exception $e) {
-            $code = 403;
-            $message = "Access Denied Exception";
-            $data = null;
-        }
+        //     $code = 200;
+        //     $message = "Success";
+        //     $data = $tour;
+        // } 
+        // catch(\Exception $e) {
+        //     $code = 403;
+        //     $message = "Access Denied Exception";
+        //     $data = null;
+        // }
         return response()->json([
-            "result_code"       => $code,
-            "result_message"    => $message,
-            "data"              => $data
-        ], $code);
+            "result_code"       => 404,
+            "result_message"    => "Page not found",
+            "data"              => null
+        ], 404);
     }
 
     /**

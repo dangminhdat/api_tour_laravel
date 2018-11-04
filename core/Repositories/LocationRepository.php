@@ -40,7 +40,7 @@ class LocationRepository implements RepositoryInterface
         $data['image']->move($upload, $name);
         $result = [
             'name'  => $data['name'],
-            'image' => $name
+            'image' => "/uploads/".$name
         ];
         if ($data['image']->isValid('image')) {
             return false;

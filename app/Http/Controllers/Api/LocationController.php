@@ -13,7 +13,7 @@ class LocationController extends ApiController
     {
         $this->location_service = $service;
         // check login
-        // $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
+        $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
     }
     /**
      * Display a listing of the resource.

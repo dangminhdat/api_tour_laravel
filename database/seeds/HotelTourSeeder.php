@@ -12,11 +12,11 @@ class HotelTourSeeder extends Seeder
     public function run()
     {
         //
-        DB::table("hotel_tour")->insert([
-        	[ "id_detail_tour" => 1, "id_hotel" => 1 ],
-        	[ "id_detail_tour" => 1, "id_hotel" => 2 ],
-        	[ "id_detail_tour" => 2, "id_hotel" => 1 ],
-        	[ "id_detail_tour" => 2, "id_hotel" => 2 ],
-        ]);
+        for ($i=1; $i <= 20 ; $i++) { 
+            DB::table("hotel_tour")->insert([
+                [ "id_detail_tour" => $i, "id_hotel" => 1 ],
+                [ "id_detail_tour" => $i, "id_hotel" => 2 ],
+            ]);
+        }
     }
 }

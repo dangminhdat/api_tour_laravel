@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Core\Services\ReviewService;
+use Core\Services\UserService;
 
 class ReviewController extends ApiController
 {
+    protected $user_service;
     protected $review_service;
 
-    public function __construct(ReviewService $service)
+    public function __construct(ReviewService $service, UserService $u_service)
     {
+        $this->user_service = $u_service;
         $this->review_service = $service;
         // check login
         $this->middleware('check_login', ['only' => [ 'update', 'destroy' ]]);
@@ -58,12 +61,15 @@ class ReviewController extends ApiController
         //
         try
         {
+            $authorization = $request->header('authorization');
+
+            $profile = $this->user_service->findWhere(["remember_token" => $authorization, 'deleted_at' => 0]);
             $review = [
                 "score"         => $request->score,
                 "content"       => $request->content,
                 "date_review"   => now(),
                 "id_tour"       => $request->id_tour,
-                "id_user"       => $request->id_user,
+                "id_user"       => $profile->id,
                 "deleted_at"    => false
             ];
 
@@ -76,7 +82,7 @@ class ReviewController extends ApiController
         catch(\Exception $e) {
             $code = 400;
             $message = "Something error!!!";
-            $data = null;
+            $data = $e->getMessage();
         }
 
         return response()->json([

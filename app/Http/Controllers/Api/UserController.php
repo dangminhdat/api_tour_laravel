@@ -419,4 +419,33 @@ class UserController extends ApiController
             "data"              => $data
         ], $code);
     }
+
+    public function review_by_user(Request $request)
+    {
+        try
+        {
+            $authorization = $request->header('authorization');
+
+            if (!$authorization) {
+                throw new \Exception("Access Denied Exception", 403);
+            }
+
+            $review = $this->user_service->review_by_user($authorization);
+
+            $code = 200;
+            $message = "Success!";
+            $data = $review;
+        } catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = $e->getMessage();
+        }
+
+        // Return json
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
 }

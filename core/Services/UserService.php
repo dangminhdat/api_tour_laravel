@@ -62,4 +62,9 @@ class UserService implements ServiceInterface
         }
         return false;
     }
+
+    public function review_by_user($authorization)
+    {
+        return $this->repository->review_by_user($authorization);
+    }
 }

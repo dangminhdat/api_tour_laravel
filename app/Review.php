@@ -17,7 +17,7 @@ class Review extends Model
      * @var array
      */
     protected $fillable = [
-        'name_review', 'email_review', 'score', 'content', 'date_review', 'deleted_at', 'id_tour', 'id_user'
+        'score', 'content', 'date_review', 'deleted_at', 'id_tour', 'id_user'
     ];
 
     public function tour()

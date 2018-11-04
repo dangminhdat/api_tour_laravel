@@ -1,0 +1,15 @@
+heroku login
+
+heroku git:clone -a apitour
+cd apitour
+
+git add .
+git commit -am "Init."
+git push heroku master
+
+heroku run php artisan clear-compiled
+heroku run php artisan optimize
+heroku run php artisan chmod -R 777 public/
+
+heroku run php artisan migrate:refresh
+heroku run php artisan db:seed

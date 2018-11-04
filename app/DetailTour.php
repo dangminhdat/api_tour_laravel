@@ -16,7 +16,7 @@ class DetailTour extends Model
      * @var array
      */
     protected $fillable = [
-        'date_depart', 'price_adults', 'price_childs', 'time_depart', 'address_depart', 'slot', 'deleted_at', 'id_image', 'id_guide', 'id_hotel', 'id_tour', 'id_type_tour'
+        'date_depart', 'price_adults', 'price_childs', 'time_depart', 'address_depart', 'slot', 'deleted_at', 'id_image', 'id_guide', 'id_hotel', 'id_tour'
     ];
 
     /**
@@ -27,24 +27,14 @@ class DetailTour extends Model
     protected $hidden = [
     ];
 
-    public function type_tour()
-    {
-    	return $this->belongsTo('App\TypeTour', 'id_type_tour', 'id');
-    }
-
     public function guide()
     {
         return $this->belongsTo('App\Guide', 'id_guide', 'id');
     }
 
-    public function tours()
+    public function tour()
     {
         return $this->belongsTo('App\Tour', 'id_tour', 'id');
-    }
-
-    public function location()
-    {
-        return $this->belongsToMany('App\Location', 'location_tour', 'id_detail_tour', 'id_location');
     }
 
     public function hotel()

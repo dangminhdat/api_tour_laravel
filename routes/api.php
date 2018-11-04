@@ -32,7 +32,7 @@ Route::group([ 'middleware' => ['check_login']], function () {
  * No login
  */
 // route post login
-Route::post('/login', ['as' => 'login', 'uses' => 'Api\UserController@login']);
+Route::post('/login', 'Api\UserController@login');
 // restful api guide
 Route::resource('guides', 'Api\GuideController');
 // restful api hotel
@@ -55,3 +55,7 @@ Route::GET('tour/location/{id}', 'Api\TourController@tour_by_location');
 Route::resource('tour', 'Api\TourController');
 // restful api location
 Route::resource('location', 'Api\LocationController');
+// restful api detail
+Route::resource('detail', 'Api\DetailTourController');
+// restful api detail
+Route::get('detail/other/{id}', 'Api\DetailTourController@detail_day_other');

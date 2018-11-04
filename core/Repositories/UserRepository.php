@@ -75,4 +75,21 @@ class UserRepository implements RepositoryInterface
         return $model->first();
     }
 
+    public function review_by_user($authorization)
+    {
+        $user = $this->model->where(["remember_token" => $authorization, "deleted_at" => 0])->first();
+        $reviews = $user->review;
+        $result = array();
+        foreach ($reviews as $key => $review) {
+            if (!$review->deleted_at) {
+                $reviews[$key]['name_tour'] = $review->tour->name;
+                unset($reviews[$key]['deleted_at']);
+                unset($reviews[$key]['id_user']);
+                unset($reviews[$key]['tour']);
+
+                $result[] = $reviews[$key];
+            }
+        }
+        return $result;
+    }
 }

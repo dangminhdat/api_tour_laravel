@@ -59,3 +59,5 @@ Route::resource('location', 'Api\LocationController');
 Route::resource('detail', 'Api\DetailTourController');
 // restful api detail
 Route::get('detail/other/{id}', 'Api\DetailTourController@detail_day_other');
+// api get review user
+Route::get('user/review', 'Api\UserController@review_by_user');

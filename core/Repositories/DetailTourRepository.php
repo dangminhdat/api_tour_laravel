@@ -118,7 +118,7 @@ class DetailTourRepository implements RepositoryInterface
         	$hotels = $detailC->hotel;
         	$guide = $details->guide;
 	        // guide
-	        if (!$hotels || !$guide || $guide->deleted_at) {
+	        if ($detailC->id == $id || !$hotels || !$guide || $guide->deleted_at) {
 	            continue;
 	        } else {
 	            unset($guide->deleted_at);

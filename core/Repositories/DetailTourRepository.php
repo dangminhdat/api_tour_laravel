@@ -24,6 +24,7 @@ class DetailTourRepository implements RepositoryInterface
         $location = array();
         $hotel = array();
         $tour = $details->tour;
+        $type = $tour->type_tour->name;
         $guide = $details->guide;
         // guide
         if ($guide->deleted_at) {
@@ -67,6 +68,10 @@ class DetailTourRepository implements RepositoryInterface
 
         unset($tour['detail_tour']);
         unset($tour['location']);
+        unset($tour['deleted_at']);
+        unset($tour['id_type_tour']);
+        unset($tour['type_tour']);
+        $tour['type_tour'] = $type;
         $tour['detail'] = $detail;
         $tour['location'] = $location;
         $tour['guide'] = $guide;
@@ -108,14 +113,39 @@ class DetailTourRepository implements RepositoryInterface
     	$result = array();
         $details = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
         $detail = $details->tour->detail_tour;
-        foreach ($detail as $key => $value) {
+        foreach ($detail as $key => $detailC) {
+        	$hotel = array();
+        	$hotels = $detailC->hotel;
+        	$guide = $details->guide;
+	        // guide
+	        if (!$hotels || !$guide || $guide->deleted_at) {
+	            continue;
+	        } else {
+	            unset($guide->deleted_at);
+	        }
+        	foreach ($hotels as $detailH) {
+	            if (!$detailH->deleted_at) {
+	                $arr = array();
+	                $arr['id'] = $detailH->id;
+	                $arr['name'] = $detailH->name;
+	                $arr['price_room'] = $detailH->price_room;
+	                $arr['address'] = $detailH->address;
+	                $arr['phone'] = $detailH->phone;
+	                $arr['website'] = $detailH->website;
+	                $hotel[] = $arr;
+	            }
+	        }
         	unset($detail[$key]['deleted_at']);
         	unset($detail[$key]['id_image']);
         	unset($detail[$key]['id_guide']);
         	unset($detail[$key]['id_hotel']);
         	unset($detail[$key]['id_tour']);
+        	unset($detail[$key]['hotel']);
 
-        	$result[] = $detail;
+        	$detail[$key]['guide'] = $guide;
+        	$detail[$key]['hotel'] = $hotel;
+
+        	$result[] = $detail[$key];
         }
     	return $result;
     }

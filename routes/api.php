@@ -15,17 +15,21 @@ use Illuminate\Http\Request;
 
 Route::group([ 'middleware' => ['check_login']], function () {
     // route post login
-	Route::post('/logout', ['as' => 'logout', 'uses' => 'Api\UserController@logout']);
+	Route::post('/logout', 'Api\UserController@logout');
 	// restful api user
 	Route::resource('users', 'Api\UserController');
 	// api get profile
-	Route::get('/profile', [ 'as' => 'profile', 'uses' => 'Api\UserController@profile', 'middleware' => 'check_login']);
+	Route::get('/profile', 'Api\UserController@profile');
 	// api change pass
 	Route::POST('/change-pass/{id}', 'Api\UserController@change_pass');
 	// api lock user
 	Route::POST('/lock/{id}', 'Api\UserController@lock_user');
 	// api unlock user
 	Route::POST('/unlock/{id}', 'Api\UserController@unlock_user');
+	// api update location
+	Route::POST('location/{id}', 'Api\LocationController@updateLocation');
+	// api get review user
+	Route::get('user/review', 'Api\UserController@review_by_user');
 });
 
 /**
@@ -59,5 +63,3 @@ Route::resource('location', 'Api\LocationController');
 Route::resource('detail', 'Api\DetailTourController');
 // restful api detail
 Route::get('detail/other/{id}', 'Api\DetailTourController@detail_day_other');
-// api get review user
-Route::get('user/review', 'Api\UserController@review_by_user');

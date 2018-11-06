@@ -42,4 +42,9 @@ class LocationService implements ServiceInterface
     {
         return $this->repository->findWhere($condition);
     }
+
+    public function updateLocation($id, $data)
+    {
+        return $this->repository->updateLocation($id, $data);
+    }
 }

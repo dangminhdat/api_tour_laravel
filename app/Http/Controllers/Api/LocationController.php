@@ -103,7 +103,7 @@ class LocationController extends ApiController
             $location = $this->location_service->find($id);
 
             if (!$location) {
-                throw new \Exception("Not found guide", 2);
+                throw new \Exception("Not found location", 2);
             }
             
             $code = 200;
@@ -131,7 +131,14 @@ class LocationController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        //
+        $code = 403;
+        $message = "Access Denied Exception";
+        $data = null;
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 
     /**
@@ -146,7 +153,7 @@ class LocationController extends ApiController
         {
             $location = $this->location_service->update($id, ["deleted_at" => true]);
             if (!$location) {
-                throw new \Exception("Not found hotel", 2);
+                throw new \Exception("Not found location", 2);
             }
         
             $code = 200;
@@ -156,8 +163,48 @@ class LocationController extends ApiController
         catch(\Exception $e) {
             $code = 400;
             $message = "Something error!!!!!";
-            $data = null;
+            $data = $e->getMessage();
         }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateLocation(Request $request, $id)
+    {
+        try
+        {
+            $location = [
+                "name"      => $request->name,
+            ];
+
+            if ($request->hasFile('image')) {
+                $location["image"] = $request->file('image');
+            }
+
+            if (!$this->location_service->updateLocation($id, $location)) {
+                throw new \Exception("Something error!!!", 1);   
+            }
+
+            $code = 200;
+            $message = "Success!";
+            $data = "Update location success";
+        }
+        catch(\Exception $e) {
+            $code = 400;
+            $message = "Something error!!!";
+            $data = $e->getMessage();
+        }
+
         return response()->json([
             "result_code"       => $code,
             "result_message"    => $message,

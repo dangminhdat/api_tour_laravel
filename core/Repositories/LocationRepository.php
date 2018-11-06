@@ -36,7 +36,7 @@ class LocationRepository implements RepositoryInterface
             mkdir($upload);
         }
         $ext = $data['image']->getClientOriginalExtension('image');
-        $name   = str_slug($data['name'],'-')."-".date("Y-m-d").'.'.$ext;
+        $name   = str_slug($data['name'],'-')."-".date("Y-m-d-H-i-s").'.'.$ext;
         $data['image']->move($upload, $name);
         $result = [
             'name'  => $data['name'],

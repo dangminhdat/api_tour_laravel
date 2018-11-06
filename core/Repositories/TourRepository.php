@@ -40,7 +40,52 @@ class TourRepository implements RepositoryInterface
         return $tours;
     }
 
-    public function find($id){}
+    public function find($id)
+    {
+        $result = array();
+        $tour = $this->model->where(["id" => $id, "deleted_at" => false ])->first();
+        foreach ($tour->detail_tour as $key => $details) {
+            $detail = array();
+            $hotel = array();
+            $guide = $details->guide;
+
+            if ($guide->deleted_at) {
+                $guide = null;
+            } else {
+                unset($guide->deleted_at);
+            }
+            // hotel
+            foreach ($details->hotel as $detailH) {
+                if (!$detailH->deleted_at) {
+                    $arr = array();
+                    $arr['id'] = $detailH->id;
+                    $arr['name'] = $detailH->name;
+                    $arr['price_room'] = $detailH->price_room;
+                    $arr['address'] = $detailH->address;
+                    $arr['phone'] = $detailH->phone;
+                    $arr['website'] = $detailH->website;
+                    $hotel[] = $arr;
+                }
+            }
+            // detail
+            $detail['id'] = $details->id;
+            $detail['date_depart'] = $details->date_depart;
+            $detail['price_adults'] = $details->price_adults;
+            $detail['price_childs'] = $details->price_childs;
+            $detail['time_depart'] = $details->time_depart;
+            $detail['address_depart'] = $details->address_depart;
+            $detail['slot'] = $details->slot;
+
+            // image
+            $image = 'url';
+
+            $detail['guide'] = $guide;
+            $detail['hotel'] = $hotel;
+
+            $result[] = $detail;
+        }
+        return $result;
+    }
 
     public function store($data)
     {

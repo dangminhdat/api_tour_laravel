@@ -50,7 +50,7 @@ class LocationRepository implements RepositoryInterface
 
     public function update($id, $data)
     {
-        $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
+        $model = $this->model->where(["id" => $id, "deleted_at" => false]);
         return $model->update($data);
     }
 
@@ -70,5 +70,31 @@ class LocationRepository implements RepositoryInterface
     {
         $model = $this->model->where($condition);
         return $model->first();
+    }
+
+    public function updateLocation($id, $data)
+    {
+        $result = array();
+        if ($data['image']) {
+            $upload = public_path()."/uploads/";
+            if(!is_dir($upload)) {
+                mkdir($upload);
+            }
+            $ext = $data['image']->getClientOriginalExtension('image');
+            $name   = str_slug($data['name'],'-')."-".date("Y-m-d-H-i-s").'.'.$ext;
+            $data['image']->move($upload, $name);
+            $data['name'] = $name;
+            $result["image"] = "/uploads/".$name;   
+            if ($data['image']->isValid('image')) {
+                return false;
+            }
+        }
+        
+        $result = [
+            'name'  => $data['name'],
+        ];
+
+        $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
+        return $model->update($result);
     }
 }

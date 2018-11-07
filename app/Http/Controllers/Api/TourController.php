@@ -72,7 +72,10 @@ class TourController extends ApiController
 
             $code = 200;
             $message = "Success";
-            $data = $tour;
+            $data = array(
+                'total' => count($tour),
+                'list' => $tour
+            );
         } 
         catch(\Exception $e) {
             $code = 403;

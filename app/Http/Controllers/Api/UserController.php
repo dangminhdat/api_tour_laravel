@@ -66,6 +66,9 @@ class UserController extends ApiController
                 if ($username) {
                     throw new \Exception("Username is exists", 2);
                 }
+                if (!$request->id_group) {
+                    throw new \Exception("Something error!!!", 3);
+                }
                 // insert data to user table
                 $data_user = [
                     "username"       => $request->username,
@@ -171,7 +174,7 @@ class UserController extends ApiController
                 // insert data to user table
                 $data_user = [
                     "username" => $request->username?$request->username:$user['username'],
-                    "id_group" => $request->id_group?$request->id_group:$user->group->first()->id,
+                    "id_group" => $request->id_group?$request->id_group:$user['id_group'],
                 ];
 
                 $this->user_service->update($user['id'], $data_user);

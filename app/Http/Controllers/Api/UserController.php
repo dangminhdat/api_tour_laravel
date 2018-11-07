@@ -73,6 +73,7 @@ class UserController extends ApiController
                     "active"         => true,
                     "deleted_at"     => false,
                     "remember_token" => null,
+                    "id_group"       => $request->id_group
                 ];
 
                 $user = $this->user_service->store($data_user);
@@ -159,6 +160,7 @@ class UserController extends ApiController
         {
             // get user by id
             $user = $this->user_service->find($id);
+
             // transaction
             DB::transaction(function () use ($request, $user) {
                 // validate username
@@ -169,6 +171,7 @@ class UserController extends ApiController
                 // insert data to user table
                 $data_user = [
                     "username" => $request->username?$request->username:$user['username'],
+                    "id_group" => $request->id_group?$request->id_group:$user->group->first()->id,
                 ];
 
                 $this->user_service->update($user['id'], $data_user);
@@ -198,7 +201,7 @@ class UserController extends ApiController
                 $message = "Something error!!!!!";
             }
             $code = 400;
-            $data = null;
+            $data = $e->getMessage();
         }
         return response()->json([
             "result_code"       => $code,

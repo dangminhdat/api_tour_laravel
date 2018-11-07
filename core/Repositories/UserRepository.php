@@ -48,13 +48,18 @@ class UserRepository implements RepositoryInterface
 
     public function store($data)
     {
-        return $this->model->create($data);
+        $store = $this->model->create($data);
+        $store->group()->attach($data['id_group']);
+        return $store;
     }
 
     public function update($id, $data)
     {
         $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
-        return $model->update($data);
+        $model->first()->group()->attach($data['id_group']);
+        unset($data['id_group']);
+        $update = $model->update($data);
+        return $update;
     }
 
     public function destroy($id)

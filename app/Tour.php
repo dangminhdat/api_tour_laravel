@@ -16,7 +16,7 @@ class Tour extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'number_days', 'date_created', 'item_tour', 'discount', 'booked', 'images', 'programs', 'note', 'deleted_at', 'id_type_tour'
+        'name', 'number_days', 'date_created', 'item_tour', 'discount', 'images', 'programs', 'note', 'deleted_at', 'id_type_tour'
     ];
 
     /**

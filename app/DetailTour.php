@@ -16,7 +16,7 @@ class DetailTour extends Model
      * @var array
      */
     protected $fillable = [
-        'date_depart', 'price_adults', 'price_childs', 'time_depart', 'address_depart', 'slot', 'deleted_at', 'id_image', 'id_guide', 'id_hotel', 'id_tour'
+        'date_depart', 'price_adults', 'price_childs', 'time_depart', 'address_depart', 'slot', 'booked', 'deleted_at', 'id_image', 'id_guide', 'id_hotel', 'id_tour'
     ];
 
     /**

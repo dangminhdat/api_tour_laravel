@@ -20,7 +20,6 @@ class CreateTableTour extends Migration
             $table->dateTime('date_created');
             $table->string("item_tour");
             $table->integer("discount");
-            $table->integer("booked");
             $table->text('images');
             $table->text('programs');
             $table->text('note');

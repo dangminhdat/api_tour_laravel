@@ -24,7 +24,7 @@ class DetailTourRepository implements RepositoryInterface
         $location = array();
         $hotel = array();
         $tour = $details->tour;
-        $type = $tour->type_tour->name;
+        $type = $tour->type_tour->id;
         $guide = $details->guide;
         // guide
         if ($guide->deleted_at) {
@@ -62,6 +62,7 @@ class DetailTourRepository implements RepositoryInterface
         $detail['time_depart'] = $details->time_depart;
         $detail['address_depart'] = $details->address_depart;
         $detail['slot'] = $details->slot;
+        $detail['booked'] = $details->booked;
 
         // image
         $image = 'url';
@@ -71,7 +72,7 @@ class DetailTourRepository implements RepositoryInterface
         unset($tour['deleted_at']);
         unset($tour['id_type_tour']);
         unset($tour['type_tour']);
-        $tour['type_tour'] = $type;
+        $tour['id_type_tour'] = $type;
         $tour['detail'] = $detail;
         $tour['location'] = $location;
         $tour['guide'] = $guide;

@@ -30,6 +30,8 @@ Route::group([ 'middleware' => ['check_login']], function () {
 	Route::POST('location/{id}', 'Api\LocationController@updateLocation');
 	// api get review user
 	Route::get('user/review', 'Api\UserController@review_by_user');
+	// api get group
+	Route::resource('group', 'Api\GroupController');
 });
 
 /**

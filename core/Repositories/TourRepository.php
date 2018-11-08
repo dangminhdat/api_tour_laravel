@@ -18,7 +18,7 @@ class TourRepository implements RepositoryInterface
         $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($tours as $key => $tour) {
             $details = $tour->detail_tour->first();
-            $type = $tour->type_tour->name;
+            $type = $tour->type_tour->id;
             if (!$details) {
                 unset($tours[$key]);
                 continue;
@@ -35,7 +35,8 @@ class TourRepository implements RepositoryInterface
             $tours[$key]['price_childs'] = $details->price_childs;
             $tours[$key]['time_depart'] = $details->time_depart;
             $tours[$key]['slot'] = $details->slot;
-            $tours[$key]['type_tour'] = $type;
+            $tours[$key]['booked'] = $details->booked;
+            $tours[$key]['id_type_tour'] = $type;
         }
         return $tours;
     }
@@ -75,6 +76,7 @@ class TourRepository implements RepositoryInterface
             $detail['time_depart'] = $details->time_depart;
             $detail['address_depart'] = $details->address_depart;
             $detail['slot'] = $details->slot;
+            $detail['booked'] = $details->booked;
 
             // image
             $image = 'url';
@@ -116,7 +118,7 @@ class TourRepository implements RepositoryInterface
         $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($tours as $key => $tour) {
             $details = $tour->detail_tour->first();
-            $type = $tour->type_tour->name;
+            $type = $tour->type_tour->id;
             // get data by location
             $item = 0;
             $checks = $tour->location;
@@ -148,7 +150,8 @@ class TourRepository implements RepositoryInterface
             $tours[$key]['price_childs'] = $details->price_childs;
             $tours[$key]['time_depart'] = $details->time_depart;
             $tours[$key]['slot'] = $details->slot;
-            $tours[$key]['type_tour'] = $type;
+            $tours[$key]['booked'] = $details->booked;
+            $tours[$key]['id_type_tour'] = $type;
          
             $result[] = $tours[$key];
         }
@@ -161,7 +164,7 @@ class TourRepository implements RepositoryInterface
         $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($tours as $key => $tour) {
             $details = $tour->detail_tour->first();
-            $type = $tour->type_tour->name;
+            $type = $tour->type_tour->id;
             if ($tour->discount === 0 || !$details) {
                 unset($tours[$key]);
                 continue;
@@ -178,7 +181,8 @@ class TourRepository implements RepositoryInterface
             $tours[$key]['price_childs'] = $details->price_childs;
             $tours[$key]['time_depart'] = $details->time_depart;
             $tours[$key]['slot'] = $details->slot;
-            $tours[$key]['type_tour'] = $type;
+            $tours[$key]['booked'] = $details->booked;
+            $tours[$key]['id_type_tour'] = $type;
 
 
             $result[] = $tours[$key];
@@ -196,7 +200,7 @@ class TourRepository implements RepositoryInterface
                 continue;
             }
             $details = $tour->detail_tour->first();
-            $type = $tour->type_tour->name;
+            $type = $tour->type_tour->id;
             if (!$details) {
                 unset($tours[$key]);
                 continue;
@@ -213,7 +217,8 @@ class TourRepository implements RepositoryInterface
             $tours[$key]['price_childs'] = $details->price_childs;
             $tours[$key]['time_depart'] = $details->time_depart;
             $tours[$key]['slot'] = $details->slot;
-            $tours[$key]['type_tour'] = $type;
+            $tours[$key]['booked'] = $details->booked;
+            $tours[$key]['id_type_tour'] = $type;
 
             $result[] = $tours[$key];
         }

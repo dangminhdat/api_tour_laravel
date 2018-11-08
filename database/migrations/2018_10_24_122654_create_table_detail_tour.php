@@ -22,6 +22,7 @@ class CreateTableDetailTour extends Migration
             $table->string('time_depart');
             $table->text('address_depart');
             $table->integer('slot');
+            $table->integer("booked");
             $table->tinyInteger('deleted_at')->default(0);
             $table->integer('id_image');
             $table->integer('id_guide');

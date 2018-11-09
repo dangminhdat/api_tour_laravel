@@ -59,17 +59,18 @@ class TourController extends ApiController
             if (!$request->hasFile('images')) {
                 throw new \Exception("No choose images", 1);
             }
-            $data = array(
+            $data = [
                 "name"          => $request->name,
                 "number_days"   => $request->number_days,
                 "date_created"  => now(),
                 "item_tour"     => $request->item_tour,
                 "discount"      => $request->discount,
+                "images"        => $request->file('images'),
                 "programs"      => $request->programs,
                 "note"          => $request->note,
                 "deleted_at"    => false,
                 "id_type_tour"  => $request->id_type_tour
-            );
+            ];
             // all data tour
             $tour = $this->tour_service->store($data);
 
@@ -80,7 +81,7 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = null;
+            $data = $e->getMessage();
         }
         return response()->json([
             "result_code"       => $code,
@@ -100,7 +101,7 @@ class TourController extends ApiController
         try
         {
             // all data tour
-            $tour = $this->tour_service->find($id);
+            $tour = $this->tour_service->find_tour_detail($id);
 
             $code = 200;
             $message = "Success";
@@ -112,7 +113,7 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = null;
+            $data = $e->getMessage();
         }
         return response()->json([
             "result_code"       => $code,
@@ -222,6 +223,42 @@ class TourController extends ApiController
                 'total' => count($tour),
                 'list' => $tour
             );
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = $e->getMessage();
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    public function updateTour(Request $request, $id)
+    {
+        try
+        {
+            $tour = $this->tour_service->find($id);
+            $data = [
+                "name"          => $request->name?$request->name:$tour->name,
+                "number_days"   => $request->number_days?$request->number_days:$tour->number_days,
+                "item_tour"     => $request->item_tour?$request->item_tour:$tour->item_tour,
+                "discount"      => $request->discount?$request->discount:$tour->discount,
+                "programs"      => $request->programs?$request->programs:$tour->programs,
+                "note"          => $request->note?$request->note:$tour->note,
+                "id_type_tour"   => $request->id_type_tour?$request->id_type_tour:$tour->id_type_tour,
+            ];
+            if ($request->hasFile('images')) {
+                $data['images'] = $request->file('images');
+            }
+            // all data tour
+            $tour = $this->tour_service->updateTour($id, $data);
+
+            $code = 200;
+            $message = "Success";
+            $data = "Update tour success";
         } 
         catch(\Exception $e) {
             $code = 403;

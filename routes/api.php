@@ -32,6 +32,8 @@ Route::group([ 'middleware' => ['check_login']], function () {
 	Route::get('user/review', 'Api\UserController@review_by_user');
 	// api get group
 	Route::resource('group', 'Api\GroupController');
+	// api update tour
+	Route::POST('tour/{id}', 'Api\TourController@updateTour');
 });
 
 /**

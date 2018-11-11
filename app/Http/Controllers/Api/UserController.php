@@ -417,7 +417,7 @@ class UserController extends ApiController
         catch(\Exception $e) {
             $code = 400;
             $message = "Something error!!!!!";
-            $data = null;
+            $data = $e->getMessage();
         }
         return response()->json([
             "result_code"       => $code,

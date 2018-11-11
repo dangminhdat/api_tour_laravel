@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Core\Services\UserService;
+use App\Http\Controllers\Controller;
+use Core\Services\GroupService;
 
-class UserController extends Controller
+class GroupController extends Controller
 {
-    protected $service;
+    protected $group_service;
 
-    public function __construct(UserService $service)
+    public function __construct(GroupService $service)
     {
-        $this->service = $service;
+        $this->group_service = $service;
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -21,8 +21,28 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-        $items = $this->service->paginate();
+        try
+        {
+            $group = $this->group_service->paginate();
+
+            $code = 200;
+            $message = "Success!";
+            $data = array(
+                "total" => count($group),
+                "list" => $group
+            );
+        }
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Something error!!!";
+            $data = null;
+        }
+
+        return response()->json([
+            "result_code" => $code,
+            "result_message" => $message,
+            "data" => $data
+        ], $code);
     }
 
     /**
@@ -32,7 +52,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -54,7 +74,25 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        try
+        {
+            $group = $this->group_service->find($id);
+
+            $code = 200;
+            $message = "Success!";
+            $data = $group;
+        }
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Something error!!!";
+            $data = null;
+        }
+
+        return response()->json([
+            "result_code" => $code,
+            "result_message" => $message,
+            "data" => $data
+        ], $code);
     }
 
     /**
@@ -89,39 +127,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     * Api login for user login
-     * 
-     * @param  Request
-     * @return [type]
-     */
-    public function login(Request $request)
-    {
-        try
-        {
-            $login = $this->service->login($request->username, $request->password);
-            if ($login) {
-                $code = 200;
-                $message = "Login success";
-                $data = $login;
-            } else {
-                $code = 200;
-                $message = "Invalid username/password supplied";
-                $data = null;
-            }
-        } catch(\Exception $e) {
-            $code = 500;
-            $message = "INTERNAL SERVER ERROR";
-            $data = null;
-        }
-        
-        // Return json
-        return response()->json([
-            "result_code"       => $code,
-            "result_message"    => $message,
-            "data"              => $data
-        ]);
     }
 }

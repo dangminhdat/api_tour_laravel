@@ -2,7 +2,7 @@
 
 namespace Core\Services;
 
-interface UserServiceInterface
+interface ServiceInterface
 {
     public function paginate();
     public function find($id);

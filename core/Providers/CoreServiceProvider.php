@@ -28,7 +28,31 @@ class CoreServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(
+            RepositoryInterface::class, 
+            UserRepository::class, 
+            UserDetailRepository::class,
+            HotelRepository::class,
+            GuideRepository::class,
+            TypeTourRepository::class,
+            ReviewRepository::class,
+            FormalityRepository::class,
+            TourRepository::class,
+            LocationRepository::class,
+            GroupRepository::class
+        );
+        $this->app->bind(
+            ServiceInterface::class, 
+            UserService::class,
+            UserDetailService::class,
+            HotelService::class,
+            GuideService::class,
+            TypeTourService::class,
+            ReviewService::class,
+            FormalityService::class,
+            TourService::class,
+            LocationService::class,
+            GroupService::class
+        );
     }
 }

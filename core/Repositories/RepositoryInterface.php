@@ -2,7 +2,7 @@
 
 namespace Core\Repositories;
 
-interface UserRepositoryInterface
+interface RepositoryInterface
 {
     public function paginate();
     public function find($id);

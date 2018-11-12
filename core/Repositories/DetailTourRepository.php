@@ -82,6 +82,15 @@ class DetailTourRepository implements RepositoryInterface
 
     public function store($data)
     {
+        if (!empty($data['id_hotel'])) {
+            $id_hotel = $data['id_hotel'];
+            unset($data['id_hotel']);
+            $result = $this->model->create($data);
+            foreach ($id_hotel as $key => $value) {
+                $result->hotel()->attach($value);
+            }
+            return $result;
+        }
         return $this->model->create($data);
     }
 
@@ -137,7 +146,6 @@ class DetailTourRepository implements RepositoryInterface
 	            }
 	        }
         	unset($detail[$key]['deleted_at']);
-        	unset($detail[$key]['id_image']);
         	unset($detail[$key]['id_guide']);
         	unset($detail[$key]['id_hotel']);
         	unset($detail[$key]['id_tour']);

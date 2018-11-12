@@ -209,7 +209,7 @@ class UserController extends ApiController
                 $message = "Something error!!!!!";
             }
             $code = 400;
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -449,7 +449,7 @@ class UserController extends ApiController
         } catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
 
         // Return json

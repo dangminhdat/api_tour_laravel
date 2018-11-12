@@ -79,7 +79,7 @@ class LocationController extends ApiController
                 $message = $e->getMessage();
             }
             $code = 400;
-            $data = $e->getMessage();
+            $data = null;
         }
 
         return response()->json([
@@ -163,7 +163,7 @@ class LocationController extends ApiController
         catch(\Exception $e) {
             $code = 400;
             $message = "Something error!!!!!";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -202,7 +202,7 @@ class LocationController extends ApiController
         catch(\Exception $e) {
             $code = 400;
             $message = "Something error!!!";
-            $data = $e->getMessage();
+            $data = null;
         }
 
         return response()->json([

@@ -26,16 +26,6 @@ class DetailTourController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -43,7 +33,42 @@ class DetailTourController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        try
+        {
+            $data = [
+                "date_depart"   => $request->date_depart,
+                "price_adults"  => $request->price_adults,
+                "price_childs"  => $request->price_childs,
+                "time_depart"   => $request->time_depart,
+                "address_depart"=> $request->address_depart,
+                "slot"          => $request->slot,
+                "booked"        => 0,
+                "deleted_at"    => false,
+                "id_guide"      => $request->id_guide,
+                "id_tour"       => $request->id_tour,
+            ];
+
+            if (!empty($request->id_hotel)) {
+                $data['id_hotel'] = $request->id_hotel;
+            }
+
+            $detail_tour = $this->detail_service->store($data);
+            
+            $code = 200;
+            $message = "Success!";
+            $data = "Insert detail tour success";
+        }
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+
+        return response()->json([
+            "result_code"   => $code,
+            "result_message"=> $message,
+            "data"          => $data
+        ], $code);
     }
 
     /**
@@ -67,7 +92,7 @@ class DetailTourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -124,7 +149,7 @@ class DetailTourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,

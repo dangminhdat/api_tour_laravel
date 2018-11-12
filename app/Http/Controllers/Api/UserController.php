@@ -173,9 +173,14 @@ class UserController extends ApiController
                 }
                 // insert data to user table
                 $data_user = [
-                    "username" => $request->username?$request->username:$user['username'],
-                    "id_group" => $request->id_group?$request->id_group:$user['id_group'],
+                    "username"  => $request->username?$request->username:$user['username'],
+                    "active"    => isset($request->active)?$request->active:$user['active'],
+                    "id_group"  => $request->id_group?$request->id_group:$user['id_group'],
                 ];
+
+                if ($request->password) {
+                    $data_user['password'] = bcrypt($request->password);
+                }
 
                 $this->user_service->update($user['id'], $data_user);
                 // validate email
@@ -188,7 +193,7 @@ class UserController extends ApiController
                     "fullname"   => $request->fullname?$request->fullname:$user['fullname'],
                     "email"      => $request->email?$request->email:$user['email'],
                     "phone"      => $request->phone?$request->phone:$user['phone'],
-                    "address"    => $request->address?$request->username:$user['address'],
+                    "address"    => $request->address?$request->address:$user['address'],
                 ];
                 $this->user_detail_service->update($user['id'], $data_user_detail);
             });
@@ -417,7 +422,7 @@ class UserController extends ApiController
         catch(\Exception $e) {
             $code = 400;
             $message = "Something error!!!!!";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,

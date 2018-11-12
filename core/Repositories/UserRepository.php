@@ -56,8 +56,10 @@ class UserRepository implements RepositoryInterface
     public function update($id, $data)
     {
         $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
-        $model->first()->group()->attach($data['id_group']);
-        unset($data['id_group']);
+        if (!empty($data['id_group'])) {
+            $model->first()->group()->attach($data['id_group']);
+            unset($data['id_group']);
+        }
         $update = $model->update($data);
         return $update;
     }

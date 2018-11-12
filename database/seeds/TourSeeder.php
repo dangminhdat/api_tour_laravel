@@ -39,7 +39,6 @@ class TourSeeder extends Seeder
                         "slot"          => 10,
                         "booked"        => $i,
                         "deleted_at"    => false,
-                        "id_image"      => 1,
                         "id_guide"      => $j,
                         "id_tour"       => $i,
                     ],

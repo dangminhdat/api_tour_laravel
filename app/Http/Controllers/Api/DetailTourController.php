@@ -132,7 +132,25 @@ class DetailTourController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        try
+        {
+            // all data tour
+            $tour = $this->detail_service->update($id, ["deleted_at" => true]);
+
+            $code = 200;
+            $message = "Success";
+            $data = "Delete detail tour success!";
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 
     public function detail_day_other($id)

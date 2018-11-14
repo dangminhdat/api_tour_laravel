@@ -15,9 +15,17 @@ class TourRepository implements RepositoryInterface
 
     public function paginate()
     {
-        $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
+        $check = false;
+        $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'ASC')->get();
         foreach ($tours as $key => $tour) {
-            $details = $tour->detail_tour->first();
+            $details = $tour->detail_tour;
+            foreach ($details as $k => $v) {
+                if (!$v->deleted_at) {
+                    $check = true;
+                    $details = $v;
+                    break;
+                }
+            }
             $type = $tour->type_tour->id;
             unset($tours[$key]['id_type_tour']);
             unset($tours[$key]['type_tour']);
@@ -26,7 +34,7 @@ class TourRepository implements RepositoryInterface
             unset($tours[$key]['detail_tour']);
             unset($tours[$key]['date_created']);
             unset($tours[$key]['deleted_at']);
-            if (!$details) {
+            if (!$details || !$check) {
                 $tours[$key]['images'] = null;
                 $tours[$key]['date_depart'] = 0;
                 $tours[$key]['price_adults'] = 0;
@@ -246,6 +254,9 @@ class TourRepository implements RepositoryInterface
         $result = array();
         $tour = $this->model->where(["id" => $id, "deleted_at" => false ])->first();
         foreach ($tour->detail_tour as $key => $details) {
+            if ($details->deleted_at) {
+                continue;
+            }
             $detail = array();
             $hotel = array();
             $guide = $details->guide;

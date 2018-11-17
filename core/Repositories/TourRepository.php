@@ -16,9 +16,10 @@ class TourRepository implements RepositoryInterface
     public function paginate()
     {
         $check = false;
-        $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'ASC')->get();
+        $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($tours as $key => $tour) {
             $details = $tour->detail_tour;
+            // print_r($details);exit;
             foreach ($details as $k => $v) {
                 if (!$v->deleted_at) {
                     $check = true;
@@ -27,6 +28,7 @@ class TourRepository implements RepositoryInterface
                 }
             }
             $type = $tour->type_tour->id;
+            $details = $details->first();
             unset($tours[$key]['id_type_tour']);
             unset($tours[$key]['type_tour']);
             unset($tours[$key]['programs']);
@@ -35,8 +37,8 @@ class TourRepository implements RepositoryInterface
             unset($tours[$key]['date_created']);
             unset($tours[$key]['deleted_at']);
             if (!$details || !$check) {
-                $tours[$key]['images'] = null;
-                $tours[$key]['date_depart'] = 0;
+                $tours[$key]['id_detail'] = null;
+                $tours[$key]['date_depart'] = null;
                 $tours[$key]['price_adults'] = 0;
                 $tours[$key]['price_childs'] = 0;
                 $tours[$key]['time_depart'] = null;
@@ -45,7 +47,7 @@ class TourRepository implements RepositoryInterface
                 $tours[$key]['id_type_tour'] = $type;
                 continue;
             } 
-            $tours[$key]['date_depart'] = $details->date_depart;
+            $tours[$key]['id_detail'] = $details->id;
             $tours[$key]['date_depart'] = $details->date_depart;
             $tours[$key]['price_adults'] = $details->price_adults;
             $tours[$key]['price_childs'] = $details->price_childs;
@@ -65,28 +67,28 @@ class TourRepository implements RepositoryInterface
 
     public function store($data)
     {
-        $upload = public_path()."/uploads/";
-        if(!is_dir($upload)) {
-            mkdir($upload);
-        }
-        $ext = $data['images']->getClientOriginalExtension('images');
-        $name   = str_slug($data['name'],'-')."-".date("Y-m-d-H-i-s").'.'.$ext;
-        $data['images']->move($upload, $name);
-        $result = [
-            'name'          => $data['name'],
-            'number_days'   => $data['number_days'],
-            'item_tour'     => $data['item_tour'],
-            'date_created'  => $data['date_created'],
-            'discount'      => $data['discount'],
-            'programs'      => $data['programs'],
-            'note'          => $data['note'],
-            'id_type_tour'  => $data['id_type_tour'],
-            'images'        => "/uploads/".$name
-        ];
-        if ($data['images']->isValid('images')) {
-            return false;
-        }
-        return $this->model->create($result);
+        // $upload = public_path()."/uploads/";
+        // if(!is_dir($upload)) {
+        //     mkdir($upload);
+        // }
+        // $ext = $data['images']->getClientOriginalExtension('images');
+        // $name   = str_slug($data['name'],'-')."-".date("Y-m-d-H-i-s").'.'.$ext;
+        // $data['images']->move($upload, $name);
+        // $result = [
+        //     'name'          => $data['name'],
+        //     'number_days'   => $data['number_days'],
+        //     'item_tour'     => $data['item_tour'],
+        //     'date_created'  => $data['date_created'],
+        //     'discount'      => $data['discount'],
+        //     'programs'      => $data['programs'],
+        //     'note'          => $data['note'],
+        //     'id_type_tour'  => $data['id_type_tour'],
+        //     'images'        => "/uploads/".$name
+        // ];
+        // if ($data['images']->isValid('images')) {
+        //     return false;
+        // }
+        return $this->model->create($data);
     }
 
     public function update($id, $data)
@@ -97,8 +99,13 @@ class TourRepository implements RepositoryInterface
 
     public function destroy($id)
     {
-        $model = $this->model->find($id);
-        return $model->destroy($id);
+        $model = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
+        if (!$model) return false;
+        $details = $model->detail_tour;
+        foreach ($details as $key => $value) {
+            $details[$key]->update(['deleted_at' => true ]);
+        }
+        return $model->update(['deleted_at' => true ]);
     }
 
     public function findWhere($condition)
@@ -140,6 +147,7 @@ class TourRepository implements RepositoryInterface
             unset($tours[$key]['deleted_at']);
             unset($tours[$key]['id_type_tour']);
             unset($tours[$key]['type_tour']);
+            $tours[$key]['id_detail'] = $details->id;
             $tours[$key]['date_depart'] = $details->date_depart;
             $tours[$key]['price_adults'] = $details->price_adults;
             $tours[$key]['price_childs'] = $details->price_childs;
@@ -171,6 +179,7 @@ class TourRepository implements RepositoryInterface
             unset($tours[$key]['deleted_at']);
             unset($tours[$key]['id_type_tour']);
             unset($tours[$key]['type_tour']);
+            $tours[$key]['id_detail'] = $details->id;
             $tours[$key]['date_depart'] = $details->date_depart;
             $tours[$key]['price_adults'] = $details->price_adults;
             $tours[$key]['price_childs'] = $details->price_childs;
@@ -207,6 +216,7 @@ class TourRepository implements RepositoryInterface
             unset($tours[$key]['deleted_at']);
             unset($tours[$key]['id_type_tour']);
             unset($tours[$key]['type_tour']);
+            $tours[$key]['id_detail'] = $details->id;
             $tours[$key]['date_depart'] = $details->date_depart;
             $tours[$key]['price_adults'] = $details->price_adults;
             $tours[$key]['price_childs'] = $details->price_childs;
@@ -298,5 +308,63 @@ class TourRepository implements RepositoryInterface
             $result[] = $detail;
         }
         return array_reverse($result);
+    }
+
+    public function upload_image($data)
+    {
+        $upload = public_path()."/uploads/";
+        if(!is_dir($upload)) {
+            mkdir($upload);
+        }
+        $ext = explode('.',$data['images']['name']);
+        $ext = $ext[count($ext) - 1];
+        $tmp = $data['images']['tmp_name'];
+        $name = uniqid()."-".date("Y-m-d-H-i-s").'.'.$ext;
+        if(@move_uploaded_file($tmp, $upload.$name)) {
+            return "/uploads/".$name;
+        }
+        return false;
+    }
+
+    public function five_tour_latest()
+    {
+        $check = false;
+        $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
+        foreach ($tours as $key => $tour) {
+            $details = $tour->detail_tour;
+            // print_r($details);exit;
+            foreach ($details as $k => $v) {
+                if (!$v->deleted_at) {
+                    $check = true;
+                    $details = $v;
+                    break;
+                }
+            }
+            $type = $tour->type_tour->id;
+            $details = $details->first();
+            unset($tours[$key]['id_type_tour']);
+            unset($tours[$key]['type_tour']);
+            unset($tours[$key]['programs']);
+            unset($tours[$key]['note']);
+            unset($tours[$key]['detail_tour']);
+            unset($tours[$key]['date_created']);
+            unset($tours[$key]['deleted_at']);
+            if (!$details || !$check) {
+                unset($tours[$key]);
+                continue;
+            } 
+            $tours[$key]['id_detail'] = $details->id;
+            $tours[$key]['date_depart'] = $details->date_depart;
+            $tours[$key]['price_adults'] = $details->price_adults;
+            $tours[$key]['price_childs'] = $details->price_childs;
+            $tours[$key]['time_depart'] = $details->time_depart;
+            $tours[$key]['slot'] = $details->slot;
+            $tours[$key]['booked'] = $details->booked;
+            $tours[$key]['id_type_tour'] = $type;
+        }
+        if (count($tours->toArray()) > 5) {
+            $tours = array_slice($tours->toArray(), 0, 5);
+        }
+        return $tours;
     }
 }

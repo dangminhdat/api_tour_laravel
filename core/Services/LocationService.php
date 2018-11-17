@@ -47,4 +47,9 @@ class LocationService implements ServiceInterface
     {
         return $this->repository->updateLocation($id, $data);
     }
+
+    public function favorite_four_location()
+    {
+        return $this->repository->favorite_four_location();
+    }
 }

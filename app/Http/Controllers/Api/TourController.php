@@ -13,7 +13,7 @@ class TourController extends ApiController
     {
         $this->tour_service = $service;
         // check login
-        $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
+        $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy', 'upload_image']]);
     }
     /**
      * Display a listing of the resource.
@@ -37,7 +37,7 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = null;
+            $data = $e->getMessage();
         }
         return response()->json([
             "result_code"       => $code,
@@ -56,16 +56,13 @@ class TourController extends ApiController
     {
         try
         {
-            if (!$request->hasFile('images')) {
-                throw new \Exception("No choose images", 1);
-            }
             $data = [
                 "name"          => $request->name,
                 "number_days"   => $request->number_days,
                 "date_created"  => now(),
                 "item_tour"     => $request->item_tour,
                 "discount"      => $request->discount,
-                "images"        => $request->file('images'),
+                "images"        => $request->images,
                 "programs"      => $request->programs,
                 "note"          => $request->note,
                 "deleted_at"    => false,
@@ -142,7 +139,28 @@ class TourController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        try
+        {
+            // all data tour
+            $tour = $this->tour_service->destroy($id);
+            if (!$tour) {
+                throw new \Exception("Access Denied Exception", 1);
+            }
+
+            $code = 200;
+            $message = "Success";
+            $data = "Delete tour success!";
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 
     /**
@@ -264,6 +282,65 @@ class TourController extends ApiController
             $code = 403;
             $message = "Access Denied Exception";
             $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    public function upload_image(Request $request)
+    {
+        try
+        {
+            if (!$request->hasFile('images')) {
+                throw new \Exception("No choose images", 1);
+            }
+            $data = [
+                "images" => $_FILES['images'],
+            ];
+            // all data tour
+            $image = $this->tour_service->upload_image($data);
+
+            if (!$image) {
+                throw new \Exception("Something error!!!", 1);
+            }
+
+            $code = 200;
+            $message = "Success";
+            $data = $image;
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = $e->getMessage();
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    public function five_tour_latest()
+    {
+        try
+        {
+            // all data tour
+            $tour = $this->tour_service->five_tour_latest();
+
+            $code = 200;
+            $message = "Success";
+            $data = array(
+                "total" => count($tour),
+                "list" => $tour
+            );
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = $e->getMessage();
         }
         return response()->json([
             "result_code"       => $code,

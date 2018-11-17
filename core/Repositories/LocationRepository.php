@@ -94,4 +94,31 @@ class LocationRepository implements RepositoryInterface
         $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
         return $model->update($result);
     }
+
+    public function favorite_four_location()
+    {
+        $locations = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
+        foreach ($locations as $s => $location) {
+            $booked = 0;
+            $tour = $location->tour;
+            foreach ($tour as $key => $value) {
+                $details = $tour[$key]->detail_tour;
+                foreach ($details as $k => $v) {
+                   $booked += $v->booked;
+                }
+            }
+            unset($locations[$s]['deleted_at']);
+            unset($locations[$s]['tour']);
+            $locations[$s]['booked'] = $booked;
+        }
+        $loca = $locations->toArray();
+        @usort($loca, function ($a, $b) {
+            // if ($a['booked'] == $b['booked']) return 0;
+            return $a['booked'] < $b['booked'];
+        });
+        if (count($loca) > 5) {
+            $loca = array_slice($loca, 0, 5);
+        }
+        return $loca;
+    }
 }

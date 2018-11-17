@@ -68,4 +68,14 @@ class TourService implements ServiceInterface
     {
         return $this->repository->find_tour_detail($id);
     }
+
+    public function upload_image($data)
+    {
+        return $this->repository->upload_image($data);
+    }
+
+    public function five_tour_latest()
+    {
+        return $this->repository->five_tour_latest();
+    }
 }

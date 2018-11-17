@@ -184,7 +184,7 @@ class LocationController extends ApiController
         try
         {
             $location = [
-                "name"      => $request->name,
+                "name" => $request->name,
             ];
 
             if ($request->hasFile('image')) {
@@ -203,6 +203,32 @@ class LocationController extends ApiController
             $code = 400;
             $message = "Something error!!!";
             $data = null;
+        }
+
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    public function favorite_four_location()
+    {
+        try
+        {
+            $location = $this->location_service->favorite_four_location();
+
+            $code = 200;
+            $message = "Success!";
+            $data = array(
+                "total" => count($location),
+                "list" => $location
+            );
+        }
+        catch(\Exception $e) {
+            $code = 400;
+            $message = "Something error!!!";
+            $data = $e->getMessage();
         }
 
         return response()->json([

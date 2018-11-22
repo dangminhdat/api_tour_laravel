@@ -43,4 +43,9 @@ class UserDetailService implements ServiceInterface
     {
         return $this->repository->findWhere($condition);
     }
+
+    public function edit_profile($id, $data)
+    {
+        return $this->repository->edit_profile($id, $data);
+    }
 }

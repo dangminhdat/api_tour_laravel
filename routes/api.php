@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 Route::group([ 'middleware' => ['check_login']], function () {
     // route post login
 	Route::post('/logout', 'Api\UserController@logout');
+	// edit profile
+	Route::post('/profile/edit', 'Api\UserController@edit_profile');
 	// restful api user
 	Route::resource('users', 'Api\UserController');
 	// api get profile

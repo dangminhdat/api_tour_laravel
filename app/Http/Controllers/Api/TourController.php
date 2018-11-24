@@ -13,7 +13,7 @@ class TourController extends ApiController
     {
         $this->tour_service = $service;
         // check login
-        $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy', 'upload_image']]);
+        $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy', 'upload_image'], 'except' => [ 'search_tour' ]]);
     }
     /**
      * Display a listing of the resource.
@@ -329,6 +329,39 @@ class TourController extends ApiController
         {
             // all data tour
             $tour = $this->tour_service->five_tour_latest();
+
+            $code = 200;
+            $message = "Success";
+            $data = array(
+                "total" => count($tour),
+                "list" => $tour
+            );
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = $e->getMessage();
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    public function search_tour(Request $request)
+    {
+        try
+        {
+            $data = array();
+            if ($request->date_depart) {
+                $data['date'] = $request->date_depart;
+            }
+            if ($request->id_location) {
+                $data['location'] = $request->id_location;
+            }
+            // all data tour
+            $tour = $this->tour_service->search_tour($data);
 
             $code = 200;
             $message = "Success";

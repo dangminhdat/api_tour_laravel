@@ -23,6 +23,7 @@ class DetailTourRepository implements RepositoryInterface
         $details = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
         $location = array();
         $hotel = array();
+        $images = array();
         $tour = $details->tour;
         $type = $tour->type_tour->id;
         $guide = $details->guide;
@@ -54,6 +55,15 @@ class DetailTourRepository implements RepositoryInterface
                 $location[] = $arr;
             }
         }
+        // hotel
+        foreach ($tour->image as $image) {
+            if (!$image->deleted_at) {
+                $arr = array();
+                $arr['id'] = $image->id;
+                $arr['url'] = $image->url;
+                $images[] = $arr;
+            }
+        }
         // detail
         $detail['id'] = $details->id;
         $detail['date_depart'] = $details->date_depart;
@@ -63,9 +73,6 @@ class DetailTourRepository implements RepositoryInterface
         $detail['address_depart'] = $details->address_depart;
         $detail['slot'] = $details->slot;
         $detail['booked'] = $details->booked;
-
-        // image
-        $image = 'url';
 
         unset($tour['detail_tour']);
         unset($tour['location']);
@@ -77,6 +84,7 @@ class DetailTourRepository implements RepositoryInterface
         $tour['location'] = $location;
         $tour['guide'] = $guide;
         $tour['hotel'] = $hotel;
+        $tour['images'] = $images;
         return $tour;
     }
 

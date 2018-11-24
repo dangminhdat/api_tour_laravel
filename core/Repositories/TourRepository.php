@@ -163,7 +163,7 @@ class TourRepository implements RepositoryInterface
 
     public function tour_by_sales()
     {
-        $resutl = array();
+        $result = array();
         $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($tours as $key => $tour) {
             $details = $tour->detail_tour->first();
@@ -196,7 +196,7 @@ class TourRepository implements RepositoryInterface
 
     public function tour_of_type($id)
     {
-        $resutl = array();
+        $result = array();
         $tours = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($tours as $key => $tour) {
             if ($tour->id_type_tour != $id) {
@@ -366,5 +366,90 @@ class TourRepository implements RepositoryInterface
             $tours = array_slice($tours->toArray(), 0, 5);
         }
         return $tours;
+    }
+
+    public function search_tour($data)
+    {
+        $date = array();
+        $result = array();
+        $location = array();
+        $tours = $this->model->where(['deleted_at' => 0])->get();
+        foreach ($tours as $key => $tour) {
+            $details = $tour->detail_tour;
+            if (!$details) {
+                continue;
+            }
+            
+            if (isset($data['date'])) {
+                foreach ($details as $d => $detail) {
+                    if (strtotime($detail->date_depart) == strtotime($data['date'])) {
+                        $type = $tour->type_tour->id;
+                        unset($tours[$key]['id_type_tour']);
+                        unset($tours[$key]['type_tour']);
+                        unset($tours[$key]['programs']);
+                        unset($tours[$key]['note']);
+                        unset($tours[$key]['detail_tour']);
+                        unset($tours[$key]['date_created']);
+                        unset($tours[$key]['deleted_at']);
+                        $tours[$key]['id_detail'] = $detail->id;
+                        $tours[$key]['date_depart'] = $detail->date_depart;
+                        $tours[$key]['price_adults'] = $detail->price_adults;
+                        $tours[$key]['price_childs'] = $detail->price_childs;
+                        $tours[$key]['time_depart'] = $detail->time_depart;
+                        $tours[$key]['slot'] = $detail->slot;
+                        $tours[$key]['booked'] = $detail->booked;
+                        $tours[$key]['id_type_tour'] = $type;
+
+                        $date[] = $tours[$key];
+                        break;
+                    }
+                }
+            }
+
+             // location
+            if (isset($data['location'])) {
+                foreach ($tour->location as $locations) {
+                    if (!$locations->deleted_at && $data['location'] == $locations->id) {
+                        $detail = $tour->detail_tour->first();
+                        $type = $tour->type_tour->id;
+                        unset($tours[$key]['id_type_tour']);
+                        unset($tours[$key]['type_tour']);
+                        unset($tours[$key]['programs']);
+                        unset($tours[$key]['note']);
+                        unset($tours[$key]['detail_tour']);
+                        unset($tours[$key]['date_created']);
+                        unset($tours[$key]['deleted_at']);
+                        unset($tours[$key]['location']);
+                        $tours[$key]['id_detail'] = $detail->id;
+                        $tours[$key]['date_depart'] = $detail->date_depart;
+                        $tours[$key]['price_adults'] = $detail->price_adults;
+                        $tours[$key]['price_childs'] = $detail->price_childs;
+                        $tours[$key]['time_depart'] = $detail->time_depart;
+                        $tours[$key]['slot'] = $detail->slot;
+                        $tours[$key]['booked'] = $detail->booked;
+                        $tours[$key]['id_type_tour'] = $type;
+
+                        $location[] = $tours[$key];
+                        break;
+                    }
+                }
+            }
+        }
+        if (isset($data['location']) && isset($data['date'])) {
+            $result = array_intersect_assoc($date,$location);
+        }
+
+        if (isset($data['location']) && !isset($data['date'])) {
+            $result = $location;
+        }
+
+        if (!isset($data['location']) && isset($data['date'])) {
+            $result = $date;
+        }
+        @usort($result, function ($a, $b) {
+            // if ($a['booked'] == $b['booked']) return 0;
+            return $a['id'] < $b['id'];
+        });
+        return $result;
     }
 }

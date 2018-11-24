@@ -452,4 +452,30 @@ class TourRepository implements RepositoryInterface
         });
         return $result;
     }
+
+    public function add($data)
+    {
+        $upload = public_path()."/uploads/";
+        if(!is_dir($upload)) {
+            mkdir($upload);
+        }
+        $ext = explode('.',$data['images']['name']);
+        $ext = $ext[count($ext) - 1];
+        $tmp = $data['images']['tmp_name'];
+        $name = uniqid()."-".date("Y-m-d-H-i-s").'.'.$ext;
+        move_uploaded_file($tmp, $upload.$name);
+        $result = [
+            'name'          => $data['name'],
+            'number_days'   => $data['number_days'],
+            'item_tour'     => $data['item_tour'],
+            'date_created'  => $data['date_created'],
+            'discount'      => $data['discount'],
+            'programs'      => $data['programs'],
+            'note'          => $data['note'],
+            'id_type_tour'  => $data['id_type_tour'],
+            'images'        => "/uploads/".$name
+        ];
+
+        return $this->model->create($result);
+    }
 }

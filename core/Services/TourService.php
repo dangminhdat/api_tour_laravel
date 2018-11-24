@@ -83,4 +83,9 @@ class TourService implements ServiceInterface
     {
         return $this->repository->search_tour($data);
     }
+
+    public function add($data)
+    {
+        return $this->repository->add($data);
+    }
 }

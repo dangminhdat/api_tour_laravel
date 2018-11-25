@@ -98,6 +98,9 @@ class UserRepository implements RepositoryInterface
                 $result[] = $reviews[$key];
             }
         }
+        @usort($result, function($a, $b) {
+            return $a['id'] < $b['id'];
+        });
         return $result;
     }
 }

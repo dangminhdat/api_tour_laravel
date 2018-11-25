@@ -2,13 +2,13 @@
 
 namespace Core\Services;
 
-use Core\Repositories\LocationRepository;
+use Core\Repositories\ImageRepository;
 
-class LocationService implements ServiceInterface
+class ImageService implements ServiceInterface
 {
     protected $repository;
 
-    public function __construct(LocationRepository $repository)
+    public function __construct(ImageRepository $repository)
     {
         return $this->repository = $repository;
     }
@@ -36,20 +36,5 @@ class LocationService implements ServiceInterface
     public function destroy($id)
     {
         return $this->repository->destroy($id);
-    }
-
-    public function findWhere($condition)
-    {
-        return $this->repository->findWhere($condition);
-    }
-
-    public function updateLocation($id, $data)
-    {
-        return $this->repository->updateLocation($id, $data);
-    }
-
-    public function favorite_four_location()
-    {
-        return $this->repository->favorite_four_location();
     }
 }

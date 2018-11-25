@@ -45,4 +45,24 @@ class UserDetailRepository implements RepositoryInterface
         $model = $this->model->where($condition);
         return $model->first();
     }
+
+    public function edit_profile($id, $data)
+    {
+        $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
+        if (isset($data['avatar'])) {
+            $upload = public_path()."/uploads/";
+            if(!is_dir($upload)) {
+                mkdir($upload);
+            }
+            $ext = explode('.',$data['avatar']['name']);
+            $ext = $ext[count($ext) - 1];
+            $tmp = $data['avatar']['tmp_name'];
+            $name = uniqid()."-".date("Y-m-d-H-i-s").'.'.$ext;
+            if(@move_uploaded_file($tmp, $upload.$name)) {
+                $data['avatar'] = "/uploads/".$name;
+            }
+        }
+        $update = $model->update($data);
+        return $update;
+    }
 }

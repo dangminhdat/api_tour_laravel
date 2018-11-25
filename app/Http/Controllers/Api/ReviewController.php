@@ -82,7 +82,7 @@ class ReviewController extends ApiController
         catch(\Exception $e) {
             $code = 400;
             $message = "Something error!!!";
-            $data = $e->getMessage();
+            $data = null;
         }
 
         return response()->json([
@@ -195,7 +195,7 @@ class ReviewController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,

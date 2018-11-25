@@ -57,6 +57,7 @@ class UserRepository implements RepositoryInterface
     {
         $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
         if (!empty($data['id_group'])) {
+            $model->first()->group()->detach();
             $model->first()->group()->attach($data['id_group']);
             unset($data['id_group']);
         }
@@ -82,9 +83,9 @@ class UserRepository implements RepositoryInterface
         return $model->first();
     }
 
-    public function review_by_user($authorization)
+    public function review_by_user($id)
     {
-        $user = $this->model->where(["remember_token" => $authorization, "deleted_at" => 0])->first();
+        $user = $this->model->where(["id" => $id, "deleted_at" => 0])->first();
         $reviews = $user->review;
         $result = array();
         foreach ($reviews as $key => $review) {

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use Core\Services\DetailTourService;
 use Illuminate\Http\Request;
+use Core\Services\ImageService;
 
-class DetailTourController extends ApiController
+class ImageController extends ApiController
 {
-    protected $detail_service;
+    protected $image_service;
 
-    public function __construct(DetailTourService $service)
+    public function __construct(ImageService $service)
     {
-        $this->detail_service = $service;
+        $this->image_service = $service;
         // check login
         $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
     }
@@ -21,6 +21,37 @@ class DetailTourController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function index()
+    {
+        try
+        {
+            // all data location
+            $data_location = $this->image_service->paginate();
+
+            $code = 200;
+            $message = "Success";
+            $data = array(
+                'total' => count($data_location),
+                'list' => $data_location
+            );
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         //
     }
@@ -35,39 +66,27 @@ class DetailTourController extends ApiController
     {
         try
         {
-            $data = [
-                "date_depart"   => $request->date_depart,
-                "price_adults"  => $request->price_adults,
-                "price_childs"  => $request->price_childs,
-                "time_depart"   => $request->time_depart,
-                "address_depart"=> $request->address_depart,
-                "slot"          => $request->slot,
-                "booked"        => 0,
-                "deleted_at"    => false,
-                "id_guide"      => $request->id_guide,
-                "id_tour"       => $request->id_tour,
+            $image = [
+                "images"      => $_FILES['images'],
+                "id_tour"     => $request->id_tour
             ];
 
-            if (!empty($request->id_hotel)) {
-                $data['id_hotel'] = $request->id_hotel;
-            }
+            $this->image_service->store($image);
 
-            $detail_tour = $this->detail_service->store($data);
-            
             $code = 200;
             $message = "Success!";
-            $data = "Insert detail tour success";
+            $data = "Insert success!";
         }
         catch(\Exception $e) {
-            $code = 403;
-            $message = "Access Denied Exception";
-            $data = null;
+            $message = "Something error!!!";
+            $code = 400;
+            $data = $e->getMessage();
         }
 
         return response()->json([
-            "result_code"   => $code,
-            "result_message"=> $message,
-            "data"          => $data
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
         ], $code);
     }
 
@@ -82,17 +101,20 @@ class DetailTourController extends ApiController
         //
         try
         {
-            // all data tour
-            $tour = $this->detail_service->find($id);
+            // all data location
+            $data_location = $this->image_service->find($id);
 
             $code = 200;
             $message = "Success";
-            $data = $tour;
+            $data = array(
+                'total' => count($data_location),
+                'list' => $data_location
+            );
         } 
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -134,41 +156,21 @@ class DetailTourController extends ApiController
     {
         try
         {
-            // all data tour
-            $tour = $this->detail_service->update($id, ["deleted_at" => true]);
+            $image = $this->image_service->update($id, ["deleted_at" => true]);
+            if (!$image) {
+                throw new \Exception("Not found", 2);
+            }
 
             $code = 200;
-            $message = "Success";
-            $data = "Delete detail tour success!";
-        } 
+            $message = "Success!";
+            $data = "Delete success!";
+        }
         catch(\Exception $e) {
-            $code = 403;
-            $message = "Access Denied Exception";
+            $message = "Something error!!!";
+            $code = 400;
             $data = null;
         }
-        return response()->json([
-            "result_code"       => $code,
-            "result_message"    => $message,
-            "data"              => $data
-        ], $code);
-    }
 
-    public function detail_day_other($id)
-    {
-        try
-        {
-            // all data tour
-            $tour = $this->detail_service->detail_day_other($id);
-
-            $code = 200;
-            $message = "Success";
-            $data = $tour;
-        } 
-        catch(\Exception $e) {
-            $code = 403;
-            $message = "Access Denied Exception";
-            $data = null;
-        }
         return response()->json([
             "result_code"       => $code,
             "result_message"    => $message,

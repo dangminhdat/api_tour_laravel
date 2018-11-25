@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Core\Services\UserService;
 use Core\Services\UserDetailService;
+use JWTAuth;
 
 class UserController extends ApiController
 {
@@ -173,9 +174,14 @@ class UserController extends ApiController
                 }
                 // insert data to user table
                 $data_user = [
-                    "username" => $request->username?$request->username:$user['username'],
-                    "id_group" => $request->id_group?$request->id_group:$user['id_group'],
+                    "username"  => $request->username?$request->username:$user['username'],
+                    "active"    => isset($request->active)?$request->active:$user['active'],
+                    "id_group"  => $request->id_group?$request->id_group:$user['id_group'],
                 ];
+
+                if ($request->password) {
+                    $data_user['password'] = bcrypt($request->password);
+                }
 
                 $this->user_service->update($user['id'], $data_user);
                 // validate email
@@ -188,7 +194,7 @@ class UserController extends ApiController
                     "fullname"   => $request->fullname?$request->fullname:$user['fullname'],
                     "email"      => $request->email?$request->email:$user['email'],
                     "phone"      => $request->phone?$request->phone:$user['phone'],
-                    "address"    => $request->address?$request->username:$user['address'],
+                    "address"    => $request->address?$request->address:$user['address'],
                 ];
                 $this->user_detail_service->update($user['id'], $data_user_detail);
             });
@@ -204,7 +210,7 @@ class UserController extends ApiController
                 $message = "Something error!!!!!";
             }
             $code = 400;
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -267,7 +273,7 @@ class UserController extends ApiController
         } catch(\Exception $e) {
             $code = 500;
             $message = "INTERNAL SERVER ERROR";
-            $data = null;
+            $data = $e->getMessage();
         }
         
         // Return json
@@ -289,7 +295,10 @@ class UserController extends ApiController
         {
             $authorization = $request->header('authorization');
 
-            $profile = $this->user_service->findWhere(["remember_token" => $authorization, 'deleted_at' => 0]);
+            JWTAuth::setToken($authorization);
+
+            $profile = JWTAuth::authenticate();
+
             $profile = $this->user_service->find($profile->id);
 
             $code = 200;
@@ -298,7 +307,7 @@ class UserController extends ApiController
         } catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = null;
+            $data = $e->getMessage();
         }
 
         // Return json
@@ -403,13 +412,10 @@ class UserController extends ApiController
         {
             $authorization = $request->header('authorization');
 
-            $user = $this->user_service->findWhere(["remember_token" => $authorization]);
+            JWTAuth::setToken($authorization);
 
-            $logout = $this->user_service->update($user->id, ["remember_token" => str_random(50)]);
-            if (!$logout) {
-                throw new \Exception("Something error!!!", 1);
-            }
-        
+            $user = JWTAuth::invalidate();
+
             $code = 200;
             $message = "Success";
             $data = "Logout success!";
@@ -417,7 +423,7 @@ class UserController extends ApiController
         catch(\Exception $e) {
             $code = 400;
             $message = "Something error!!!!!";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -436,11 +442,80 @@ class UserController extends ApiController
                 throw new \Exception("Access Denied Exception", 403);
             }
 
-            $review = $this->user_service->review_by_user($authorization);
+            JWTAuth::setToken($authorization);
+
+            $user = JWTAuth::authenticate();
+
+            $review = $this->user_service->review_by_user($user->id);
 
             $code = 200;
             $message = "Success!";
             $data = $review;
+        } catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+
+        // Return json
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    public function edit_profile(Request $request)
+    {
+        try
+        {
+            $authorization = $request->header('authorization');
+
+            JWTAuth::setToken($authorization);
+
+            $profile = JWTAuth::authenticate();
+
+            $user = $this->user_service->find($profile->id);
+
+            // transaction
+            DB::transaction(function () use ($request, $user) {
+                // validate username
+                $username = $this->user_service->findWhere(["username" => $request->username ]);
+                if ($username && $username->username !== $user['username']) {
+                    throw new \Exception("Username is exists", 2);
+                }
+                // insert data to user table
+                $data_user = [
+                    "username"  => $request->username?$request->username:$user['username'],
+                ];
+
+                if ($request->password) {
+                    $data_user['password'] = bcrypt($request->password);
+                }
+
+                $this->user_service->update($user['id'], $data_user);
+                // validate email
+                $email = $this->user_detail_service->findWhere(["email" => $request->email]);
+                if ($email && $email->email !== $user['email']) {
+                    throw new \Exception("Email is exists", 3);
+                }
+                // insert ta to user_detail table
+                $data_user_detail = [
+                    "fullname"   => $request->fullname?$request->fullname:$user['fullname'],
+                    "email"      => $request->email?$request->email:$user['email'],
+                    "phone"      => $request->phone?$request->phone:$user['phone'],
+                    "address"    => $request->address?$request->address:$user['address'],
+                ];
+                if (isset($_FILES['avatar'])) {
+                    $data_user_detail['avatar'] = $_FILES['avatar'];
+                }
+
+                $this->user_detail_service->edit_profile($user['id'], $data_user_detail);
+            });
+
+            $code = 200;
+            $message = "Success!";
+            $data = "Update profile success!";
         } catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";

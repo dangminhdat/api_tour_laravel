@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 Route::group([ 'middleware' => ['check_login']], function () {
     // route post login
 	Route::post('/logout', 'Api\UserController@logout');
+	// edit profile
+	Route::post('/profile/edit', 'Api\UserController@edit_profile');
 	// restful api user
 	Route::resource('users', 'Api\UserController');
 	// api get profile
@@ -59,11 +61,21 @@ Route::GET('tour/sales', 'Api\TourController@tour_by_sales');
 Route::GET('tour/type-tour/{id}', 'Api\TourController@tour_of_type');
 // get data by location
 Route::GET('tour/location/{id}', 'Api\TourController@tour_by_location');
+// get 5 tour lastest
+Route::get('tour/latest', 'Api\TourController@five_tour_latest');
 // restful api tour
 Route::resource('tour', 'Api\TourController');
+// get 5 location favorite
+Route::get('location/favorite', 'Api\LocationController@favorite_four_location');
 // restful api location
 Route::resource('location', 'Api\LocationController');
 // restful api detail
 Route::resource('detail', 'Api\DetailTourController');
 // restful api detail
 Route::get('detail/other/{id}', 'Api\DetailTourController@detail_day_other');
+// upload image
+Route::POST('upload', 'Api\TourController@upload_image');
+// search tour
+Route::POST('search-tour', 'Api\TourController@search_tour');
+// search tour
+Route::resource('images', 'Api\ImageController');

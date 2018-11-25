@@ -31,7 +31,7 @@ class TourSeeder extends Seeder
             
                 DB::table("detail_tour")->insert([
                     [
-                        "date_depart"   => "2018-12-".$i." 12:00",
+                        "date_depart"   => "2018-12-1",
                         "price_adults"  => 100000,
                         "price_childs"  => 100000,
                         "time_depart"   => '12:00',
@@ -39,7 +39,6 @@ class TourSeeder extends Seeder
                         "slot"          => 10,
                         "booked"        => $i,
                         "deleted_at"    => false,
-                        "id_image"      => 1,
                         "id_guide"      => $j,
                         "id_tour"       => $i,
                     ],

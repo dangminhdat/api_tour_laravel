@@ -4,6 +4,8 @@ namespace Core\Services;
 
 use Core\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserService implements ServiceInterface
 {
@@ -57,14 +59,14 @@ class UserService implements ServiceInterface
         $user = $this->repository->findWhere(["username" => $username, "deleted_at" => 0, "active" => 1]);
         if (!empty($user) && Hash::check($password, $user->password)) {
             // Update remember_token
-            $user->remember_token = str_random(50);
+            $user->remember_token = JWTAuth::attempt(['username' => $username, 'password' => $password]);
             return ($user->save())? $user->remember_token : false;
         }
         return false;
     }
 
-    public function review_by_user($authorization)
+    public function review_by_user($id)
     {
-        return $this->repository->review_by_user($authorization);
+        return $this->repository->review_by_user($id);
     }
 }

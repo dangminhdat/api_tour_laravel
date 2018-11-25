@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Core\Services\UserService;
+use JWTAuth;
 
 class LoginMiddleware
 {
@@ -27,7 +28,10 @@ class LoginMiddleware
         {
             $authorization = $request->header('authorization');
 
-            $profile = $this->user_service->findWhere(["remember_token" => $authorization, 'deleted_at' => 0]);
+            JWTAuth::setToken($authorization);
+
+            $profile = JWTAuth::authenticate();
+            
             $profile = $this->user_service->find($profile->id);
 
             return $next($request);

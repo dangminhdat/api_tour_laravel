@@ -16,7 +16,7 @@ class CreateTableDetailTour extends Migration
         //
         Schema::create("detail_tour", function(Blueprint $table) {
             $table->increments("id");
-            $table->dateTime('date_depart');
+            $table->date('date_depart');
             $table->integer('price_adults');
             $table->integer('price_childs');
             $table->string('time_depart');

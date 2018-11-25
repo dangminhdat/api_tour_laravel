@@ -3,11 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable implements JWTSubject
 {
     protected $table = "users";
     public $timestamps = false;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -40,5 +44,15 @@ class User extends Model
     public function group()
     {
         return $this->belongsToMany('App\Group','group_user', 'id_user', 'id_group');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

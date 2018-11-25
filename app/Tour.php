@@ -46,4 +46,9 @@ class Tour extends Model
     {
         return $this->belongsToMany('App\Location', 'location_tour', 'id_tour', 'id_location');
     }
+
+    public function image()
+    {
+        return $this->hasMany('App\Image', 'id_tour', 'id');
+    }
 }

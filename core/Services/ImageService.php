@@ -2,14 +2,13 @@
 
 namespace Core\Services;
 
-use Core\Repositories\UserDetailRepository;
-use Illuminate\Support\Facades\Hash;
+use Core\Repositories\ImageRepository;
 
-class UserDetailService implements ServiceInterface
+class ImageService implements ServiceInterface
 {
     protected $repository;
 
-    public function __construct(UserDetailRepository $repository)
+    public function __construct(ImageRepository $repository)
     {
         return $this->repository = $repository;
     }
@@ -37,15 +36,5 @@ class UserDetailService implements ServiceInterface
     public function destroy($id)
     {
         return $this->repository->destroy($id);
-    }
-
-    public function findWhere($condition)
-    {
-        return $this->repository->findWhere($condition);
-    }
-
-    public function edit_profile($id, $data)
-    {
-        return $this->repository->edit_profile($id, $data);
     }
 }

@@ -273,7 +273,7 @@ class UserController extends ApiController
         } catch(\Exception $e) {
             $code = 500;
             $message = "INTERNAL SERVER ERROR";
-            $data = $e->getMessage();
+            $data = null;
         }
         
         // Return json
@@ -307,7 +307,7 @@ class UserController extends ApiController
         } catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
 
         // Return json
@@ -519,7 +519,7 @@ class UserController extends ApiController
         } catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
 
         // Return json

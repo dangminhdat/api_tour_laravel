@@ -80,7 +80,7 @@ class ImageController extends ApiController
         catch(\Exception $e) {
             $message = "Something error!!!";
             $code = 400;
-            $data = $e->getMessage();
+            $data = null;
         }
 
         return response()->json([

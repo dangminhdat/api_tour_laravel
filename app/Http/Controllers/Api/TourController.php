@@ -37,7 +37,7 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -314,7 +314,7 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -340,7 +340,7 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -373,7 +373,42 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    public function add(Request $request)
+    {
+        try
+        {
+            $data = [
+                "name"          => $request->name,
+                "number_days"   => $request->number_days,
+                "date_created"  => now(),
+                "item_tour"     => $request->item_tour,
+                "discount"      => $request->discount,
+                "images"        => $_FILES['images'],
+                "programs"      => $request->programs,
+                "note"          => $request->note,
+                "deleted_at"    => false,
+                "id_type_tour"  => $request->id_type_tour
+            ];
+            // all data tour
+            $tour = $this->tour_service->add($data);
+
+            $code = 200;
+            $message = "Success";
+            $data = "Insert tour success";
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,

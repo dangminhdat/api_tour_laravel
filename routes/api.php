@@ -63,6 +63,8 @@ Route::GET('tour/type-tour/{id}', 'Api\TourController@tour_of_type');
 Route::GET('tour/location/{id}', 'Api\TourController@tour_by_location');
 // get 5 tour lastest
 Route::get('tour/latest', 'Api\TourController@five_tour_latest');
+// add tour image
+Route::POST('tours/add', 'Api\TourController@add');
 // restful api tour
 Route::resource('tour', 'Api\TourController');
 // get 5 location favorite

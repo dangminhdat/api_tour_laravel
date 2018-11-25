@@ -228,7 +228,7 @@ class LocationController extends ApiController
         catch(\Exception $e) {
             $code = 400;
             $message = "Something error!!!";
-            $data = $e->getMessage();
+            $data = null;
         }
 
         return response()->json([

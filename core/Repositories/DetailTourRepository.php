@@ -55,15 +55,15 @@ class DetailTourRepository implements RepositoryInterface
                 $location[] = $arr;
             }
         }
-        // hotel
-        foreach ($tour->image as $image) {
-            if (!$image->deleted_at) {
-                $arr = array();
-                $arr['id'] = $image->id;
-                $arr['url'] = $image->url;
-                $images[] = $arr;
-            }
-        }
+        // images
+        // foreach ($tour->image as $image) {
+        //     if (!$image->deleted_at) {
+        //         $arr = array();
+        //         $arr['id'] = $image->id;
+        //         $arr['url'] = $image->url;
+        //         $images[] = $arr;
+        //     }
+        // }
         // detail
         $detail['id'] = $details->id;
         $detail['date_depart'] = $details->date_depart;
@@ -84,7 +84,7 @@ class DetailTourRepository implements RepositoryInterface
         $tour['location'] = $location;
         $tour['guide'] = $guide;
         $tour['hotel'] = $hotel;
-        $tour['images'] = $images;
+        // $tour['images'] = $images;
         return $tour;
     }
 

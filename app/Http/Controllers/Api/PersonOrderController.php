@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Core\Services\GroupService;
+use Core\Services\PersonOrderService;
 
-class GroupController extends ApiController
+class PersonOrderController extends ApiController
 {
-    protected $group_service;
+    protected $person_order_service;
 
-    public function __construct(GroupService $service)
+    public function __construct(PersonOrderService $service)
     {
-        $this->group_service = $service;
+        $this->person_order_service = $service;
     }
     /**
      * Display a listing of the resource.
@@ -22,13 +22,13 @@ class GroupController extends ApiController
     {
         try
         {
-            $group = $this->group_service->paginate();
+            $person_order = $this->person_order_service->paginate();
 
             $code = 200;
             $message = "Success!";
             $data = array(
-                "total" => count($group),
-                "list" => $group
+                "total" => count($person_order),
+                "list" => $person_order
             );
         }
         catch(\Exception $e) {
@@ -51,7 +51,7 @@ class GroupController extends ApiController
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -73,25 +73,7 @@ class GroupController extends ApiController
      */
     public function show($id)
     {
-        try
-        {
-            $group = $this->group_service->find($id);
-
-            $code = 200;
-            $message = "Success!";
-            $data = $group;
-        }
-        catch(\Exception $e) {
-            $code = 403;
-            $message = "Something error!!!";
-            $data = null;
-        }
-
-        return response()->json([
-            "result_code" => $code,
-            "result_message" => $message,
-            "data" => $data
-        ], $code);
+        //
     }
 
     /**

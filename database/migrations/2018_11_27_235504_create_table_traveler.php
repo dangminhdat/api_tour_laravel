@@ -34,7 +34,6 @@ class CreateTableTraveler extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists("traveler");
     }
 }

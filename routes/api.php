@@ -81,3 +81,5 @@ Route::POST('upload', 'Api\TourController@upload_image');
 Route::POST('search-tour', 'Api\TourController@search_tour');
 // search tour
 Route::resource('images', 'Api\ImageController');
+// restful api person order
+Route::resource('person-order', 'Api\PersonOrderController');

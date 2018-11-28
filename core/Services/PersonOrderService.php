@@ -37,4 +37,9 @@ class PersonOrderService implements ServiceInterface
     {
         return $this->repository->destroy($id);
     }
+
+    public function get_tour_of_user($id)
+    {
+        return $this->repository->get_tour_of_user($id);
+    }
 }

@@ -175,4 +175,28 @@ class DetailTourController extends ApiController
             "data"              => $data
         ], $code);
     }
+
+    public function change_order(Request $request)
+    {
+        //
+        try
+        {
+            // all data tour
+            $tour = $this->detail_service->change_order($request->id_detail_tour);
+
+            $code = 200;
+            $message = "Success";
+            $data = "Success!";
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
 }

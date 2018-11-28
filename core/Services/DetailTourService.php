@@ -48,4 +48,9 @@ class DetailTourService implements ServiceInterface
     {
         return $this->repository->detail_day_other($id);
     }
+
+    public function change_order($id)
+    {
+        return $this->repository->change_order($id);
+    }
 }

@@ -15,13 +15,18 @@ class PersonOrderRepository implements RepositoryInterface
 
     public function paginate()
     {
-        $person = $this->model->where(['deleted_at' => 0])->get();
+        $person = $this->model->where(['deleted_at' => 0])->orderBy('id', 'DESC')->get();
+        foreach ($person as $key => $value) {
+        	unset($person[$key]->deleted_at);
+        }
         return $person;
     }
 
     public function find($id)
     {
-        return $this->model->find($id);
+    	$person = $this->model->where(['deleted_at' => 0])->first();
+    	unset($person->deleted_at);
+        return $person;
     }
 
     public function store($data)
@@ -39,5 +44,14 @@ class PersonOrderRepository implements RepositoryInterface
     {
         $model = $this->model->find($id);
         return $model->destroy($id);
+    }
+
+    public function get_tour_of_user($id)
+    {
+    	$person = $this->model->where(['id_user' => $id])->orderBy('id', 'DESC')->get();
+        foreach ($person as $key => $value) {
+        	unset($person[$key]->deleted_at);
+        }
+        return $person;
     }
 }

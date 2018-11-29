@@ -128,7 +128,37 @@ class TourController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            $tour = $this->tour_service->find($id);
+
+            $data = [
+                "name"          => $request->name?$request->name:$tour->name,
+                "number_days"   => $request->number_days?$request->number_days:$tour->number_days,
+                "item_tour"     => $request->item_tour?$request->item_tour:$tour->item_tour,
+                "discount"      => $request->discount?$request->discount:$tour->discount,
+                "images"        => $request->images?$request->images:$tour->images,
+                "programs"      => $request->programs?$request->programs:$tour->programs,
+                "note"          => $request->note?$request->note:$tour->note,
+                "id_type_tour"  => $request->id_type_tour?$request->id_type_tour:$tour->id_type_tours
+            ];
+            // all data tour
+            $tour = $this->tour_service->update($id, $data);
+
+            $code = 200;
+            $message = "Success";
+            $data = "Update tour success";
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 
     /**

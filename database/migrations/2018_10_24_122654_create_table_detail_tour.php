@@ -26,8 +26,8 @@ class CreateTableDetailTour extends Migration
             $table->tinyInteger('deleted_at')->default(0);
             $table->integer('id_guide');
             $table->integer('id_tour');
-            $table->foreign('id_tour')->references('id')->on('tour')->onDelete('restrict');
-            $table->foreign('id_guide')->references('id')->on('guide')->onDelete('restrict');
+            $table->foreign('id_tour')->references('id')->on('tour')->onDelete('cascade');
+            $table->foreign('id_guide')->references('id')->on('guide')->onDelete('cascade');
         });
     }
 

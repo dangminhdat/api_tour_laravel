@@ -18,8 +18,8 @@ class CreateTableLocationDetailTour extends Migration
             $table->increments("id");
             $table->integer('id_tour');
             $table->integer('id_location');
-            $table->foreign('id_tour')->references('id')->on('tour')->onDelete('restrict');
-            $table->foreign('id_location')->references('id')->on('location')->onDelete('restrict');
+            $table->foreign('id_tour')->references('id')->on('tour')->onDelete('cascade');
+            $table->foreign('id_location')->references('id')->on('location')->onDelete('cascade');
         });
     }
 

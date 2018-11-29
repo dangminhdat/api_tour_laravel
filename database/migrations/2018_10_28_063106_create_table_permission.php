@@ -22,8 +22,8 @@ class CreateTablePermission extends Migration
             $table->tinyInteger('is_delete')->default(0);
             $table->integer('id_group');
             $table->integer('id_resource');
-            $table->foreign('id_group')->references('id')->on('groups')->onDelete('restrict');
-            $table->foreign('id_resource')->references('id')->on('resource')->onDelete('restrict');
+            $table->foreign('id_group')->references('id')->on('groups')->onDelete('cascade');
+            $table->foreign('id_resource')->references('id')->on('resource')->onDelete('cascade');
         });
     }
 

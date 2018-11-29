@@ -18,8 +18,8 @@ class CreateTableHotelDetailTour extends Migration
             $table->increments("id");
             $table->integer('id_detail_tour');
             $table->integer('id_hotel');
-            $table->foreign('id_detail_tour')->references('id')->on('detail_tour')->onDelete('restrict');
-            $table->foreign('id_hotel')->references('id')->on('hotel')->onDelete('restrict');
+            $table->foreign('id_detail_tour')->references('id')->on('detail_tour')->onDelete('cascade');
+            $table->foreign('id_hotel')->references('id')->on('hotel')->onDelete('cascade');
         });
     }
 

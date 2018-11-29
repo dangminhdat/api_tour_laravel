@@ -23,7 +23,7 @@ class CreateUserDetail extends Migration
             $table->string('avatar')->nullable();
             $table->tinyInteger('deleted_at')->default(0);
             $table->integer('id_user');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('restrict');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

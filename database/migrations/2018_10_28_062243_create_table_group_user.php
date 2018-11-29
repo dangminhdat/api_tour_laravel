@@ -17,8 +17,8 @@ class CreateTableGroupUser extends Migration
             $table->increments('id');
             $table->integer('id_user');
             $table->integer('id_group');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('restrict');
-            $table->foreign('id_group')->references('id')->on('groups')->onDelete('restrict');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_group')->references('id')->on('groups')->onDelete('cascade');
         });
     }
 

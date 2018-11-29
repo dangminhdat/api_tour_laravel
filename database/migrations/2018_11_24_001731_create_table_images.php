@@ -19,7 +19,7 @@ class CreateTableImages extends Migration
             $table->string('url');
             $table->integer('id_tour');
             $table->tinyInteger('deleted_at')->default(0);
-            $table->foreign('id_tour')->references('id')->on('tour')->onDelete('restrict');
+            $table->foreign('id_tour')->references('id')->on('tour')->onDelete('cascade');
         });
     }
 

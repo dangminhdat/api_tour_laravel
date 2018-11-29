@@ -29,8 +29,8 @@ class CreateTablePersonOrder extends Migration
             $table->integer('id_detail_tour');
             $table->integer('id_user');
             // $table->foreign('id_formality')->references('id')->on('formality')->onDelete('restrict');
-            $table->foreign('id_detail_tour')->references('id')->on('detail_tour')->onDelete('restrict');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('restrict');
+            $table->foreign('id_detail_tour')->references('id')->on('detail_tour')->onDelete('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

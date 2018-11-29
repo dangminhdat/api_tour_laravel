@@ -2,14 +2,13 @@
 
 namespace Core\Services;
 
-use Core\Repositories\DetailTourRepository;
-use Illuminate\Support\Facades\Hash;
+use Core\Repositories\PersonOrderRepository;
 
-class DetailTourService implements ServiceInterface
+class PersonOrderService implements ServiceInterface
 {
     protected $repository;
 
-    public function __construct(DetailTourRepository $repository)
+    public function __construct(PersonOrderRepository $repository)
     {
         return $this->repository = $repository;
     }
@@ -39,18 +38,8 @@ class DetailTourService implements ServiceInterface
         return $this->repository->destroy($id);
     }
 
-    public function findWhere($condition)
+    public function get_tour_of_user($id)
     {
-        return $this->repository->findWhere($condition);
-    }
-
-    public function detail_day_other($id)
-    {
-        return $this->repository->detail_day_other($id);
-    }
-
-    public function change_order($id)
-    {
-        return $this->repository->change_order($id);
+        return $this->repository->get_tour_of_user($id);
     }
 }

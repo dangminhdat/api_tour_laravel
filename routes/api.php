@@ -36,6 +36,12 @@ Route::group([ 'middleware' => ['check_login']], function () {
 	Route::resource('group', 'Api\GroupController');
 	// api update tour
 	Route::POST('tour/{id}', 'Api\TourController@updateTour');
+	// restful api person order
+	Route::resource('person-order', 'Api\PersonOrderController');
+	// get person order of user
+	Route::get('order-user', 'Api\PersonOrderController@get_tour_of_user');
+	// chagne order slot booked
+	Route::POST('change-order', 'Api\DetailTourController@change_order');
 });
 
 /**

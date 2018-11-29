@@ -166,4 +166,15 @@ class DetailTourRepository implements RepositoryInterface
         }
     	return $result;
     }
+
+    public function change_order($id)
+    {
+        $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
+        $details = $model->first();
+        $data = [
+            'slot'      => ($details->slot - 1),
+            'booked'    => ($details->booked + 1)
+        ];
+        return $model->update($data);
+    }
 }

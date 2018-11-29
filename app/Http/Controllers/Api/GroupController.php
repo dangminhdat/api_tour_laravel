@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Core\Services\GroupService;
 
-class GroupController extends Controller
+class GroupController extends ApiController
 {
     protected $group_service;
 

@@ -42,6 +42,10 @@ Route::group([ 'middleware' => ['check_login']], function () {
 	Route::get('order-user', 'Api\PersonOrderController@get_tour_of_user');
 	// chagne order slot booked
 	Route::POST('change-order', 'Api\DetailTourController@change_order');
+	// active order
+	Route::POST('active-order', 'Api\PersonOrderController@active_order');	
+	// cancel
+	Route::POST('cancel-order', 'Api\PersonOrderController@cancel_order');
 });
 
 /**

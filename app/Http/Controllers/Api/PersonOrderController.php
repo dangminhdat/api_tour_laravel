@@ -115,6 +115,10 @@ class PersonOrderController extends ApiController
         {
             $person_order = $this->person_order_service->find($id);
 
+            if (!$person_order) {
+                throw new \Exception("Not found", 1);
+            }
+
             $code = 200;
             $message = "Success!";
             $data = $person_order;
@@ -122,7 +126,7 @@ class PersonOrderController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Something error!!!";
-            $data = $e->getMessage();
+            $data = null;
         }
 
         return response()->json([
@@ -152,7 +156,41 @@ class PersonOrderController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            $order = $this->person_order_service->find($id);
+
+            if (!$order) {
+                throw new \Exception("Not found", 1);
+            }
+
+            $data = [
+                "name"          => $request->name?$request->name:$order->name,
+                "email"         => $request->email?$request->email:$order->email,
+                "phone"         => $request->phone?$request->phone:$order->phone,
+                "address"       => $request->address?$request->address:$order->address,
+                "note"          => $request->note?$request->note:$order->note,
+                "num_adults"    => $request->num_adults?$request->num_adults:$order->num_adults,
+                "num_childs"    => $request->num_childs?$request->num_childs:$order->num_childs,
+                "date_ordered"  => date("Y-m-d")
+            ];
+            $person_order = $this->person_order_service->update($id, $data);
+
+            $code = 200;
+            $message = "Success!";
+            $data = "Update success!";
+        }
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Something error!!!";
+            $data = $e->getMessage();
+        }
+
+        return response()->json([
+            "result_code" => $code,
+            "result_message" => $message,
+            "data" => $data
+        ], $code);
     }
 
     /**
@@ -202,6 +240,72 @@ class PersonOrderController extends ApiController
                 "total" => count($person_order),
                 "list" => $person_order
             );
+        }
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Something error!!!";
+            $data = $e->getMessage();
+        }
+
+        return response()->json([
+            "result_code" => $code,
+            "result_message" => $message,
+            "data" => $data
+        ], $code);
+    }
+
+    public function active_order(Request $request)
+    {
+        try
+        {
+            $order = $this->person_order_service->find($request->id);
+
+            if (!$order) {
+                throw new \Exception("Not found", 1);
+            }
+
+            $person_order = $this->person_order_service->update($order->id, ['status' => 2]);
+
+            if (!$person_order) {
+                throw new \Exception("Not found", 1);
+            }
+
+            $code = 200;
+            $message = "Success!";
+            $data = "Active order success!";
+        }
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Something error!!!";
+            $data = $e->getMessage();
+        }
+
+        return response()->json([
+            "result_code" => $code,
+            "result_message" => $message,
+            "data" => $data
+        ], $code);
+    }
+
+    public function cancel_order(Request $request)
+    {
+        try
+        {
+            $order = $this->person_order_service->find($request->id);
+
+            if (!$order) {
+                throw new \Exception("Not found", 1);
+            }
+
+            $person_order = $this->person_order_service->update($order->id, ['status' => 0]);
+
+            if (!$person_order) {
+                throw new \Exception("Not found", 1);
+            }
+
+            $code = 200;
+            $message = "Success!";
+            $data = "Cancel order success!";
         }
         catch(\Exception $e) {
             $code = 403;

@@ -24,7 +24,7 @@ class PersonOrderRepository implements RepositoryInterface
 
     public function find($id)
     {
-    	$person = $this->model->where(['deleted_at' => 0])->first();
+    	$person = $this->model->where(['deleted_at' => 0, 'id' => $id])->first();
     	unset($person->deleted_at);
         return $person;
     }
@@ -36,7 +36,7 @@ class PersonOrderRepository implements RepositoryInterface
 
     public function update($id, $data)
     {
-        $model = $this->model->find($id);
+        $model = $this->model->where(['id' => $id, 'deleted_at' => 0, 'status' => 1]);
         return $model->update($data);
     }
 

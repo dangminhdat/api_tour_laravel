@@ -20,7 +20,8 @@ class PersonOrderSeeder extends Seeder
         		"note" 			=> "OK".$i,
         		"num_adults" 	=> $i,
         		"num_childs" 	=> $i,
-        		"date_ordered" 	=> now(),
+                "date_ordered"  => now(),
+        		"status" 	=> 1,
         		"deleted_at" 	=> false,
         		"id_detail_tour"=> $i,
         		"id_user" 		=> 1

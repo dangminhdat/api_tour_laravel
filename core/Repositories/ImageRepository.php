@@ -17,6 +17,7 @@ class ImageRepository implements RepositoryInterface
     {
         $images = $this->model->where(['deleted_at' => 0])->orderBy('id', 'DESC')->get();
         foreach ($images as $key => $image) {
+            $images[$key]['id_detail_tour'] = $image->tour->detail_tour->first()->id;
             $images[$key]['name_tour'] = $image->tour->name;
             unset($images[$key]['tour']);
             unset($images[$key]['deleted_at']);
@@ -47,9 +48,9 @@ class ImageRepository implements RepositoryInterface
             $name = uniqid()."-".date("Y-m-d-H-i-s").'.'.$ext;
             @move_uploaded_file($tmp, $upload.$name);
             $insert = [
-                'name'      => $name,
-                'url'       => '/uploads/'.$name,
-                'id_tour'   => $data['id_tour']
+                'description'   => $data['description'],
+                'url'           => '/uploads/'.$name,
+                'id_tour'       => $data['id_tour']
             ];
             $this->model->create($insert);
         }

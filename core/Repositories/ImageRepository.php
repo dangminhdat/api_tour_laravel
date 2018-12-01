@@ -17,6 +17,7 @@ class ImageRepository implements RepositoryInterface
     {
         $images = $this->model->where(['deleted_at' => 0])->orderBy('id', 'DESC')->get();
         foreach ($images as $key => $image) {
+            $images[$key]['id_detail_tour'] = $image->tour->detail_tour->first()->id;
             $images[$key]['name_tour'] = $image->tour->name;
             unset($images[$key]['tour']);
             unset($images[$key]['deleted_at']);

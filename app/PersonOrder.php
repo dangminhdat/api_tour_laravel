@@ -14,7 +14,7 @@ class PersonOrder extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'address', 'note', 'num_adults', 'num_childs', 'date_ordered', 'deleted_at', 'id_detail_tour', 'id_user'
+        'name', 'email', 'phone', 'address', 'note', 'num_adults', 'num_childs', 'date_ordered', 'status', 'deleted_at', 'id_detail_tour', 'id_user'
     ];
 
     /**

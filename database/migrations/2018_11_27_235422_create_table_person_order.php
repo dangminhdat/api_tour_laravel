@@ -24,6 +24,7 @@ class CreateTablePersonOrder extends Migration
             $table->integer('num_adults');
             $table->integer('num_childs');
             $table->date('date_ordered');
+            $table->integer('status')->default(1);//0: Hủy 1:Chờ duyệt 2:Đã duyệt
             $table->tinyInteger('deleted_at')->default(0);
             // $table->integer('id_formality');
             $table->integer('id_detail_tour');

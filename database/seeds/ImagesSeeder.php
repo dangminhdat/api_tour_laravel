@@ -13,8 +13,8 @@ class ImagesSeeder extends Seeder
     {
         for ($i=1; $i <= 10; $i++) { 
             DB::table('images')->insert([
-                ["name" => "Tour ".$i, "url" => "/uploads/da-nang-2018-11-02.png", "id_tour" => $i],
-                ["name" => "Tour ".$i, "url" => "/uploads/da-nang-2018-11-04.png", "id_tour" => $i]
+                ["description" => "Tour ".$i, "url" => "/uploads/da-nang-2018-11-02.png", "id_tour" => $i],
+                ["description" => "Tour ".$i, "url" => "/uploads/da-nang-2018-11-04.png", "id_tour" => $i]
             ]);
         }
     }

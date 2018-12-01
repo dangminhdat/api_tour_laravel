@@ -10,7 +10,7 @@ class Image extends Model
     public $timestamps = false;
 
     protected $fillable = [
-    	"name", "url", "id_tour"
+    	"description", "url", "id_tour"
     ];
 
     protected $hidden = [

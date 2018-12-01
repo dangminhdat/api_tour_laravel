@@ -47,9 +47,9 @@ class ImageRepository implements RepositoryInterface
             $name = uniqid()."-".date("Y-m-d-H-i-s").'.'.$ext;
             @move_uploaded_file($tmp, $upload.$name);
             $insert = [
-                'name'      => $name,
-                'url'       => '/uploads/'.$name,
-                'id_tour'   => $data['id_tour']
+                'description'   => $data['description'],
+                'url'           => '/uploads/'.$name,
+                'id_tour'       => $data['id_tour']
             ];
             $this->model->create($insert);
         }

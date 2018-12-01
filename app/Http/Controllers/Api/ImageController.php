@@ -67,6 +67,7 @@ class ImageController extends ApiController
         try
         {
             $image = [
+                "description" => $request->description,
                 "images"      => $_FILES['images'],
                 "id_tour"     => $request->id_tour
             ];
@@ -80,7 +81,7 @@ class ImageController extends ApiController
         catch(\Exception $e) {
             $message = "Something error!!!";
             $code = 400;
-            $data = null;
+            $data = $e->getMessage();
         }
 
         return response()->json([
@@ -143,7 +144,32 @@ class ImageController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            $data = [
+                "description" => $request->description
+            ];
+
+            $image = $this->image_service->update($id, $data);
+            if (!$image) {
+                throw new \Exception("Not found", 2);
+            }
+
+            $code = 200;
+            $message = "Success!";
+            $data = "Update success!";
+        }
+        catch(\Exception $e) {
+            $message = "Something error!!!";
+            $code = 400;
+            $data = null;
+        }
+
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 
     /**

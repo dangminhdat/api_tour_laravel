@@ -177,4 +177,9 @@ class DetailTourRepository implements RepositoryInterface
         ];
         return $model->update($data);
     }
+
+    public function get($id)
+    {
+        return $this->model->where(['deleted_at' => 0, 'id' => $id])->first();
+    }
 }

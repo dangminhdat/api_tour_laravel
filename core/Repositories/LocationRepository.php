@@ -117,7 +117,7 @@ class LocationRepository implements RepositoryInterface
             return $a['booked'] < $b['booked'];
         });
         if (count($loca) > 4) {
-            $loca = array_slice($loca, 0, 5);
+            $loca = array_slice($loca, 0, 4);
         }
         return $loca;
     }

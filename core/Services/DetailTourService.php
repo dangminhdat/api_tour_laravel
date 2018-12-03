@@ -53,4 +53,9 @@ class DetailTourService implements ServiceInterface
     {
         return $this->repository->change_order($id);
     }
+
+    public function get($id)
+    {
+        return $this->repository->get($id);
+    }
 }

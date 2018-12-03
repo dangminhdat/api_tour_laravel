@@ -446,4 +446,27 @@ class TourController extends ApiController
             "data"              => $data
         ], $code);
     }
+
+    public function find($id)
+    {
+        try
+        {
+            $tour = $this->tour_service->find($id);
+            unset($tour->deleted_at);
+
+            $code = 200;
+            $message = "Success";
+            $data = $tour;
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
 }

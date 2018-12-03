@@ -46,6 +46,10 @@ Route::group([ 'middleware' => ['check_login']], function () {
 	Route::POST('active-order', 'Api\PersonOrderController@active_order');	
 	// cancel
 	Route::POST('cancel-order', 'Api\PersonOrderController@cancel_order');
+	// get tour
+	Route::get('get-tour/{id}', 'Api\TourController@find');
+	// get tour
+	Route::get('get-detail/{id}', 'Api\DetailTourController@find');
 });
 
 /**

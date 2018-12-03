@@ -199,4 +199,28 @@ class DetailTourController extends ApiController
             "data"              => $data
         ], $code);
     }
+
+    public function find($id)
+    {
+        //
+        try
+        {
+            // all data tour
+            $detail = $this->detail_service->get($id);
+
+            $code = 200;
+            $message = "Success";
+            $data = $detail;
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
 }

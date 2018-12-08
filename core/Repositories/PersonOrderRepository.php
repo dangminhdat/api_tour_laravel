@@ -48,9 +48,20 @@ class PersonOrderRepository implements RepositoryInterface
 
     public function get_tour_of_user($id)
     {
-    	$person = $this->model->where(['id_user' => $id])->orderBy('id', 'DESC')->get();
+    	$person = $this->model->where(['deleted_at' => 0, 'id_user' => $id])->orderBy('id', 'DESC')->get();
         foreach ($person as $key => $value) {
-        	unset($person[$key]->deleted_at);
+            $details = $value->detail_tour;
+            $tour = $details->tour;
+            if ($details->deleted_at) {
+                unset($person[$key]);
+                continue;
+            }
+            $sum = $details->price_childs * $value->num_childs + $details->price_adults * $value->num_adults;
+            unset($person[$key]->deleted_at);
+        	unset($person[$key]->detail_tour);
+            $person[$key]['price_total'] = $sum;
+            $person[$key]['discount'] = $tour->discount;
+            $person[$key]['total'] = $sum - $sum * $tour->discount / 100;
         }
         return $person;
     }

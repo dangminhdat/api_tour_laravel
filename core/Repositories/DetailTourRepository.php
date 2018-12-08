@@ -192,7 +192,7 @@ class DetailTourRepository implements RepositoryInterface
         $hotels = $details->hotel;
         $hotel_arr = array();
         foreach ($hotels as $key => $hotel) {
-            if (!$hotel->deleted) {
+            if (!$hotel->deleted_at) {
                 array_push($hotel_arr, $hotel->id);
             }
         }

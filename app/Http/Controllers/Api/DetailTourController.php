@@ -121,7 +121,45 @@ class DetailTourController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            $details = $this->detail_service->get($id);
+
+            if (!$details){
+                throw new \Exception("Not found", 1);
+            }
+
+            $data = [
+                "date_depart"   => $request->date_depart?$request->date_depart:$details->date_depart,
+                "price_adults"  => $request->price_adults?$request->price_adults:$details->price_adults,
+                "price_childs"  => $request->price_childs?$request->price_childs:$details->price_childs,
+                "time_depart"   => $request->time_depart?$request->time_depart:$details->time_depart,
+                "address_depart"=> $request->address_depart?$request->address_depart:$details->address_depart,
+                "slot"          => $request->slot?$request->slot:$details->slot,
+                "id_guide"      => $request->id_guide?$request->id_guide:$details->id_guide,
+                "id_tour"       => $request->id_tour?$request->id_tour:$details->id_tour,
+            ];
+
+            if (!empty($request->id_hotel)) {
+                $data['id_hotel'] = $request->id_hotel;
+            }
+            $detail_tour = $this->detail_service->update($id, $data);
+            
+            $code = 200;
+            $message = "Success!";
+            $data = "Update detail tour success";
+        }
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+
+        return response()->json([
+            "result_code"   => $code,
+            "result_message"=> $message,
+            "data"          => $data
+        ], $code);
     }
 
     /**

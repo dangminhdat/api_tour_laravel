@@ -105,6 +105,14 @@ class DetailTourRepository implements RepositoryInterface
     public function update($id, $data)
     {
         $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
+        if (!empty($data['id_hotel'])) {
+            $model->first()->hotel()->detach();
+            $id_hotel = $data['id_hotel'];
+            unset($data['id_hotel']);
+            foreach ($id_hotel as $key => $value) {
+                $model->first()->hotel()->attach($value);
+            }
+        }
         return $model->update($data);
     }
 
@@ -180,6 +188,16 @@ class DetailTourRepository implements RepositoryInterface
 
     public function get($id)
     {
-        return $this->model->where(['deleted_at' => 0, 'id' => $id])->first();
+        $details = $this->model->where(['deleted_at' => 0, 'id' => $id])->first();
+        $hotels = $details->hotel;
+        $hotel_arr = array();
+        foreach ($hotels as $key => $hotel) {
+            if (!$hotel->deleted_at) {
+                array_push($hotel_arr, $hotel->id);
+            }
+        }
+        unset($details['hotel']);
+        $details['id_hotel'] = $hotel_arr;
+        return $details;
     }
 }

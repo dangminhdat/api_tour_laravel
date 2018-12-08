@@ -41,4 +41,9 @@ class DetailTour extends Model
     {
         return $this->belongsToMany('App\Hotel', 'hotel_tour', 'id_detail_tour', 'id_hotel');
     }
+
+    public function person_order()
+    {
+        return $this->hasMany('App\PersonOrder', 'id_detail_tour', 'id');
+    }
 }

@@ -28,7 +28,7 @@ class PersonOrder extends Model
 
     public function detail_tour()
     {
-    	return $this->hasOne('App\DetailTour', 'id_detail_tour', 'id');
+    	return $this->belongsTo('App\DetailTour', 'id_detail_tour', 'id');
     }
 
     public function user()

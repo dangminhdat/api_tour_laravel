@@ -58,7 +58,11 @@ class PersonOrderRepository implements RepositoryInterface
             }
             $sum = $details->price_childs * $value->num_childs + $details->price_adults * $value->num_adults;
             unset($person[$key]->deleted_at);
+            unset($person[$key]->deleted_at);
+            unset($person[$key]->id_detail_tour);
+            unset($person[$key]->id_user);
         	unset($person[$key]->detail_tour);
+            $person[$key]['name_tour'] = $tour->name;
             $person[$key]['price_total'] = $sum;
             $person[$key]['discount'] = $tour->discount;
             $person[$key]['total'] = $sum - $sum * $tour->discount / 100;

@@ -5,31 +5,31 @@ namespace App\Http\Controllers\Api;
 use Core\Services\DetailTourService;
 use Illuminate\Http\Request;
 
+/**
+ * Class DetailTourController
+ */
 class DetailTourController extends ApiController
 {
+    /**
+     * protected $detail_service
+     */
     protected $detail_service;
 
+    /**
+     * [__construct description]
+     * @param DetailTourService $service [description]
+     */
     public function __construct(DetailTourService $service)
     {
         $this->detail_service = $service;
         // check login
         $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Save detail tour
+     * @param Request $request
+     * @return object
      */
     public function store(Request $request)
     {
@@ -72,14 +72,12 @@ class DetailTourController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show detail tour
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {
-        //
         try
         {
             // all data tour
@@ -102,22 +100,10 @@ class DetailTourController extends ApiController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update detail tour
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function update(Request $request, $id)
     {
@@ -163,10 +149,9 @@ class DetailTourController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete detail tour
+     * @param int $id
+     * @return object
      */
     public function destroy($id)
     {
@@ -191,6 +176,11 @@ class DetailTourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Detail tour of day other
+     * @param int $id
+     * @return object
+     */
     public function detail_day_other($id)
     {
         try
@@ -214,9 +204,13 @@ class DetailTourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Change order booked
+     * @param Request $request
+     * @return object
+     */
     public function change_order(Request $request)
     {
-        //
         try
         {
             // all data tour
@@ -238,12 +232,15 @@ class DetailTourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Get detail tour
+     * @param int $id
+     * @return object
+     */
     public function find($id)
     {
-        //
         try
         {
-            // all data tour
             $detail = $this->detail_service->get($id);
 
             $code = 200;

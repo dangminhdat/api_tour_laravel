@@ -4,20 +4,35 @@ namespace Core\Repositories;
 
 use App\DetailTour;
 
+/**
+ * Class DetailTourRepository
+ */
 class DetailTourRepository implements RepositoryInterface
 {
+    /**
+     * @var $model
+     */
     protected $model;
 
+    /**
+     * [__construct description]
+     * @param DetailTour $model [description]
+     */
     public function __construct(DetailTour $model)
     {
         $this->model = $model;
     }
 
-    public function paginate()
-    {
-        
-    }
+    /**
+     * @return void
+     */
+    public function paginate(){}
 
+    /**
+     * Find
+     * @param int $id
+     * @return object
+     */
     public function find($id)
     {
         $details = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
@@ -88,6 +103,11 @@ class DetailTourRepository implements RepositoryInterface
         return $tour;
     }
 
+    /**
+     * Store
+     * @param array $data
+     * @return mixed
+     */
     public function store($data)
     {
         if (!empty($data['id_hotel'])) {
@@ -102,6 +122,12 @@ class DetailTourRepository implements RepositoryInterface
         return $this->model->create($data);
     }
 
+    /**
+     * Update
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
     public function update($id, $data)
     {
         $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
@@ -116,6 +142,11 @@ class DetailTourRepository implements RepositoryInterface
         return $model->update($data);
     }
 
+    /**
+     * Destroy
+     * @param int $id
+     * @return mixed
+     */
     public function destroy($id)
     {
         $model = $this->model->find($id);
@@ -123,10 +154,9 @@ class DetailTourRepository implements RepositoryInterface
     }
 
     /**
-     * Select username use eloquent
-     * 
-     * @param  string $username
-     * @return object $model
+     * Select
+     * @param array $username
+     * @return object
      */
     public function findWhere($condition)
     {
@@ -134,6 +164,11 @@ class DetailTourRepository implements RepositoryInterface
         return $model->first();
     }
 
+    /**
+     * Select detail day other
+     * @param int $id
+     * @return array
+     */
     public function detail_day_other($id)
     {
     	$result = array();
@@ -175,6 +210,11 @@ class DetailTourRepository implements RepositoryInterface
     	return $result;
     }
 
+    /**
+     * Change order
+     * @param int $id
+     * @return mixed
+     */
     public function change_order($id)
     {
         $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
@@ -186,6 +226,11 @@ class DetailTourRepository implements RepositoryInterface
         return $model->update($data);
     }
 
+    /**
+     * Get detail tour
+     * @param int $id
+     * @return array
+     */
     public function get($id)
     {
         $details = $this->model->where(['deleted_at' => 0, 'id' => $id])->first();

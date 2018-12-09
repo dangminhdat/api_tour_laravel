@@ -4,15 +4,29 @@ namespace Core\Repositories;
 
 use App\Tour;
 
+/**
+ * Class TourRepository
+ */
 class TourRepository implements RepositoryInterface
 {
+    /**
+     * @var $model
+     */
     protected $model;
 
+    /**
+     * [__construct description]
+     * @param Tour $model [description]
+     */
     public function __construct(Tour $model)
     {
         $this->model = $model;
     }
 
+    /**
+     * All
+     * @return array
+     */
     public function paginate()
     {
         $check = false;
@@ -59,12 +73,22 @@ class TourRepository implements RepositoryInterface
         return $tours;
     }
 
+    /**
+     * Find
+     * @param int $id
+     * @return array
+     */
     public function find($id)
     {
         $tour = $this->model->where(['deleted_at' => false, 'id' => $id])->first();
         return $tour;
     }
 
+    /**
+     * Store
+     * @param array $data
+     * @return mixed
+     */
     public function store($data)
     {
         // $upload = public_path()."/uploads/";
@@ -91,12 +115,23 @@ class TourRepository implements RepositoryInterface
         return $this->model->create($data);
     }
 
+    /**
+     * Update
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
     public function update($id, $data)
     {
         $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
         return $model->update($data);
     }
 
+    /**
+     * Destroy
+     * @param int $id
+     * @return mixed
+     */
     public function destroy($id)
     {
         $model = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
@@ -108,12 +143,22 @@ class TourRepository implements RepositoryInterface
         return $model->update(['deleted_at' => true ]);
     }
 
+    /**
+     * Select
+     * @param array $condition
+     * @return array
+     */
     public function findWhere($condition)
     {
         $model = $this->model->where($condition);
         return $model->first();
     }
 
+    /**
+     * Select tour by location
+     * @param int $id
+     * @return array
+     */
     public function tour_by_location($id)
     {
         $result = array();
@@ -161,6 +206,10 @@ class TourRepository implements RepositoryInterface
         return $result;
     }
 
+    /**
+     * Select tour sales
+     * @return array
+     */
     public function tour_by_sales()
     {
         $result = array();
@@ -194,6 +243,11 @@ class TourRepository implements RepositoryInterface
         return $result;
     }
 
+    /**
+     * Select tour of type
+     * @param int $id
+     * @return array
+     */
     public function tour_of_type($id)
     {
         $result = array();
@@ -230,6 +284,12 @@ class TourRepository implements RepositoryInterface
         return $result;
     }
 
+    /**
+     * Update tour
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
     public function updateTour($id, $data)
     {
         $result = array();
@@ -259,6 +319,11 @@ class TourRepository implements RepositoryInterface
         return $model->update($result);
     }
 
+    /**
+     * Select tour detail
+     * @param int $id
+     * @return array
+     */
     public function find_tour_detail($id)
     {
         $result = array();
@@ -310,6 +375,11 @@ class TourRepository implements RepositoryInterface
         return array_reverse($result);
     }
 
+    /**
+     * Upload image
+     * @param array $data
+     * @return mixed
+     */
     public function upload_image($data)
     {
         $upload = public_path()."/uploads/";
@@ -326,6 +396,10 @@ class TourRepository implements RepositoryInterface
         return false;
     }
 
+    /**
+     * Select 5 tour latest
+     * @return array
+     */
     public function five_tour_latest()
     {
         $check = false;
@@ -368,6 +442,11 @@ class TourRepository implements RepositoryInterface
         return $tours;
     }
 
+    /**
+     * Select tour search
+     * @param array $data
+     * @return array
+     */
     public function search_tour($data)
     {
         $date = array();
@@ -453,6 +532,11 @@ class TourRepository implements RepositoryInterface
         return $result;
     }
 
+    /**
+     * Add
+     * @param array $data
+     * @return mixed
+     */
     public function add($data)
     {
         $upload = public_path()."/uploads/";

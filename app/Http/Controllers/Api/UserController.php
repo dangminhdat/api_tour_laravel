@@ -8,11 +8,26 @@ use Core\Services\UserService;
 use Core\Services\UserDetailService;
 use JWTAuth;
 
+/**
+ * Class UserController
+ */
 class UserController extends ApiController
 {
+    /**
+     * protected $user_service
+     */
     protected $user_service;
+
+    /**
+     * protected $user_detail_service
+     */
     protected $user_detail_service;
 
+    /**
+     * [__construct description]
+     * @param UserService       $service        [description]
+     * @param UserDetailService $service_detail [description]
+     */
     public function __construct(UserService $service, UserDetailService $service_detail)
     {
         $this->user_service = $service;
@@ -20,9 +35,8 @@ class UserController extends ApiController
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show list user
+     * @return object
      */
     public function index()
     {
@@ -51,10 +65,9 @@ class UserController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Save user
+     * @param Request $request
+     * @return object
      */
     public function store(Request $request)
     { 
@@ -119,10 +132,9 @@ class UserController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show user by id
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {
@@ -152,11 +164,10 @@ class UserController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update user
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function update(Request $request, $id)
     {
@@ -220,10 +231,9 @@ class UserController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete user
+     * @param int $id
+     * @return object
      */
     public function destroy($id)
     {
@@ -251,10 +261,9 @@ class UserController extends ApiController
     }
 
     /**
-     * Api login for user login
-     * 
-     * @param  Request
-     * @return [type]
+     * Login
+     * @param Request $request
+     * @return object
      */
     public function login(Request $request)
     {
@@ -286,8 +295,8 @@ class UserController extends ApiController
 
     /**
      * Get profile user login
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     * @param Request $request
+     * @return object
      */
     public function profile(Request $request)
     {
@@ -320,9 +329,9 @@ class UserController extends ApiController
 
     /**
      * Change password for user
-     * @param  Request $request [description]
-     * @param  [type]  $id      [description]
-     * @return [type]           [description]
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function change_pass(Request $request, $id)
     {
@@ -348,8 +357,8 @@ class UserController extends ApiController
 
     /**
      * Lock user
-     * @param  [type] $id [description]
-     * @return [type]     [description]
+     * @param int $id
+     * @return object
      */
     public function lock_user($id)
     {
@@ -378,8 +387,8 @@ class UserController extends ApiController
 
     /**
      * Unlock user
-     * @param  string $value [description]
-     * @return [type]        [description]
+     * @param int $id
+     * @return object
      */
     public function unlock_user($id)
     {
@@ -406,6 +415,11 @@ class UserController extends ApiController
         ], $code);
     }
 
+    /**
+     * Logout
+     * @param Request $request
+     * @return object
+     */
     public function logout(Request $request)
     {
         try
@@ -432,6 +446,11 @@ class UserController extends ApiController
         ], $code);
     }
 
+    /**
+     * Review of user
+     * @param Request $request
+     * @return object
+     */
     public function review_by_user(Request $request)
     {
         try
@@ -465,6 +484,11 @@ class UserController extends ApiController
         ], $code);
     }
 
+    /**
+     * Edit profile
+     * @param Request $request
+     * @return object
+     */
     public function edit_profile(Request $request)
     {
         try

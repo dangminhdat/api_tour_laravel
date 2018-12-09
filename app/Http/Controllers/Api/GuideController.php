@@ -5,10 +5,20 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\GuideService;
 
+/**
+ * Class GuideController
+ */
 class GuideController extends ApiController
 {
+    /**
+     * protected $guide_service
+     */
     protected $guide_service;
 
+    /**
+     * [__construct description]
+     * @param GuideService $service [description]
+     */
     public function __construct(GuideService $service)
     {
         $this->guide_service = $service;
@@ -17,9 +27,8 @@ class GuideController extends ApiController
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show list guide
+     * @return object
      */
     public function index()
     {
@@ -48,10 +57,9 @@ class GuideController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Save guide
+     * @param Request $request
+     * @return object
      */
     public function store(Request $request)
     {
@@ -96,10 +104,9 @@ class GuideController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show guide by id
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {
@@ -129,11 +136,10 @@ class GuideController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update guide by id
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function update(Request $request, $id)
     {
@@ -180,10 +186,9 @@ class GuideController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete guide by id
+     * @param int $id
+     * @return object
      */
     public function destroy($id)
     {

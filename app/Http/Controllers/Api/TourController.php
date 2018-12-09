@@ -5,20 +5,30 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\TourService;
 
+/**
+ * Class TourController
+ */
 class TourController extends ApiController
 {
+    /**
+     * protected $tour_service
+     */
     protected $tour_service;
 
+    /**
+     * [__construct description]
+     * @param TourService $service [description]
+     */
     public function __construct(TourService $service)
     {
         $this->tour_service = $service;
         // check login
         $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy', 'upload_image'], 'except' => [ 'search_tour' ]]);
     }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show list tour
+     * @return object
      */
     public function index()
     {
@@ -47,10 +57,9 @@ class TourController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Save tour
+     * @param Request $request
+     * @return object
      */
     public function store(Request $request)
     {
@@ -88,10 +97,9 @@ class TourController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show tour by id
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {
@@ -120,11 +128,10 @@ class TourController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update tour by id
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function update(Request $request, $id)
     {
@@ -162,10 +169,9 @@ class TourController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete tour
+     * @param int $id
+     * @return object
      */
     public function destroy($id)
     {
@@ -195,7 +201,8 @@ class TourController extends ApiController
 
     /**
      * Get list tour by location
-     * @return [type] [description]
+     * @param int $id
+     * @return object
      */
     public function tour_by_location($id)
     {
@@ -225,7 +232,7 @@ class TourController extends ApiController
 
     /**
      * Get list tour by sales
-     * @return [type] [description]
+     * @return object
      */
     public function tour_by_sales()
     {
@@ -255,8 +262,8 @@ class TourController extends ApiController
 
     /**
      * Get list tour of type
-     * @param  [type] $id [description]
-     * @return [type]     [description]
+     * @param int $id
+     * @return object
      */
     public function tour_of_type($id)
     {
@@ -284,6 +291,12 @@ class TourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Update tour
+     * @param Request $request
+     * @param int $id
+     * @return object
+     */
     public function updateTour(Request $request, $id)
     {
         try
@@ -320,6 +333,11 @@ class TourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Upload image
+     * @param Request $request
+     * @return object
+     */
     public function upload_image(Request $request)
     {
         try
@@ -353,6 +371,10 @@ class TourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Get 5 tour latest
+     * @return object
+     */
     public function five_tour_latest()
     {
         try
@@ -379,6 +401,11 @@ class TourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Search tour
+     * @param Request $request
+     * @return object
+     */
     public function search_tour(Request $request)
     {
         try
@@ -412,6 +439,11 @@ class TourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Add tour
+     * @param Request $request
+     * @return object
+     */
     public function add(Request $request)
     {
         try
@@ -447,6 +479,11 @@ class TourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Get tour
+     * @param int $id
+     * @return object
+     */
     public function find($id)
     {
         try

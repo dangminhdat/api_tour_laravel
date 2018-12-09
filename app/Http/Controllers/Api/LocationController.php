@@ -5,10 +5,20 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\LocationService;
 
+/**
+ * Class LocationController
+ */
 class LocationController extends ApiController
 {
+    /**
+     * protected $location_service
+     */
     protected $location_service;
 
+    /**
+     * [__construct description]
+     * @param LocationService $service [description]
+     */
     public function __construct(LocationService $service)
     {
         $this->location_service = $service;
@@ -16,13 +26,11 @@ class LocationController extends ApiController
         $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
     }
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show list location
+     * @return object
      */
     public function index()
     {
-        //
         try
         {
             // all data location
@@ -48,10 +56,9 @@ class LocationController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Save location
+     * @param Request $request
+     * @return object
      */
     public function store(Request $request)
     {
@@ -90,10 +97,9 @@ class LocationController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show location by id
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {
@@ -123,11 +129,10 @@ class LocationController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update location
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function update(Request $request, $id)
     {
@@ -142,10 +147,9 @@ class LocationController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete location
+     * @param int $id
+     * @return object
      */
     public function destroy($id)
     {
@@ -173,11 +177,10 @@ class LocationController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update location have upload
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function updateLocation(Request $request, $id)
     {
@@ -212,6 +215,10 @@ class LocationController extends ApiController
         ], $code);
     }
 
+    /**
+     * Get 4 favorite location
+     * @return object
+     */
     public function favorite_four_location()
     {
         try

@@ -4,13 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class PersonOrder
+ */
 class PersonOrder extends Model
 {
     protected $table = "person_order";
     public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [
@@ -19,18 +22,25 @@ class PersonOrder extends Model
 
     /**
      * The attributes that should be hidden for arrays.
-     *
      * @var array
      */
     protected $hidden = [
        
     ];
 
+    /**
+     * Relation detail tour
+     * @return object
+     */
     public function detail_tour()
     {
     	return $this->belongsTo('App\DetailTour', 'id_detail_tour', 'id');
     }
 
+    /**
+     * Relation user
+     * @return object
+     */
     public function user()
     {
     	return $this->belongsTo('App\User', 'id_user', 'id');

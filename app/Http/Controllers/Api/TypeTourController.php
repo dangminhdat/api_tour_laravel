@@ -5,18 +5,28 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\TypeTourService;
 
+/**
+ * Class TypeTourController
+ */
 class TypeTourController extends ApiController
 {
+    /**
+     * protected $typetour_service
+     */
     protected $typetour_service;
 
+    /**
+     * [__construct description]
+     * @param TypeTourService $service [description]
+     */
     public function __construct(TypeTourService $service)
     {
         $this->typetour_service = $service;
     }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show list type tour
+     * @return object
      */
     public function index()
     {

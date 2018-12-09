@@ -7,51 +7,90 @@ use Illuminate\Support\Facades\Hash;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
+/**
+ * Class UserService
+ */
 class UserService implements ServiceInterface
 {
+    /**
+     * @var $repository
+     */
     protected $repository;
 
+    /**
+     * [__construct description]
+     * @param UserRepository $repository [description]
+     */
     public function __construct(UserRepository $repository)
     {
         return $this->repository = $repository;
     }
 
+    /**
+     * All
+     * @return array
+     */
     public function paginate()
     {
         return $this->repository->paginate();
     }
 
+    /**
+     * Find
+     * @param int $id
+     * @return array
+     */
     public function find($id)
     {
         return $this->repository->find($id);
     }
 
+    /**
+     * Store
+     * @param array $data
+     * @return mixed
+     */
     public function store($data)
     {
         return $this->repository->store($data);
     }
 
+    /**
+     * Update
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
     public function update($id, $data)
     {
         return $this->repository->update($id, $data);
     }
 
+    /**
+     * Destroy
+     * @param int $id
+     * @return mixed
+     */
     public function destroy($id)
     {
         return $this->repository->destroy($id);
     }
 
+    /**
+     * Select
+     * @param array $condition
+     * @return array
+     */
     public function findWhere($condition)
     {
         return $this->repository->findWhere($condition);
     }
 
     /**
-     * Service lgin
-     * 
-     * @param  string $username
-     * @param  string $passwrd
-     * @return boolean
+     * Login
+     * @param string $username
+     * @param string $passwrd
+     * @return mixed
      */
     public function login($username, $password)
     {
@@ -65,6 +104,11 @@ class UserService implements ServiceInterface
         return false;
     }
 
+    /**
+     * Select review of user
+     * @param int $id
+     * @return array
+     */
     public function review_by_user($id)
     {
         return $this->repository->review_by_user($id);

@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Formality
+ */
 class Formality extends Model
 {
     protected $table = "formality";
@@ -11,7 +14,6 @@ class Formality extends Model
 
     /**
      * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [
@@ -20,12 +22,15 @@ class Formality extends Model
 
     /**
      * The attributes that should be hidden for arrays.
-     *
      * @var array
      */
     protected $hidden = [
     ];
 
+    /**
+     * Relation person order
+     * @return object
+     */
     public function person_order()
     {
         return $this->hasMany('App\PersonOrder','id_formality','id');

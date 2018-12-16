@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\PersonOrderService;
 use JWTAuth;
+use App\Mail\OrderTour;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class PersonOrderController
@@ -84,6 +86,8 @@ class PersonOrderController extends ApiController
                 "id_user"       => $profile->id
             ];
             $person_order = $this->person_order_service->store($data);
+
+            Mail::to($data["email"])->send(new OrderTour($data));
 
             $code = 200;
             $message = "Success!";

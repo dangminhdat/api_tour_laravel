@@ -1,0 +1,28 @@
+    /**
+     * @var $repository
+     */
+    /**
+     * All
+     * @return array
+     */
+    /**
+     * Find
+     * @param int $id
+     * @return array
+     */
+    /**
+     * Store
+     * @param array $data
+     * @return mixed
+     */
+    /**
+     * Update
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
+    /**
+     * Destroy
+     * @param int $id
+     * @return mixed
+     */

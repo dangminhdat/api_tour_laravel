@@ -5,19 +5,31 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\PersonOrderService;
 use JWTAuth;
+use App\Mail\OrderTour;
+use Illuminate\Support\Facades\Mail;
 
+/**
+ * Class PersonOrderController
+ */
 class PersonOrderController extends ApiController
 {
+    /**
+     * protected $person_order_service
+     */
     protected $person_order_service;
 
+    /**
+     * [__construct description]
+     * @param PersonOrderService $service [description]
+     */
     public function __construct(PersonOrderService $service)
     {
         $this->person_order_service = $service;
     }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show list person order
+     * @return object
      */
     public function index()
     {
@@ -46,20 +58,9 @@ class PersonOrderController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Save person order
+     * @param Request $request
+     * @return object
      */
     public function store(Request $request)
     {
@@ -86,6 +87,8 @@ class PersonOrderController extends ApiController
             ];
             $person_order = $this->person_order_service->store($data);
 
+            Mail::to($data["email"])->send(new OrderTour($data));
+
             $code = 200;
             $message = "Success!";
             $data = "Insert success!";
@@ -104,10 +107,9 @@ class PersonOrderController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show person order by id
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {
@@ -135,24 +137,12 @@ class PersonOrderController extends ApiController
             "data" => $data
         ], $code);
     }
-
+    
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update person order
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function update(Request $request, $id)
     {
@@ -194,10 +184,9 @@ class PersonOrderController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete person order
+     * @param int $id
+     * @return object
      */
     public function destroy($id)
     {
@@ -222,6 +211,11 @@ class PersonOrderController extends ApiController
         ], $code);
     }
 
+    /**
+     * Get tour order of user
+     * @param Request $request
+     * @return object
+     */
     public function get_tour_of_user(Request $request)
     {
         try
@@ -254,6 +248,11 @@ class PersonOrderController extends ApiController
         ], $code);
     }
 
+    /**
+     * Active order
+     * @param Request $request
+     * @return object
+     */
     public function active_order(Request $request)
     {
         try
@@ -287,6 +286,11 @@ class PersonOrderController extends ApiController
         ], $code);
     }
 
+    /**
+     * Cancel order
+     * @param Request $request
+     * @return object
+     */
     public function cancel_order(Request $request)
     {
         try

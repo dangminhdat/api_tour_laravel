@@ -5,10 +5,20 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\HotelService;
 
+/**
+ * Class HotelController
+ */
 class HotelController extends ApiController
 {
+    /**
+     * protected $hotel_service
+     */
     protected $hotel_service;
 
+    /**
+     * [__construct description]
+     * @param HotelService $service [description]
+     */
     public function __construct(HotelService $service)
     {
         $this->hotel_service = $service;
@@ -17,9 +27,8 @@ class HotelController extends ApiController
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show list hotel
+     * @return object
      */
     public function index()
     {
@@ -48,14 +57,12 @@ class HotelController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Save hotel
+     * @param Request $request
+     * @return object
      */
     public function store(Request $request)
     {
-        //
         try
         {
             $hotel = $this->hotel_service->findName($request->name);
@@ -95,10 +102,9 @@ class HotelController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show hotel by id
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {
@@ -127,11 +133,10 @@ class HotelController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update hotel
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function update(Request $request, $id)
     {
@@ -175,10 +180,9 @@ class HotelController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete hotel
+     * @param int $id
+     * @return object
      */
     public function destroy($id)
     {

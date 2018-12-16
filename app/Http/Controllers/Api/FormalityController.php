@@ -5,18 +5,28 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\FormalityService;
 
+/**
+ * Class FormalityController
+ */
 class FormalityController extends ApiController
 {
+    /**
+     * protected $formality_service
+     */
     protected $formality_service;
 
+    /**
+     * [__construct description]
+     * @param FormalityService $service [description]
+     */
     public function __construct(FormalityService $service)
     {
         $this->formality_service = $service;
     }
+    
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show
+     * @return object
      */
     public function index()
     {

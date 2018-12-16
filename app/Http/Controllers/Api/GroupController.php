@@ -5,18 +5,28 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\GroupService;
 
+/**
+ * Class GroupController
+ */
 class GroupController extends ApiController
 {
+    /**
+     * protected $group_service
+     */
     protected $group_service;
 
+    /**
+     * [__construct description]
+     * @param GroupService $service [description]
+     */
     public function __construct(GroupService $service)
     {
         $this->group_service = $service;
     }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show group
+     * @return object
      */
     public function index()
     {
@@ -62,14 +72,12 @@ class GroupController extends ApiController
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show group by id
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {

@@ -4,15 +4,29 @@ namespace Core\Repositories;
 
 use App\Location;
 
+/**
+ * Class LocationRepository
+ */
 class LocationRepository implements RepositoryInterface
 {
+    /**
+     * @var $model
+     */
     protected $model;
 
+    /**
+     * [__construct description]
+     * @param Location $model [description]
+     */
     public function __construct(Location $model)
     {
         $this->model = $model;
     }
 
+    /**
+     * All
+     * @return array
+     */
     public function paginate()
     {
         $locations = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
@@ -22,6 +36,11 @@ class LocationRepository implements RepositoryInterface
         return $locations;
     }
 
+    /**
+     * Find
+     * @param int $id
+     * @return array
+     */
     public function find($id)
     {
         $location = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
@@ -29,6 +48,11 @@ class LocationRepository implements RepositoryInterface
         return $location;
     }
 
+    /**
+     * Store
+     * @param array $data
+     * @return mixed
+     */
     public function store($data)
     {
         $upload = public_path()."/uploads/";
@@ -48,12 +72,23 @@ class LocationRepository implements RepositoryInterface
         return $this->model->create($result);
     }
 
+    /**
+     * Update
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
     public function update($id, $data)
     {
         $model = $this->model->where(["id" => $id, "deleted_at" => false]);
         return $model->update($data);
     }
 
+    /**
+     * Destroy
+     * @param int $id
+     * @return mixed
+     */
     public function destroy($id)
     {
         $model = $this->model->find($id);
@@ -61,10 +96,9 @@ class LocationRepository implements RepositoryInterface
     }
 
     /**
-     * Select username use eloquent
-     * 
-     * @param  string $username
-     * @return object $model
+     * Select
+     * @param array $condition
+     * @return array
      */
     public function findWhere($condition)
     {
@@ -72,6 +106,12 @@ class LocationRepository implements RepositoryInterface
         return $model->first();
     }
 
+    /**
+     * Update location
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
     public function updateLocation($id, $data)
     {
         $result = array();
@@ -95,6 +135,10 @@ class LocationRepository implements RepositoryInterface
         return $model->update($result);
     }
 
+    /**
+     * Select 4 favorite location
+     * @return array
+     */
     public function favorite_four_location()
     {
         $locations = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();

@@ -6,20 +6,29 @@ use Closure;
 use Core\Services\UserService;
 use JWTAuth;
 
+/**
+ * Class LoginMiddleware
+ */
 class LoginMiddleware
 {
+    /**
+     * protected $user_service
+     */
     protected $user_service;
 
+    /**
+     * [__construct description]
+     * @param UserService $user [description]
+     */
     public function __construct(UserService $user)
     {
         $this->user_service = $user;
     }
 
     /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * Check user login
+     * @param Request $request
+     * @param Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -43,7 +52,5 @@ class LoginMiddleware
                 "data"              => null
             ], 403);
         }
-
-        
     }
 }

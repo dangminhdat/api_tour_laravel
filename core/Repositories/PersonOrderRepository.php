@@ -4,15 +4,29 @@ namespace Core\Repositories;
 
 use App\PersonOrder;
 
+/**
+ * Class PersonOrderRepository
+ */
 class PersonOrderRepository implements RepositoryInterface
 {
+    /**
+     * @var $model
+     */
     protected $model;
 
+    /**
+     * [__construct description]
+     * @param PersonOrder $model [description]
+     */
     public function __construct(PersonOrder $model)
     {
         $this->model = $model;
     }
 
+    /**
+     * All
+     * @return array
+     */
     public function paginate()
     {
         $person = $this->model->where(['deleted_at' => 0])->orderBy('id', 'DESC')->get();
@@ -22,6 +36,11 @@ class PersonOrderRepository implements RepositoryInterface
         return $person;
     }
 
+    /**
+     * Find
+     * @param int $id
+     * @return array
+     */
     public function find($id)
     {
     	$person = $this->model->where(['deleted_at' => 0, 'id' => $id])->first();
@@ -29,23 +48,44 @@ class PersonOrderRepository implements RepositoryInterface
         return $person;
     }
 
+    /**
+     * Store
+     * @param array $data
+     * @return mixed
+     */
     public function store($data)
     {
         return $this->model->create($data);
     }
 
+    /**
+     * Update
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
     public function update($id, $data)
     {
         $model = $this->model->where(['id' => $id, 'deleted_at' => 0, 'status' => 1]);
         return $model->update($data);
     }
 
+    /**
+     * Destroy
+     * @param int $id
+     * @return mixed
+     */
     public function destroy($id)
     {
         $model = $this->model->find($id);
         return $model->destroy($id);
     }
 
+    /**
+     * Select tour order of user
+     * @param int $id
+     * @return array
+     */
     public function get_tour_of_user($id)
     {
     	$person = $this->model->where(['deleted_at' => 0, 'id_user' => $id])->orderBy('id', 'DESC')->get();

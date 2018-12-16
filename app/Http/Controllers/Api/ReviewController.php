@@ -6,11 +6,26 @@ use Illuminate\Http\Request;
 use Core\Services\ReviewService;
 use Core\Services\UserService;
 
+/**
+ * Class ReviewController
+ */
 class ReviewController extends ApiController
 {
+    /**
+     * protected $user_service
+     */
     protected $user_service;
+
+    /**
+     * protected $review_service
+     */
     protected $review_service;
 
+    /**
+     * [__construct description]
+     * @param ReviewService $service   [description]
+     * @param UserService   $u_service [description]
+     */
     public function __construct(ReviewService $service, UserService $u_service)
     {
         $this->user_service = $u_service;
@@ -20,9 +35,8 @@ class ReviewController extends ApiController
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show list review
+     * @return object
      */
     public function index()
     {
@@ -51,14 +65,12 @@ class ReviewController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Save review
+     * @param Request $request
+     * @return object
      */
     public function store(Request $request)
     {
-        //
         try
         {
             $authorization = $request->header('authorization');
@@ -93,10 +105,9 @@ class ReviewController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show review
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {
@@ -126,11 +137,10 @@ class ReviewController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update review
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function update(Request $request, $id)
     {
@@ -142,14 +152,12 @@ class ReviewController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete review
+     * @param int $id
+     * @return object
      */
     public function destroy($id)
     {
-        //
         try
         {
             $review = $this->review_service->update($id, ["deleted_at" => true]);
@@ -175,8 +183,8 @@ class ReviewController extends ApiController
 
     /**
      * Get review of tour
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     * @param Request $request
+     * @return object
      */
     public function review_by_tour($id)
     {

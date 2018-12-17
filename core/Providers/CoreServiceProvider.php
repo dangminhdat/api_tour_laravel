@@ -8,6 +8,9 @@ use Core\Repositories\UserRepositoryInterface;
 use Core\Services\UserService;
 use Core\Services\UserServiceInterface;
 
+/**
+ * Class CoreServiceProvider
+ */
 class CoreServiceProvider extends ServiceProvider
 {
     /**
@@ -27,7 +30,6 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
         $this->app->bind(
             RepositoryInterface::class, 
             UserRepository::class, 
@@ -40,7 +42,8 @@ class CoreServiceProvider extends ServiceProvider
             TourRepository::class,
             LocationRepository::class,
             GroupRepository::class,
-            ImageRepository::class
+            ImageRepository::class,
+            PersonOrderRepository::class
         );
         $this->app->bind(
             ServiceInterface::class, 
@@ -54,7 +57,8 @@ class CoreServiceProvider extends ServiceProvider
             TourService::class,
             LocationService::class,
             GroupService::class,
-            ImageService::class
+            ImageService::class,
+            PersonOrderService::class
         );
     }
 }

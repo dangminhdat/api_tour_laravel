@@ -21,15 +21,17 @@ class CreateTablePersonOrder extends Migration
             $table->string('phone');
             $table->string('address');
             $table->string('note');
-            $table->integer('num_passenger');
-            $table->dateTime('date_ordered');
+            $table->integer('num_adults');
+            $table->integer('num_childs');
+            $table->date('date_ordered');
+            $table->integer('status')->default(1);//0: Hủy 1:Chờ duyệt 2:Đã duyệt
             $table->tinyInteger('deleted_at')->default(0);
-            $table->integer('id_formality');
-            $table->integer('id_tour');
+            // $table->integer('id_formality');
+            $table->integer('id_detail_tour');
             $table->integer('id_user');
-            $table->foreign('id_formality')->references('id')->on('formality')->onDelete('restrict');
-            $table->foreign('id_tour')->references('id')->on('tour')->onDelete('restrict');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('restrict');
+            // $table->foreign('id_formality')->references('id')->on('formality')->onDelete('restrict');
+            $table->foreign('id_detail_tour')->references('id')->on('detail_tour')->onDelete('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -40,7 +42,6 @@ class CreateTablePersonOrder extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists("person_order");
     }
 }

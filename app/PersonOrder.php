@@ -5,11 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Review
+ * Class PersonOrder
  */
-class Review extends Model
+class PersonOrder extends Model
 {
-    protected $table = "review";
+    protected $table = "person_order";
     public $timestamps = false;
 
     /**
@@ -17,23 +17,24 @@ class Review extends Model
      * @var array
      */
     protected $fillable = [
-        'score', 'content', 'date_review', 'deleted_at', 'id_tour', 'id_user'
+        'name', 'email', 'phone', 'address', 'note', 'num_adults', 'num_childs', 'date_ordered', 'status', 'deleted_at', 'id_detail_tour', 'id_user'
     ];
-    
+
     /**
      * The attributes that should be hidden for arrays.
      * @var array
      */
     protected $hidden = [
+       
     ];
 
     /**
-     * Relation tour
+     * Relation detail tour
      * @return object
      */
-    public function tour()
+    public function detail_tour()
     {
-    	return $this->belongsTo('App\Tour', 'id_tour', 'id');
+    	return $this->belongsTo('App\DetailTour', 'id_detail_tour', 'id');
     }
 
     /**
@@ -42,6 +43,6 @@ class Review extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User', 'id_user', 'id');
+    	return $this->belongsTo('App\User', 'id_user', 'id');
     }
 }

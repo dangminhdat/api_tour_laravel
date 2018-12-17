@@ -4,15 +4,29 @@ namespace Core\Repositories;
 
 use App\User;
 
+/**
+ * Class UserRepository
+ */
 class UserRepository implements RepositoryInterface
 {
+    /**
+     * @var $model
+     */
     protected $model;
 
+    /**
+     * [__construct description]
+     * @param User $model [description]
+     */
     public function __construct(User $model)
     {
         $this->model = $model;
     }
 
+    /**
+     * All
+     * @return array
+     */
     public function paginate()
     {
         $paginate = array();
@@ -29,6 +43,11 @@ class UserRepository implements RepositoryInterface
         return $paginate;
     }
 
+    /**
+     * Find
+     * @param int $id
+     * @return array
+     */
     public function find($id)
     {
         // get user by id
@@ -46,6 +65,11 @@ class UserRepository implements RepositoryInterface
         return $userR;
     }
 
+    /**
+     * Store
+     * @param array $data
+     * @return mixed
+     */
     public function store($data)
     {
         $store = $this->model->create($data);
@@ -53,6 +77,12 @@ class UserRepository implements RepositoryInterface
         return $store;
     }
 
+    /**
+     * Update
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
     public function update($id, $data)
     {
         $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
@@ -65,6 +95,11 @@ class UserRepository implements RepositoryInterface
         return $update;
     }
 
+    /**
+     * Destroy
+     * @param int $id
+     * @return mixed
+     */
     public function destroy($id)
     {
         $model = $this->model->find($id);
@@ -72,10 +107,9 @@ class UserRepository implements RepositoryInterface
     }
 
     /**
-     * Select username use eloquent
-     * 
-     * @param  string $username
-     * @return object $model
+     * Select
+     * @param array $condition
+     * @return array
      */
     public function findWhere($condition)
     {
@@ -83,6 +117,11 @@ class UserRepository implements RepositoryInterface
         return $model->first();
     }
 
+    /**
+     * Select review
+     * @param int $id
+     * @return array
+     */
     public function review_by_user($id)
     {
         $user = $this->model->where(["id" => $id, "deleted_at" => 0])->first();
@@ -98,6 +137,9 @@ class UserRepository implements RepositoryInterface
                 $result[] = $reviews[$key];
             }
         }
+        @usort($result, function($a, $b) {
+            return $a['id'] < $b['id'];
+        });
         return $result;
     }
 }

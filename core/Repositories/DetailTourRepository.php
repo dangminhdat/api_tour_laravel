@@ -4,20 +4,35 @@ namespace Core\Repositories;
 
 use App\DetailTour;
 
+/**
+ * Class DetailTourRepository
+ */
 class DetailTourRepository implements RepositoryInterface
 {
+    /**
+     * @var $model
+     */
     protected $model;
 
+    /**
+     * [__construct description]
+     * @param DetailTour $model [description]
+     */
     public function __construct(DetailTour $model)
     {
         $this->model = $model;
     }
 
-    public function paginate()
-    {
-        
-    }
+    /**
+     * @return void
+     */
+    public function paginate(){}
 
+    /**
+     * Find
+     * @param int $id
+     * @return object
+     */
     public function find($id)
     {
         $details = $this->model->where(["deleted_at" => 0, "id" => $id])->first();
@@ -55,15 +70,15 @@ class DetailTourRepository implements RepositoryInterface
                 $location[] = $arr;
             }
         }
-        // hotel
-        foreach ($tour->image as $image) {
-            if (!$image->deleted_at) {
-                $arr = array();
-                $arr['id'] = $image->id;
-                $arr['url'] = $image->url;
-                $images[] = $arr;
-            }
-        }
+        // images
+        // foreach ($tour->image as $image) {
+        //     if (!$image->deleted_at) {
+        //         $arr = array();
+        //         $arr['id'] = $image->id;
+        //         $arr['url'] = $image->url;
+        //         $images[] = $arr;
+        //     }
+        // }
         // detail
         $detail['id'] = $details->id;
         $detail['date_depart'] = $details->date_depart;
@@ -84,10 +99,15 @@ class DetailTourRepository implements RepositoryInterface
         $tour['location'] = $location;
         $tour['guide'] = $guide;
         $tour['hotel'] = $hotel;
-        $tour['images'] = $images;
+        // $tour['images'] = $images;
         return $tour;
     }
 
+    /**
+     * Store
+     * @param array $data
+     * @return mixed
+     */
     public function store($data)
     {
         if (!empty($data['id_hotel'])) {
@@ -102,12 +122,31 @@ class DetailTourRepository implements RepositoryInterface
         return $this->model->create($data);
     }
 
+    /**
+     * Update
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
     public function update($id, $data)
     {
         $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
+        if (!empty($data['id_hotel'])) {
+            $model->first()->hotel()->detach();
+            $id_hotel = $data['id_hotel'];
+            unset($data['id_hotel']);
+            foreach ($id_hotel as $key => $value) {
+                $model->first()->hotel()->attach($value);
+            }
+        }
         return $model->update($data);
     }
 
+    /**
+     * Destroy
+     * @param int $id
+     * @return mixed
+     */
     public function destroy($id)
     {
         $model = $this->model->find($id);
@@ -115,10 +154,9 @@ class DetailTourRepository implements RepositoryInterface
     }
 
     /**
-     * Select username use eloquent
-     * 
-     * @param  string $username
-     * @return object $model
+     * Select
+     * @param array $username
+     * @return object
      */
     public function findWhere($condition)
     {
@@ -126,6 +164,11 @@ class DetailTourRepository implements RepositoryInterface
         return $model->first();
     }
 
+    /**
+     * Select detail day other
+     * @param int $id
+     * @return array
+     */
     public function detail_day_other($id)
     {
     	$result = array();
@@ -165,5 +208,41 @@ class DetailTourRepository implements RepositoryInterface
         	$result[] = $detail[$key];
         }
     	return $result;
+    }
+
+    /**
+     * Change order
+     * @param int $id
+     * @return mixed
+     */
+    public function change_order($id)
+    {
+        $model = $this->model->where(["deleted_at" => 0, "id" => $id]);
+        $details = $model->first();
+        $data = [
+            'slot'      => ($details->slot - 1),
+            'booked'    => ($details->booked + 1)
+        ];
+        return $model->update($data);
+    }
+
+    /**
+     * Get detail tour
+     * @param int $id
+     * @return array
+     */
+    public function get($id)
+    {
+        $details = $this->model->where(['deleted_at' => 0, 'id' => $id])->first();
+        $hotels = $details->hotel;
+        $hotel_arr = array();
+        foreach ($hotels as $key => $hotel) {
+            if (!$hotel->deleted_at) {
+                array_push($hotel_arr, $hotel->id);
+            }
+        }
+        unset($details['hotel']);
+        $details['id_hotel'] = $hotel_arr;
+        return $details;
     }
 }

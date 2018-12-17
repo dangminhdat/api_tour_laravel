@@ -36,6 +36,20 @@ Route::group([ 'middleware' => ['check_login']], function () {
 	Route::resource('group', 'Api\GroupController');
 	// api update tour
 	Route::POST('tour/{id}', 'Api\TourController@updateTour');
+	// restful api person order
+	Route::resource('person-order', 'Api\PersonOrderController');
+	// get person order of user
+	Route::get('order-user', 'Api\PersonOrderController@get_tour_of_user');
+	// chagne order slot booked
+	Route::POST('change-order', 'Api\DetailTourController@change_order');
+	// active order
+	Route::POST('active-order', 'Api\PersonOrderController@active_order');	
+	// cancel
+	Route::POST('cancel-order', 'Api\PersonOrderController@cancel_order');
+	// get tour
+	Route::get('get-tour/{id}', 'Api\TourController@find');
+	// get tour
+	Route::get('get-detail/{id}', 'Api\DetailTourController@find');
 });
 
 /**
@@ -63,6 +77,8 @@ Route::GET('tour/type-tour/{id}', 'Api\TourController@tour_of_type');
 Route::GET('tour/location/{id}', 'Api\TourController@tour_by_location');
 // get 5 tour lastest
 Route::get('tour/latest', 'Api\TourController@five_tour_latest');
+// add tour image
+Route::POST('tours/add', 'Api\TourController@add');
 // restful api tour
 Route::resource('tour', 'Api\TourController');
 // get 5 location favorite

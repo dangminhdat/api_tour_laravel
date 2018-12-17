@@ -21,8 +21,8 @@ class CreateTableReview extends Migration
             $table->tinyInteger('deleted_at')->default(0);
             $table->integer('id_tour');
             $table->integer('id_user');
-            $table->foreign('id_tour')->references('id')->on('tour')->onDelete('restrict');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('restrict');
+            $table->foreign('id_tour')->references('id')->on('tour')->onDelete('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

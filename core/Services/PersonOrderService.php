@@ -2,12 +2,12 @@
 
 namespace Core\Services;
 
-use Core\Repositories\GroupRepository;
+use Core\Repositories\PersonOrderRepository;
 
 /**
- * Class GroupService
+ * Class PersonOrderService
  */
-class GroupService implements ServiceInterface
+class PersonOrderService implements ServiceInterface
 {
     /**
      * @var $repository
@@ -16,9 +16,9 @@ class GroupService implements ServiceInterface
 
     /**
      * [__construct description]
-     * @param GroupRepository $repository [description]
+     * @param PersonOrderRepository $repository [description]
      */
-    public function __construct(GroupRepository $repository)
+    public function __construct(PersonOrderRepository $repository)
     {
         return $this->repository = $repository;
     }
@@ -71,5 +71,15 @@ class GroupService implements ServiceInterface
     public function destroy($id)
     {
         return $this->repository->destroy($id);
+    }
+
+    /**
+     * Select tour order of user
+     * @param int $id
+     * @return array
+     */
+    public function get_tour_of_user($id)
+    {
+        return $this->repository->get_tour_of_user($id);
     }
 }

@@ -5,11 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Formality
+ * Class Traveler
  */
-class Formality extends Model
+class Traveler extends Model
 {
-    protected $table = "formality";
+    protected $table = "traveler";
     public $timestamps = false;
 
     /**
@@ -17,7 +17,7 @@ class Formality extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name', 'gender', 'birth', 'cat_traveler', 'check_room', 'deleted_at', 'id_person_order'
     ];
 
     /**
@@ -25,6 +25,7 @@ class Formality extends Model
      * @var array
      */
     protected $hidden = [
+        
     ];
 
     /**
@@ -33,6 +34,6 @@ class Formality extends Model
      */
     public function person_order()
     {
-        return $this->hasMany('App\PersonOrder','id_formality','id');
+    	return $this->hasOne('App\PersonOrder', 'id_person_order', 'id');
     }
 }

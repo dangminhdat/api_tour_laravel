@@ -23,7 +23,7 @@ class CreateTableTraveler extends Migration
             $table->tinyInteger('check_room');
             $table->tinyInteger('deleted_at')->default(0);
             $table->integer('id_person_order');
-            $table->foreign('id_person_order')->references('id')->on('person_order')->onDelete('restrict');
+            $table->foreign('id_person_order')->references('id')->on('person_order')->onDelete('cascade');
         });
     }
 
@@ -34,7 +34,6 @@ class CreateTableTraveler extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists("traveler");
     }
 }

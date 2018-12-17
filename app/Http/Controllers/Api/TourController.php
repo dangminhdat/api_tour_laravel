@@ -5,20 +5,30 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\TourService;
 
+/**
+ * Class TourController
+ */
 class TourController extends ApiController
 {
+    /**
+     * protected $tour_service
+     */
     protected $tour_service;
 
+    /**
+     * [__construct description]
+     * @param TourService $service [description]
+     */
     public function __construct(TourService $service)
     {
         $this->tour_service = $service;
         // check login
         $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy', 'upload_image'], 'except' => [ 'search_tour' ]]);
     }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show list tour
+     * @return object
      */
     public function index()
     {
@@ -37,7 +47,7 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -47,10 +57,9 @@ class TourController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Save tour
+     * @param Request $request
+     * @return object
      */
     public function store(Request $request)
     {
@@ -88,10 +97,9 @@ class TourController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show tour by id
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {
@@ -120,22 +128,50 @@ class TourController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update tour by id
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            $tour = $this->tour_service->find($id);
+
+            $data = [
+                "name"          => $request->name?$request->name:$tour->name,
+                "number_days"   => $request->number_days?$request->number_days:$tour->number_days,
+                "item_tour"     => $request->item_tour?$request->item_tour:$tour->item_tour,
+                "discount"      => $request->discount?$request->discount:$tour->discount,
+                "images"        => $request->images?$request->images:$tour->images,
+                "programs"      => $request->programs?$request->programs:$tour->programs,
+                "note"          => $request->note?$request->note:$tour->note,
+                "id_type_tour"  => $request->id_type_tour?$request->id_type_tour:$tour->id_type_tours
+            ];
+            // all data tour
+            $tour = $this->tour_service->update($id, $data);
+
+            $code = 200;
+            $message = "Success";
+            $data = "Update tour success";
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete tour
+     * @param int $id
+     * @return object
      */
     public function destroy($id)
     {
@@ -165,7 +201,8 @@ class TourController extends ApiController
 
     /**
      * Get list tour by location
-     * @return [type] [description]
+     * @param int $id
+     * @return object
      */
     public function tour_by_location($id)
     {
@@ -195,7 +232,7 @@ class TourController extends ApiController
 
     /**
      * Get list tour by sales
-     * @return [type] [description]
+     * @return object
      */
     public function tour_by_sales()
     {
@@ -225,8 +262,8 @@ class TourController extends ApiController
 
     /**
      * Get list tour of type
-     * @param  [type] $id [description]
-     * @return [type]     [description]
+     * @param int $id
+     * @return object
      */
     public function tour_of_type($id)
     {
@@ -254,6 +291,12 @@ class TourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Update tour
+     * @param Request $request
+     * @param int $id
+     * @return object
+     */
     public function updateTour(Request $request, $id)
     {
         try
@@ -290,6 +333,11 @@ class TourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Upload image
+     * @param Request $request
+     * @return object
+     */
     public function upload_image(Request $request)
     {
         try
@@ -314,7 +362,7 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -323,6 +371,10 @@ class TourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Get 5 tour latest
+     * @return object
+     */
     public function five_tour_latest()
     {
         try
@@ -340,7 +392,7 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,
@@ -349,6 +401,11 @@ class TourController extends ApiController
         ], $code);
     }
 
+    /**
+     * Search tour
+     * @param Request $request
+     * @return object
+     */
     public function search_tour(Request $request)
     {
         try
@@ -373,7 +430,75 @@ class TourController extends ApiController
         catch(\Exception $e) {
             $code = 403;
             $message = "Access Denied Exception";
-            $data = $e->getMessage();
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    /**
+     * Add tour
+     * @param Request $request
+     * @return object
+     */
+    public function add(Request $request)
+    {
+        try
+        {
+            $data = [
+                "name"          => $request->name,
+                "number_days"   => $request->number_days,
+                "date_created"  => now(),
+                "item_tour"     => $request->item_tour,
+                "discount"      => $request->discount,
+                "images"        => $_FILES['images'],
+                "programs"      => $request->programs,
+                "note"          => $request->note,
+                "deleted_at"    => false,
+                "id_type_tour"  => $request->id_type_tour
+            ];
+            // all data tour
+            $tour = $this->tour_service->add($data);
+
+            $code = 200;
+            $message = "Success";
+            $data = "Insert tour success";
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
+
+    /**
+     * Get tour
+     * @param int $id
+     * @return object
+     */
+    public function find($id)
+    {
+        try
+        {
+            $tour = $this->tour_service->find($id);
+            unset($tour->deleted_at);
+
+            $code = 200;
+            $message = "Success";
+            $data = $tour;
+        } 
+        catch(\Exception $e) {
+            $code = 403;
+            $message = "Access Denied Exception";
+            $data = null;
         }
         return response()->json([
             "result_code"       => $code,

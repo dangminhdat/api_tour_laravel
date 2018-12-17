@@ -5,20 +5,30 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Core\Services\ImageService;
 
+/**
+ * Class ImageController
+ */
 class ImageController extends ApiController
 {
+    /**
+     * protected $image_service
+     */
     protected $image_service;
 
+    /**
+     * [__construct description]
+     * @param ImageService $service [description]
+     */
     public function __construct(ImageService $service)
     {
         $this->image_service = $service;
         // check login
         $this->middleware('check_login', ['only' => [ 'store', 'update', 'destroy' ]]);
     }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show list images
+     * @return object
      */
     public function index()
     {
@@ -47,26 +57,16 @@ class ImageController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Save image
+     * @param Request $request
+     * @return object
      */
     public function store(Request $request)
     {
         try
         {
             $image = [
+                "description" => $request->description,
                 "images"      => $_FILES['images'],
                 "id_tour"     => $request->id_tour
             ];
@@ -91,14 +91,12 @@ class ImageController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show image by id
+     * @param int $id
+     * @return object
      */
     public function show($id)
     {
-        //
         try
         {
             // all data location
@@ -124,33 +122,45 @@ class ImageController extends ApiController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update images
+     * @param Request $request
+     * @param int $id
+     * @return object
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            $data = [
+                "description" => $request->description
+            ];
+
+            $image = $this->image_service->update($id, $data);
+            if (!$image) {
+                throw new \Exception("Not found", 2);
+            }
+
+            $code = 200;
+            $message = "Success!";
+            $data = "Update success!";
+        }
+        catch(\Exception $e) {
+            $message = "Something error!!!";
+            $code = 400;
+            $data = null;
+        }
+
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete images
+     * @param int $id
+     * @return object
      */
     public function destroy($id)
     {

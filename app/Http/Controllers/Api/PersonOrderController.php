@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Core\Services\PersonOrderService;
+use Core\Services\DetailTourService;
 use JWTAuth;
 use App\Mail\OrderTour;
 use Illuminate\Support\Facades\Mail;
@@ -19,12 +20,18 @@ class PersonOrderController extends ApiController
     protected $person_order_service;
 
     /**
+     * protected $detail_tour_service
+     */
+    protected $detail_tour_service;
+
+    /**
      * [__construct description]
      * @param PersonOrderService $service [description]
      */
-    public function __construct(PersonOrderService $service)
+    public function __construct(PersonOrderService $service, DetailTourService $detail)
     {
         $this->person_order_service = $service;
+        $this->detail_tour_service = $detail;
     }
 
     /**
@@ -86,6 +93,10 @@ class PersonOrderController extends ApiController
                 "id_user"       => $profile->id
             ];
             $person_order = $this->person_order_service->store($data);
+
+            $data['tour'] = $this->detail_tour_service->find($request->id_detail_tour);
+
+            $data['sum'] = ($data['tour']->detail['price_adults'] * $data['num_adults'] + $data['tour']->detail['price_childs'] * $data['num_childs']) * (1 - $data['tour']->discount / 100);
 
             Mail::to($data["email"])->send(new OrderTour($data));
 

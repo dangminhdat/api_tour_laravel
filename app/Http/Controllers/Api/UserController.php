@@ -553,4 +553,68 @@ class UserController extends ApiController
             "data"              => $data
         ], $code);
     }
+
+    /**
+     * Register
+     * @param Request $request
+     * @return object
+     */
+    public function register(Request $request)
+    { 
+        try
+        {
+
+            DB::transaction(function () use ($request) {
+                // validate username
+                $username = $this->user_service->findWhere(["username" => $request->username]);
+                if ($username) {
+                    throw new \Exception("Username is exists", 2);
+                }
+                // insert data to user table
+                $data_user = [
+                    "username"       => $request->username,
+                    "password"       => bcrypt($request->password),
+                    "active"         => true,
+                    "deleted_at"     => false,
+                    "remember_token" => null,
+                    "id_group"       => 3
+                ];
+
+                $user = $this->user_service->store($data_user);
+                // validate email
+                $email = $this->user_detail_service->findWhere(["email" => $request->email]);
+                if ($email) {
+                    throw new \Exception("Email is exists", 3);
+                }
+                // insert ta to user_detail table
+                $data_user_detail = [
+                    "fullname"   => $request->fullname,
+                    "email"      => $request->email,
+                    "phone"      => $request->phone,
+                    "address"    => $request->address,
+                    "deleted_at" => false,
+                    "id_user"    => $user['id']
+                ];
+                $user_detail = $this->user_detail_service->store($data_user_detail);
+            });
+            
+            $code = 200;
+            $message = "Success";
+            $data = "Register success!";
+        } 
+        catch(\Exception $e) {
+            if ($e->getCode() === 2 || $e->getCode() === 3) {
+                $message = $e->getMessage();
+            } else {
+                $message = "Something error!!!!!";
+            }
+            $code = 400;
+            $data = $e->getMessage();
+        }
+        return response()->json([
+            "result_code"       => $code,
+            "result_message"    => $message,
+            "data"              => $data
+        ], $code);
+    }
 }

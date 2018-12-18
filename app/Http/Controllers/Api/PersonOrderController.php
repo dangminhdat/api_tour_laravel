@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Core\Services\PersonOrderService;
+use Core\Services\DetailTourService;
 use JWTAuth;
-use App\Mail\OrderTour;
+use App\Mail\ActiveOrder;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -19,12 +20,18 @@ class PersonOrderController extends ApiController
     protected $person_order_service;
 
     /**
+     * protected $detail_tour_service
+     */
+    protected $detail_tour_service;
+
+    /**
      * [__construct description]
      * @param PersonOrderService $service [description]
      */
-    public function __construct(PersonOrderService $service)
+    public function __construct(PersonOrderService $service, DetailTourService $detail)
     {
         $this->person_order_service = $service;
+        $this->detail_tour_service = $detail;
     }
 
     /**
@@ -77,7 +84,8 @@ class PersonOrderController extends ApiController
                 "email"         => $request->email,
                 "phone"         => $request->phone,
                 "address"       => $request->address,
-                "note"          => $request->note,
+                "note"          => $request->note ?? null,
+                "pay"           => $request->pay,
                 "num_adults"    => $request->num_adults,
                 "num_childs"    => $request->num_childs,
                 "date_ordered"  => date("Y-m-d"),
@@ -86,8 +94,6 @@ class PersonOrderController extends ApiController
                 "id_user"       => $profile->id
             ];
             $person_order = $this->person_order_service->store($data);
-
-            Mail::to($data["email"])->send(new OrderTour($data));
 
             $code = 200;
             $message = "Success!";
@@ -160,6 +166,7 @@ class PersonOrderController extends ApiController
                 "phone"         => $request->phone?$request->phone:$order->phone,
                 "address"       => $request->address?$request->address:$order->address,
                 "note"          => $request->note?$request->note:$order->note,
+                "pay"           => $request->pay?$request->pay:$order->pay,
                 "num_adults"    => $request->num_adults?$request->num_adults:$order->num_adults,
                 "num_childs"    => $request->num_childs?$request->num_childs:$order->num_childs,
                 "date_ordered"  => date("Y-m-d")
@@ -257,17 +264,23 @@ class PersonOrderController extends ApiController
     {
         try
         {
-            $order = $this->person_order_service->find($request->id);
+            $data = $this->person_order_service->find($request->id)->toArray();
 
-            if (!$order) {
+            if (!$data) {
                 throw new \Exception("Not found", 1);
             }
 
-            $person_order = $this->person_order_service->update($order->id, ['status' => 2]);
+            $person_order = $this->person_order_service->update($data['id'], ['status' => 2]);
 
             if (!$person_order) {
                 throw new \Exception("Not found", 1);
             }
+
+            $data['tour'] = $this->detail_tour_service->find($data['id_detail_tour']);
+
+            $data['sum'] = ($data['tour']->detail['price_adults'] * $data['num_adults'] + $data['tour']->detail['price_childs'] * $data['num_childs']) * (1 - $data['tour']->discount / 100);
+
+            Mail::to($data['email'])->send(new ActiveOrder($data));
 
             $code = 200;
             $message = "Success!";

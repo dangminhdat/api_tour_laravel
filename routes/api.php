@@ -57,6 +57,8 @@ Route::group([ 'middleware' => ['check_login']], function () {
  */
 // route post login
 Route::post('/login', 'Api\UserController@login');
+// route post register
+Route::post('/register', 'Api\UserController@register');
 // restful api guide
 Route::resource('guides', 'Api\GuideController');
 // restful api hotel

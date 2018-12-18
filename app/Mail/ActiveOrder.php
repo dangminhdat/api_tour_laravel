@@ -31,6 +31,6 @@ class ActiveOrder extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.order')->text('mails.order_text')->with('data', $this->data);
+        return $this->view('mails.active')->with('data', $this->data);
     }
 }

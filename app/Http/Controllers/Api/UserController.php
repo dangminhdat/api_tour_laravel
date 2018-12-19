@@ -30,7 +30,6 @@ class UserController extends ApiController
      */
     public function __construct(UserService $service, UserDetailService $service_detail)
     {
-        $this->middleware('admin_login');
         $this->user_service = $service;
         $this->user_detail_service = $service_detail;
     }

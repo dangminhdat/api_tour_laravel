@@ -50,6 +50,8 @@ Route::group([ 'middleware' => ['check_login']], function () {
 	Route::get('get-tour/{id}', 'Api\TourController@find');
 	// get tour
 	Route::get('get-detail/{id}', 'Api\DetailTourController@find');
+	// search tour
+	Route::get('statistic', 'Api\StatisticController@index');
 });
 
 /**

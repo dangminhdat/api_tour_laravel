@@ -13,13 +13,17 @@ class LocationSeeder extends Seeder
     {
         //
         DB::table("location")->insert([
-        	[ "name" => "Đà Nẵng", "image" => "place1.jpg" ],
-        	[ "name" => "Nha Trang", "image" => "place2.jpg" ],
-        	[ "name" => "Hồ Chí Minh", "image" => "place3.jpg" ],
-        	[ "name" => "Hà Nội", "image" => "place4.jpg" ],
-        	[ "name" => "Sa Pa", "image" => "place5.jpg" ],
-        	[ "name" => "Đà Lạt", "image" => "place6.jpg" ],
-        	[ "name" => "Hội An", "image" => "place7.jpg" ],
+        	[ "name" => "Đà Nẵng", "image" => "uploads/da-nang.jpg" ],
+        	[ "name" => "Nha Trang", "image" => "uploads/nha-trang.jpg" ],
+        	[ "name" => "Hồ Chí Minh", "image" => "uploads/ho-chi-minh.jpg" ],
+        	[ "name" => "Hà Nội", "image" => "uploads/ha-noi.jpg" ],
+        	[ "name" => "Sa Pa", "image" => "uploads/sa-pa.jpg" ],
+        	[ "name" => "Đà Lạt", "image" => "uploads/da-lat.jpg" ],
+            [ "name" => "London", "image" => "uploads/london.jpg" ],
+            [ "name" => "Amsterdam", "image" => "uploads/amsterdam.jpg" ],
+            [ "name" => "Japan", "image" => "uploads/japan.jpg" ],
+            [ "name" => "Italy", "image" => "uploads/italy.jpg" ],
+            [ "name" => "Paris", "image" => "uploads/paris.jpg" ],
         ]);
     }
 }

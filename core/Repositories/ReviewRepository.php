@@ -31,7 +31,7 @@ class ReviewRepository implements RepositoryInterface
     {
         $reviews = $this->model->where(["deleted_at" => 0])->orderBy('id', 'DESC')->get();
         foreach ($reviews as $key => $review) {
-            $reviewF = $this->model->where(["id" => $review["id"]])->first();
+            $reviewF = $this->model->where(["id" => $review->id])->first();
             $reviews[$key]['email'] = $reviewF->user->user_detail->email;
             $reviews[$key]['name'] = $reviewF->user->user_detail->fullname;
             $reviews[$key]['name_tour'] = $reviewF->tour->name;

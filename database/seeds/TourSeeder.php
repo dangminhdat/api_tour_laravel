@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 use Illuminate\Database\Seeder;
 
@@ -19,7 +19,7 @@ class TourSeeder extends Seeder
                     "date_created"=> now(),
                     "item_tour"   => "OK",
                     "discount"    => $i,
-                    "images"      => "/images/tour".$i.".png",
+                    "images"      => "uploads/da-nang-nha-trang-0".$i.".jpg",
                     "programs"    => "OK",
                     "note"        => "OK",
                     "deleted_at"  => false,
@@ -39,7 +39,7 @@ class TourSeeder extends Seeder
                         "slot"          => 10,
                         "booked"        => $i,
                         "deleted_at"    => false,
-                        "id_guide"      => $j,
+                        "id_guide"      => $i,
                         "id_tour"       => $i,
                     ],
                 ]);
